@@ -107,7 +107,7 @@ const Header = () => {
           <div className='container mx-auto flex text-sm font-thin p-2 mb-2 justify-between'>
             <div className='flex-1 md:flex space-x-2 hidden'><span>Follow Us</span>
               <a
-                href="https://www.facebook.com/groups/497811331424773/"
+                href="https://www.facebook.com/DivarisMakahariscollege/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-white hover:text-gray-900"
