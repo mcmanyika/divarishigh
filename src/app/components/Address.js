@@ -4,13 +4,13 @@ import ItemList from '../components/ItemsList'
 
 const Address = () => {
   return (
-    <section className="p-4 bg-gray-400 text-white">
+    <section className="p-4 bg-footer text-white">
       <div className="container mx-auto">
         <div className="flex flex-col md:flex-row justify-between">
           <div className="pb-5">
             <h2 className="text-sm font-bold mb-2 uppercase">Our Address</h2>
             <p className="text-sm font-thin text-white font-sans">
-              Address: 9480 1st Drive, <br />Glenview 3, <br /> PO Box GV 41, Glen View
+            Corner Lavenham Drive & Northolt Road,<br /> Bluffhill, Harare, Zimbabwe
             </p>
           </div>
           <div className="flex flex-col items-start pb-5">

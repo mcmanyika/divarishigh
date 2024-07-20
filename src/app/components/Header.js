@@ -98,7 +98,7 @@ const Header = () => {
 
   return (
     <header
-      className={`fixed z-50 w-full bg-blue-400 text-white transition-all duration-500 ease-in-out ${
+      className={`fixed z-50 w-full bg-main text-white transition-all duration-500 ease-in-out ${
         isSticky ? 'top-0' : 'bottom-0 border-t-2 border-t-white p-5'
       } ${!isSticky && 'hidden md:block'}`}
     >
@@ -153,7 +153,7 @@ const Header = () => {
                   Welcome Guest, &nbsp;
                   <button
                     onClick={() => signIn('google')}
-                    className="bg-blue-500 text-white p-1 rounded hover:bg-blue-600"
+                    className=" text-white p-1 rounded hover:bg-main2"
                   >
                     Sign In
                   </button>
@@ -165,7 +165,7 @@ const Header = () => {
       )}
       <nav className="max-w-4xl mx-auto flex justify-between items-center p-4">
         <div className={`flex items-center space-x-2 ${isOpen ? 'hidden md:flex' : 'block'}`}>
-          <Link href='/'>
+          {/* <Link href='/'>
             <Image
               src="/images/logo.png"
               alt="Logo"
@@ -174,8 +174,8 @@ const Header = () => {
               className="rounded"
               priority
             />
-          </Link>
-          <h1 className="text-sm md:text-2xl font-normal uppercase flex">GlenView 2 High</h1>
+          </Link> */}
+          <h1 className="text-sm md:text-2xl font-normal uppercase flex">Divaris Makaharis High</h1>
         </div>
         {isSticky && (
           <div className="md:hidden">

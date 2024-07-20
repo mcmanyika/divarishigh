@@ -5,7 +5,7 @@ const About = () => {
     <div className="bg-blue2 pt-10">
 
 <div className='max-w-60 mx-auto '>
-        <h2 className="text-lg  font-thin text-center bg-black text-white p-2 uppercase">Our Mission</h2></div>
+        <h2 className="text-lg  font-thin text-center bg-main3 text-white p-2 uppercase">Our Mission</h2></div>
       <div className="max-w-3xl mx-auto p-8">
         <p className='text-center font-sans text-xl font-thin'>
         To facilitate high quality teaching and learning, build learning communities, encourage

@@ -5,7 +5,7 @@ const Socials = () => {
   return (
     <div className="bg-blue2 p-6">
         <div className='max-w-40 mx-auto'>
-        <h2 className="text-lg  font-thin mb-6 text-center bg-black text-white p-2 uppercase">Follow Us</h2></div>
+        <h2 className="text-lg  font-thin mb-6 text-center bg-main3 text-white p-2 uppercase">Follow Us</h2></div>
       <div className="max-w-3xl mx-auto p-8">
         <div className="flex justify-center space-x-6">
           <a

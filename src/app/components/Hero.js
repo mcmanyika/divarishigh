@@ -14,18 +14,9 @@ const Hero = () => {
     {
       title: "Excellence in Education",
       description: "Empowering students to reach their full potential.",
-      imageUrl: "https://firebasestorage.googleapis.com/v0/b/glenview2-b3d45.appspot.com/o/general%2Fweb%2Fstudents3.jpeg?alt=media&token=368a73f2-a805-4330-85b6-24be48315e97",
+      imageUrl: "/images/divaris.jpeg",
     },
-    {
-      title: "Innovative Teaching",
-      description: "Providing state-of-the-art facilities and teaching methods.",
-      imageUrl: "https://firebasestorage.googleapis.com/v0/b/glenview2-b3d45.appspot.com/o/general%2Fweb%2Fcomputerlab.jpeg?alt=media&token=af04fc07-062b-412c-a9ce-a17bed728757",
-    },
-    {
-      title: "Sporting Activities",
-      description: "Building strong connections with the local community.",
-      imageUrl: "https://firebasestorage.googleapis.com/v0/b/glenview2-b3d45.appspot.com/o/general%2Fweb%2Fnetball.jpeg?alt=media&token=af4ee37f-7f9e-46d1-b823-d7ece81bcac8",
-    },
+    
   ];
 
   // Function to handle menu click and toggle overlay visibility
@@ -89,7 +80,7 @@ const Hero = () => {
           <div key={index} className="min-w-full h-full bg-cover bg-center" style={{ backgroundImage: `url(${slide.imageUrl})` }}></div>
         ))}
       </div>
-      <div className="absolute inset-0 bg-blue-500 opacity-20"></div>
+      <div className="absolute inset-0 bg-main opacity-20"></div>
       <div className="absolute top-4 left-1/2 transform -translate-x-1/2 z-20">
         <Link href="/">
           <Image

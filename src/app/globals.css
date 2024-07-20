@@ -8,11 +8,19 @@ body {
     color: #333; /* Example text color */
   }
 
-  .bg-blue {
-    background-color: #85b6fb
+  .bg-main {
+    background-color: #6c3a44
   }
-  .bg-blue2{
-    background-color: #85b6fb36;
+  .bg-main2{
+    background-color: #6c3a4424;
+  }
+
+  .bg-main3 {
+    background-color: #cf9874;
+  }
+
+  .bg-footer {
+    background-color: #121212;
   }
 
   .no-hover-overlay {

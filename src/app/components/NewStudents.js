@@ -8,13 +8,13 @@ const NewStudents = () => {
         className="absolute inset-0 bg-cover bg-center"
         style={{ backgroundImage: "url('images/book.png')" }}
       ></div>
-      <div className="absolute inset-0 bg-black opacity-50"></div> {/* Dark overlay */}
+      <div className="absolute inset-0 bg-main3 opacity-50"></div> {/* Dark overlay */}
       <section className="relative text-white p-20 md:p-15 text-center">
         <h1 className="text-xl md:text-3xl font-thin font-sans uppercase">Welcome New Students</h1>
         <p className="mt-4 text-base md:text-lg">
           {/* Use Link component for navigation */}
           <Link href="/admissions">
-            <button className="uppercase p-2 bg-blue-400 text-white hover:bg-blue-500 transition duration-300">
+            <button className="uppercase p-2 bg-main text-white  transition duration-300">
               Find out more
             </button>
           </Link>
