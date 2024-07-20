@@ -29,7 +29,7 @@ const Address = () => {
             <h2 className="ttext-sm font-bold mb-2 uppercase">Stay Connected</h2>
             <div className="flex space-x-2">
               <a
-                href="https://www.facebook.com/groups/497811331424773/"
+                href="https://www.facebook.com/DivarisMakahariscollege/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-300 hover:text-white"
@@ -37,7 +37,7 @@ const Address = () => {
                 <FaFacebookSquare className="h-6 w-6" />
               </a>
               <a
-                href="https://www.instagram.com/your-instagram-page"
+                href="https://www.instagram.com"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-300 hover:text-white"

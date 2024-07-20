@@ -36,7 +36,7 @@ const SupplierContactForm = () => {
 
   return (
     <div className="flex justify-center items-center">
-      <form onSubmit={handleSubmit} className="bg-blue-300 p-8 rounded shadow-md text-black w-full max-w-md">
+      <form onSubmit={handleSubmit} className=" p-8 rounded shadow-md text-black w-full max-w-md">
         <div className="mb-4">
           <input
             id="name"

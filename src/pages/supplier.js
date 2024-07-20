@@ -19,7 +19,7 @@ const SupplierInvitation = () => {
       <div className="relative flex items-center justify-center">
         <div
           className="absolute inset-0 bg-cover"
-          style={{ backgroundImage: "url('/images/fountain.png')" }} // Replace with your background image path
+          style={{ backgroundImage: "url('/images/banner.jpg')" }} // Replace with your background image path
         ></div>
         <div className="absolute inset-0 bg-black opacity-40"></div> {/* Dark overlay */}
         <section className="relative text-white p-20 md:p-15 text-center text-xl font-thin">
@@ -31,7 +31,7 @@ const SupplierInvitation = () => {
             Contact us today to explore partnership opportunities.
           </p>
           <button
-            className="mt-6 uppercase p-3 bg-blue-400 text-white hover:bg-blue-500 transition duration-300"
+            className="mt-6 uppercase p-3 bg-main text-white  transition duration-300"
             onClick={handleButtonClick}
           >
             Contact Us
@@ -44,9 +44,9 @@ const SupplierInvitation = () => {
             isOverlayVisible ? 'translate-x-0' : 'translate-x-full'
           }`}
         >
-          <div className="relative w-full h-full flex items-center justify-center p-8 bg-blue-300 text-white">
+          <div className="relative w-full h-full flex items-center justify-center p-8 bg-main text-white">
             <button
-              className="absolute top-4 right-4 text-white bg-blue-500 p-2 rounded"
+              className="absolute top-4 right-4 text-white bg-main3 p-2 rounded"
               onClick={handleCloseOverlay}
             >
               Close

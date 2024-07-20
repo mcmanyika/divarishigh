@@ -61,7 +61,7 @@ const Header2 = () => {
   };
 
   return (
-    <header className="fixed top-0 z-50 w-full bg-blue-400 text-white p-4 transition-all duration-500 ease-in-out">
+    <header className="fixed top-0 z-50 w-full bg-main text-white p-4 transition-all duration-500 ease-in-out">
         <div className='top-0 w-full text-white p-0 text-right'>
           <div className='container mx-auto text-xs p-2 mb-2'>
             {session ? <span>Hi {session.user.name}</span> : <>Welcome Guest </>}, &nbsp; 
@@ -84,7 +84,7 @@ const Header2 = () => {
             />
           </Link>
           {/* Toggle visibility based on isOpen state */}
-          <h1 className={`text-sm md:text-2xl font-normal uppercase ${isOpen ? 'hidden' : 'block'}`}>GlenView 2 High</h1>
+          <h1 className={`text-sm md:text-xl font-normal uppercase ${isOpen ? 'hidden' : 'block'}`}>Divaris Makaharis High</h1>
         </div>
         <div className="md:hidden"> {/* Display menu icon on mobile */}
           <button onClick={toggleMenu} className="text-white focus:outline-none">
