@@ -11,23 +11,25 @@ const teamMembers = [
 
 const ManagementTeam = () => {
   return (
-    <div className="flex flex-wrap justify-center bg-main2 p-4">
+    <div className="bg-main2 p-4">
       <div className="text-2xl md:text-4xl text-center font-thin w-full p-5">Our Management Team</div>
-      {teamMembers.map((member, index) => (
-        <div key={index} className="flex flex-col items-center p-4 md:p-12">
-          <div className="relative w-32 h-32 md:w-48 md:h-48 mb-2">
-            <Image
-              src={member.imageUrl}
-              alt={member.name}
-              layout="fill"
-              className="rounded-full object-cover"
-            />
-            <div className="absolute inset-0 bg-main3 opacity-20 rounded-full"></div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+        {teamMembers.map((member, index) => (
+          <div key={index} className="flex flex-col items-center p-4">
+            <div className="relative w-32 h-32 md:w-48 md:h-48 mb-2">
+              <Image
+                src={member.imageUrl}
+                alt={member.name}
+                fill
+                className="rounded-full object-cover"
+              />
+              <div className="absolute inset-0 bg-main3 opacity-20 rounded-full"></div>
+            </div>
+            <div className="text-lg font-semibold">{member.name}</div>
+            <div className="text-base font-thin text-gray-600">{member.role}</div>
           </div>
-          <div className="text-lg font-semibold">{member.name}</div>
-          <div className="text-base font-thin text-gray-600">{member.role}</div>
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
   );
 };
