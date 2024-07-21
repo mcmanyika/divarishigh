@@ -10,7 +10,7 @@ const curriculum = [
 
 const Curriculum = () => {
   return (
-    <div className="flex flex-wrap justify-center space-x-16 bg-main2 p-4">
+    <div className="flex flex-wrap justify-center md:space-x-16 bg-main2 p-4">
       <div className="text-4xl text-center font-thin w-full p-5">Our Curriculum</div>
       {curriculum.map((subject, index) => (
         <div key={index} className="flex flex-col items-center p-12">
