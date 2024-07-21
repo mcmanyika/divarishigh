@@ -68,7 +68,7 @@ const Header2 = () => {
             {session ? (
               <button onClick={() => signOut()}> Sign Out</button>
             ) : (
-              <button onClick={() => signIn('google')}> Sign In</button>
+              <button onClick={() => signIn('google')} className=" text-white font-thin  p-1 rounded hover:bg-main2"> Sign In</button>
             )}
           </div>
         </div>

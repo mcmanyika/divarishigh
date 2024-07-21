@@ -19,9 +19,8 @@ const Hero = () => {
     {
       title: "Excellence in Education",
       description: "Empowering students to reach their full potential.",
-      imageUrl: "/images/banner.jpg",
+      imageUrl: "/images/banner2.png",
     }
-    
   ];
 
   // Function to handle menu click and toggle overlay visibility
@@ -82,7 +81,7 @@ const Hero = () => {
     <div className="relative h-screen flex items-center justify-center overflow-hidden">
       <div className="absolute inset-0 flex transition-transform duration-1000 ease-in-out" style={{ transform: `translateX(${currentIndex * -100}%)` }}>
         {carouselData.map((slide, index) => (
-          <div key={index} className="min-w-full h-full bg-cover bg-center" style={{ backgroundImage: `url(${slide.imageUrl})` }}></div>
+          <div key={index} className="min-w-full h-full bg-cover" style={{ backgroundImage: `url(${slide.imageUrl})` }}></div>
         ))}
       </div>
       <div className="absolute inset-0 bg-main opacity-20"></div>
@@ -93,7 +92,7 @@ const Hero = () => {
             alt="Logo"
             width={100}
             height={100}
-            className="rounded w-12 h-12 md:w-24 md:h-24"
+            className="rounded w-12 h-12 md:w-24 md:h-24 top"
             onClick={handleMenuClick}
           />
         </Link>
