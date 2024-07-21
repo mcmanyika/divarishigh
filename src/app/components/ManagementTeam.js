@@ -12,7 +12,7 @@ const teamMembers = [
 const ManagementTeam = () => {
   return (
     <div className="flex flex-wrap justify-center bg-main2 p-4">
-      <div className="text-4xl text-center font-thin w-full p-5">Our Management Team</div>
+      <div className="text-2xl md:text-4xl text-center font-thin w-full p-5">Our Management Team</div>
       {teamMembers.map((member, index) => (
         <div key={index} className="flex flex-col items-center p-4 md:p-12">
           <div className="relative w-32 h-32 md:w-48 md:h-48 mb-2">
