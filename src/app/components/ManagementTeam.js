@@ -13,7 +13,7 @@ const ManagementTeam = () => {
   return (
     <div className="bg-main2 p-4">
       <div className="text-2xl md:text-4xl text-center font-thin w-full p-5">Our Management Team</div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+      <div className="wi-full md:max-w-7xl mx-auto grid grid-cols-2  md:grid-cols-3 lg:grid-cols-5 gap-4">
         {teamMembers.map((member, index) => (
           <div key={index} className="flex flex-col items-center p-4">
             <div className="relative w-32 h-32 md:w-48 md:h-48 mb-2">
