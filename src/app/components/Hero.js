@@ -19,7 +19,7 @@ const Hero = () => {
     {
       title: "Excellence in Education",
       description: "Empowering students to reach their full potential.",
-      imageUrl: "/images/banner2.png",
+      imageUrl: "/images/banner4.png",
     }
   ];
 
