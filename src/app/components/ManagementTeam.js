@@ -11,6 +11,7 @@ const teamMembers = [
 
 const ManagementTeam = () => {
   return (
+    <section id='team'>
     <div className="bg-main2 p-4">
       <div className="text-2xl md:text-4xl text-center font-thin w-full p-5">Our Management Team</div>
       <div className="w-full md:max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
@@ -31,6 +32,7 @@ const ManagementTeam = () => {
         ))}
       </div>
     </div>
+    </section>
   );
 };
 

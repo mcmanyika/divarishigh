@@ -10,6 +10,7 @@ const curriculum = [
 
 const Curriculum = () => {
   return (
+    <section id='academic'>
     <div className="flex flex-wrap justify-center md:space-x-16 bg-main2 p-4">
       <div className="text-4xl text-center font-thin w-full p-5">Our Curriculum</div>
       {curriculum.map((subject, index) => (
@@ -19,6 +20,7 @@ const Curriculum = () => {
         </div>
       ))}
     </div>
+    </section>
   );
 };
 

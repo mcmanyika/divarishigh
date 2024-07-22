@@ -12,15 +12,17 @@ const values = [
 
 const Values = () => {
   return (
-    <div className="flex flex-wrap justify-center space-x-4 bg-main2 p-4">
-        <div className='text-4xl text-center font-thin w-full p-5'>Our Values</div>
-      {values.map((value, index) => (
-        <div key={index} className="flex flex-col items-center p-12 ">
-          <div className="text-7xl text-red-950   mb-2">{value.icon}</div>
-          <div className="text-lg font-semibold ">{value.name}</div>
-        </div>
-      ))}
-    </div>
+    <section id='values'>
+      <div className="flex flex-wrap justify-center space-x-4 bg-main2 p-4">
+          <div className='text-4xl text-center font-thin w-full p-5'>Our Values</div>
+        {values.map((value, index) => (
+          <div key={index} className="flex flex-col items-center p-12 ">
+            <div className="text-7xl text-red-950   mb-2">{value.icon}</div>
+            <div className="text-lg font-semibold ">{value.name}</div>
+          </div>
+        ))}
+      </div>
+    </section>
   );
 };
 

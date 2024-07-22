@@ -1,7 +1,6 @@
 import { useEffect, useState, useRef } from 'react';
 import { FaFacebook, FaInstagram, FaHome } from 'react-icons/fa';
 import Link from 'next/link';
-import Image from 'next/image';
 import { ref, onValue, query, orderByChild, equalTo } from 'firebase/database';
 import { database } from '../../../utils/firebaseConfig';
 import { useGlobalState, setIsOverlayVisible } from '../store';
@@ -193,7 +192,7 @@ const Header = () => {
         <ul className="hidden md:flex space-x-4">
           {titles.length > 0 && titles.map((rw) => (
             <li key={rw.id}>
-              <Link href={`${rw.link}`}>
+              <Link href={`${rw.link}`} passHref>
                 <div className="hover:text-gray-300 text-sm font-sans font-thin uppercase pb-2 border-b-2 border-transparent hover:border-blue-200">{rw.title}</div>
               </Link>
             </li>

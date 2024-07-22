@@ -2,6 +2,7 @@ import React from 'react';
 
 const Vision = () => {
   return (
+    <section id='vision'>
     <div className="relative parallax  min-h-80 bg-top" style={{ backgroundImage: "url('/images/d4.jpeg')" }}>
       <div className="absolute inset-0 bg-main opacity-50"></div>
       <div className="relative max-w-7xl mx-auto z-10 flex flex-col md:flex-row items-center justify-between h-full text-white p-4">
@@ -19,6 +20,7 @@ const Vision = () => {
         </div>
       </div>
     </div>
+    </section>
   );
 };
 
