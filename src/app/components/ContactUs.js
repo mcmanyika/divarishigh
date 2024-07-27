@@ -1,3 +1,5 @@
+// components/ContactUs.js
+
 import React, { useState } from 'react';
 import { ref, push } from 'firebase/database';
 import { ToastContainer, toast } from 'react-toastify';
@@ -51,8 +53,10 @@ const ContactUs = () => {
               <div className="w-full mb-4 flex">
                 <FontAwesomeIcon icon={faPhone} className="mr-4 mt-1" />
                 <span>
-                  <strong>Phone:</strong><br />
-                  +263242310064
+                  <strong>WhatsApp Call:</strong><br />
+                  <a href="https://wa.me/263773391486" target="_blank" rel="noopener noreferrer" className="text-blue-500">
+                    +263773391486
+                  </a>
                 </span>
               </div>
               <div className="w-full mb-4 flex">
