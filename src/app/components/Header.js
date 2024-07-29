@@ -114,14 +114,14 @@ const Header = ({ session }) => {
               >
                 <FaFacebook className="h-5 w-5" />
               </a>
-              <a
+              {/* <a
                 href="https://www.instagram.com/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-white hover:text-gray-900"
               >
                 <FaInstagram className="h-5 w-5" />
-              </a>
+              </a> */}
             </div>
             <div className='flex-1 text-right relative'>
               {session ? (

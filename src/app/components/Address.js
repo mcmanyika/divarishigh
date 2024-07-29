@@ -29,14 +29,14 @@ const Address = () => {
               >
                 <FaFacebookSquare className="h-6 w-6" />
               </a>
-              <a
+              {/* <a
                 href="https://www.instagram.com"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-300 hover:text-white"
               >
                 <FaInstagram className="h-6 w-6" />
-              </a>
+              </a> */}
             </div>
           </div>
         </div>
