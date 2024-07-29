@@ -25,7 +25,7 @@ const ContactUs = () => {
 
     try {
       await push(ref(database, 'contacts'), contactData);
-      toast.success('Form submitted successfully!');
+      toast.success('Thank you for contacting us, we will soon be reaching out to you');
       setName('');
       setEmail('');
       setMessage('');
