@@ -13,12 +13,12 @@ const Hero = () => {
   const carouselData = [
     {
       title: "Excellence in Education",
-      description: "Empowering students to reach their full potential.",
+      description: "Providing a well-rounded, high quality, and relevant education for learners",
       imageUrl: "/images/divaris.jpeg",
     },
     {
-      title: "Excellence in Education",
-      description: "Empowering students to reach their full potential.",
+      title: "Our Vision",
+      description: "To be e a trailblazer in the provision of quality education",
       imageUrl: "/images/banner4.png",
     }
   ];
