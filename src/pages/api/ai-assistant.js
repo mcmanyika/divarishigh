@@ -6,7 +6,7 @@ export default async function handler(req, res) {
   
       // Here you should call the AI assistant service and get the response.
       // For the sake of this example, we'll just return a static response.
-      const aiResponse = `Coming Soon"`;
+      const aiResponse = `Coming Soon`;
   
       res.status(200).json({ response: aiResponse });
     } else {
