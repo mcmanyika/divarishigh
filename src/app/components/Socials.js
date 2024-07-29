@@ -16,14 +16,14 @@ const Socials = () => {
           >
             <FaFacebook className="h-8 w-8" />
           </a>
-          <a
+          {/* <a
             href="https://www.instagram.com/"
             target="_blank"
             rel="noopener noreferrer"
             className="text-gray-700 hover:text-gray-900"
           >
             <FaInstagram className="h-8 w-8" />
-          </a>
+          </a> */}
         </div>
       </div>
     </div>
