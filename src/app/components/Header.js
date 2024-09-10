@@ -131,7 +131,7 @@ const Header = ({ session }) => {
                   </span>
                   {showPopover && (
                     <div ref={popoverRef} className="absolute right-0 mt-2 w-48 bg-white text-black p-2 rounded shadow-md">
-                      <Link href="/dashboard">
+                      <Link href="/admin/dashboard">
                         <p
                           className="text-sm text-left flex items-center cursor-pointer"
                           onClick={() => setShowPopover(false)}
@@ -141,7 +141,7 @@ const Header = ({ session }) => {
                       </Link>
                       <button
                         onClick={() => signOut()}
-                        className="mt-4 w-full bg-blue-400 text-white p-1 rounded hover:bg-blue-500"
+                        className="mt-4 w-full bg-main text-white p-1 rounded "
                       >
                         Sign Out
                       </button>
