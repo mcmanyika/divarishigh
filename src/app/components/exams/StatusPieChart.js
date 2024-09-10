@@ -12,7 +12,7 @@ const StatusPieChart = () => {
     if (!session) return;
 
     const email = session.user.email;
-    const admissionsRef = ref(database, 'admissions');
+    const admissionsRef = ref(database, 'userTypes');
 
     onValue(admissionsRef, (snapshot) => {
       const admissionsData = snapshot.val();

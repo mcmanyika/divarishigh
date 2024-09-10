@@ -23,7 +23,7 @@ const AssignedExamsList = () => {
     if (!session) return;
 
     const email = session.user.email;
-    const admissionsRef = ref(database, 'admissions');
+    const admissionsRef = ref(database, 'userTypes');
     const examsRef = ref(database, 'exams');
     const resultsRef = ref(database, 'examResults');
 

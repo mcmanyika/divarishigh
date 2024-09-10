@@ -10,13 +10,13 @@ const CombinedExamsList = () => {
   const [student, setStudent] = useState(null);
   const [examsMap, setExamsMap] = useState({});
   const [examResults, setExamResults] = useState({});
-  const [admissionId] = useGlobalState('studentId');
+  const [userID] = useGlobalState('userID');
 
   useEffect(() => {
     if (!session) return;
 
     const email = session.user.email;
-    const admissionRef = ref(database, `admissions/${admissionId}`);
+    const admissionRef = ref(database, `userTypes/${userID}`);
     const examsRef = ref(database, 'exams');
     const resultsRef = ref(database, 'examResults');
 
@@ -51,12 +51,12 @@ const CombinedExamsList = () => {
     };
 
     fetchData();
-  }, [session, admissionId]);
+  }, [session, userID]);
 
   const filteredExams = Object.keys(student?.exams || {}).map((examId) => {
     const examName = examsMap[examId] || 'Unknown Exam';
-    const score = examResults[`${student?.id}_${examId}`]?.score || 0;
-    const comment = examResults[`${student?.id}_${examId}`]?.comment || 'No comment';
+    const score = examResults[`${student?.userID}_${examId}`]?.score || 0;
+    const comment = examResults[`${student?.userID}_${examId}`]?.comment || 'No comment';
     return { examName, score, comment };
   });
 

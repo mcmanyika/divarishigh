@@ -13,16 +13,16 @@ const GenderCount = () => {
     if (status === 'authenticated') {
       const fetchGenderCounts = async () => {
         try {
-          const admissionsRef = ref(database, 'admissions');
+          const admissionsRef = ref(database, 'userTypes');
 
           onValue(admissionsRef, (snapshot) => {
             const admissionsData = snapshot.val();
             if (admissionsData) {
               const counts = { Male: 0, Female: 0, TotalCount: 0 };
               Object.values(admissionsData).forEach((admission) => {
-                if (admission.gender === 'Male') {
+                if (admission.gender === 'male') {
                   counts.Male += 1;
-                } else if (admission.gender === 'Female') {
+                } else if (admission.gender === 'female') {
                   counts.Female += 1;
                 }
                 counts.TotalCount += 1;
