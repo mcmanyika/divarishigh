@@ -53,12 +53,15 @@ const CombinedExamsList = () => {
     fetchData();
   }, [session, userID]);
 
-  const filteredExams = Object.keys(student?.exams || {}).map((examId) => {
-    const examName = examsMap[examId] || 'Unknown Exam';
-    const score = examResults[`${student?.userID}_${examId}`]?.score || 0;
-    const comment = examResults[`${student?.userID}_${examId}`]?.comment || 'No comment';
-    return { examName, score, comment };
-  });
+  const filteredExams = Object.keys(student?.exams || {})
+    .map((examId) => {
+      const examName = examsMap[examId] || 'Unknown Exam';
+      const score = examResults[`${student?.userID}_${examId}`]?.score || 0;
+      const comment = examResults[`${student?.userID}_${examId}`]?.comment || 'No comment';
+      return { examName, score, comment };
+    })
+    .filter(exam => exam.score > 0)  // Filter exams with score greater than 0
+    .slice(-10);  // Get the last 10 exams
 
   return (
     <div className="w-full bg-white rounded px-4 sm:px-8 pt-6 pb-8 mt-4 mb-4">

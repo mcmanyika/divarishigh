@@ -52,7 +52,7 @@ const NoticeCount = () => {
           Events <br />{totalNotices}
         </div>
       </div>
-      <div className="w-full md:w-1/3 flex bg-white border shadow-sm rounded m-2 mt-0 ml-0 mr-2">
+      <div className="w-full md:w-1/3 flex bg-white border shadow-sm rounded m-2 mt-0 ml-0 ">
         <div className='w-1/3 flex items-center justify-center p-4 md:p-2'>
           <FaClipboardList className='w-16 h-16 rounded-full bg-purple-300 text-white p-2' />
         </div>

@@ -71,7 +71,7 @@ const StudentDash = () => {
           ) : (
             <div>
               {studentStatus === "Accepted" ? (
-                <div className=''>
+                <div>
                   <NoticeCount />
                   <div className="w-full flex flex-col md:flex-row mt-4">
                     <div className="md:w-2/4 bg-white mt-0 mr-1">
