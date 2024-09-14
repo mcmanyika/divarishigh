@@ -38,7 +38,7 @@ const iconMapping = {
             </li>
           );
         })}
-        <li className="mb-4 flex flex-col items-center mt-20">
+        <li className="mb-4 flex flex-col items-center">
           <FaSignOutAlt className="text-2xl" />
           <button
             onClick={onSignOut}
