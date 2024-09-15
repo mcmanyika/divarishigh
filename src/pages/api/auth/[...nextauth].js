@@ -1,7 +1,7 @@
 import NextAuth from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
 import CredentialsProvider from 'next-auth/providers/credentials';
-// import { verifyPassword } from '../../../utils/auth'; // Utility to verify passwords (bcrypt)
+import { verifyPassword } from './auth'; // Utility to verify passwords (bcrypt)
 import { getUserByEmail } from '../../../../utils/firebaseConfig'; // Fetch user by email
 
 export const authOptions = {
@@ -40,7 +40,7 @@ export const authOptions = {
   ],
   secret: process.env.NEXTAUTH_SECRET,
   pages: {
-    signIn: '/auth/signin', // Optional: Custom sign-in page
+    signIn: '/admin/login', // Optional: Custom sign-in page
   },
   callbacks: {
     async session({ session, token, user }) {
