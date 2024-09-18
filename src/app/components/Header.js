@@ -140,12 +140,13 @@ const Header = ({ session }) => {
               ) : (
                 <>
                  <span className='pr-3'>Welcome Guest</span>|
+                 <Link href='/admin/login'>
                   <button
-                    onClick={() => signIn('google')}
                     className=" text-white p-1 rounded "
                   >
                     Sign In
                   </button>
+                  </Link>
                 </>
               )}
             </div>
