@@ -28,12 +28,19 @@ const AdmissionsList = () => {
           id: key,
           ...data[key],
         }));
-        setAdmissions(admissionsArray);
+        
+        // Assuming there's a 'createdAt' field in each admission that contains a timestamp
+        const sortedAdmissions = admissionsArray.sort((a, b) => {
+          return new Date(b.createdAt) - new Date(a.createdAt); // Sort by latest
+        });
+  
+        setAdmissions(sortedAdmissions);
       } else {
         setAdmissions([]);
       }
     });
   }, []);
+  
 
   const filteredAdmissions = admissions.filter((admission) =>
     Object.values(admission).some((value) =>

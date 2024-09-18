@@ -10,14 +10,14 @@ const AdmissionList = () => {
 
   const [admissions, setAdmissions] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(5); // Number of admissions per page
+  const [itemsPerPage] = useState(10); // Number of admissions per page
   const [selectedAdmission, setSelectedAdmission] = useState(null); // For modal data
   const [modalOpen, setModalOpen] = useState(false); // For modal visibility
   const [formData, setFormData] = useState({}); // For the form data
   const [searchQuery, setSearchQuery] = useState(''); // For search query
 
   useEffect(() => {
-    const admissionsRef = ref(database, 'admissions');
+    const admissionsRef = ref(database, 'userTypes');
     onValue(admissionsRef, (snapshot) => {
       const data = snapshot.val();
       if (data) {
@@ -75,7 +75,7 @@ const AdmissionList = () => {
       updatedData.studentNumber = `STID-${Math.floor(1000 + Math.random() * 9000)}`;
     }
 
-    const admissionsRef = ref(database, `admissions/${selectedAdmission.id}`);
+    const admissionsRef = ref(database, `userTypes/${selectedAdmission.id}`);
     update(admissionsRef, updatedData)
       .then(() => {
         closeModal(); // Close the modal after successful update
@@ -106,14 +106,14 @@ const AdmissionList = () => {
 
   return (
     <div className="p-4 bg-white shadow-md rounded-md">
-        <div className="flex justify-between items-center w-full">
-            <div className="text-2xl font-semibold mb-4">Admission List</div>
-            <div className="three-dots flex flex-col justify-between h-4 space-y-1">
-                <Link href="/admin/admission">
-                    <div className="w-1 h-1 bg-black rounded-full"></div>
-                </Link>
-            </div>
-            </div>
+      <div className="flex justify-between items-center w-full">
+        <div className="text-2xl font-semibold mb-4">Accounts List</div>
+        <div className="three-dots flex flex-col justify-between h-4 space-y-1">
+          <Link href="/admin/admission">
+            <div className="w-1 h-1 bg-black rounded-full"></div>
+          </Link>
+        </div>
+      </div>
 
       {/* Search Bar */}
       <div className="mb-4">
@@ -130,8 +130,7 @@ const AdmissionList = () => {
         <table className="min-w-full bg-white border">
           <thead>
             <tr className='text-left'>
-              <th className="py-2 px-4 text-sm">Admission ID</th>
-              <th className="py-2 px-4 text-sm">Student ID</th>
+              <th className="py-2 px-4 text-sm">Account ID</th>
               <th className="py-2 px-4 text-sm">First Name</th>
               <th className="py-2 px-4 text-sm">Last Name</th>
               <th className="py-2 px-4 text-sm">Gender</th>
@@ -149,8 +148,7 @@ const AdmissionList = () => {
                 className="hover:bg-gray-100 cursor-pointer"
                 onClick={() => openModal(admission)} // Open modal on row click
               >
-                <td className="py-2 px-4 text-sm">{admission.admissionId}</td>
-                <td className="py-2 px-4 text-sm">{admission.studentNumber || 'N/A'}</td>
+                <td className="py-2 px-4 text-sm">{admission.userID}</td>
                 <td className="py-2 px-4 text-sm">{admission.firstName}</td>
                 <td className="py-2 px-4 text-sm">{admission.lastName}</td>
                 <td className="py-2 px-4 text-sm">{admission.gender}</td>
@@ -193,11 +191,11 @@ const AdmissionList = () => {
             <form onSubmit={handleSubmit}>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                 <div>
-                  <label className="block mb-2">Admission ID</label>
+                  <label className="block mb-2">Account ID</label>
                   <input
                     type="text"
                     name="admissionId"
-                    value={formData.admissionId}
+                    value={formData.userID}
                     onChange={handleInputChange}
                     className="border rounded w-full px-3 py-2"
                     disabled
@@ -225,13 +223,16 @@ const AdmissionList = () => {
                 </div>
                 <div>
                   <label className="block mb-2">Gender</label>
-                  <input
-                    type="text"
+                  <select
                     name="gender"
                     value={formData.gender}
                     onChange={handleInputChange}
                     className="border rounded w-full px-3 py-2"
-                  />
+                  >
+                    <option value="">Select Gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                  </select>
                 </div>
                 <div>
                   <label className="block mb-2">Date of Birth</label>
@@ -244,16 +245,6 @@ const AdmissionList = () => {
                   />
                 </div>
                 <div>
-                  <label className="block mb-2">Religion</label>
-                  <input
-                    type="text"
-                    name="religion"
-                    value={formData.religion}
-                    onChange={handleInputChange}
-                    className="border rounded w-full px-3 py-2"
-                  />
-                </div>
-                <div>
                   <label className="block mb-2">Email</label>
                   <input
                     type="email"
@@ -261,6 +252,7 @@ const AdmissionList = () => {
                     value={formData.email}
                     onChange={handleInputChange}
                     className="border rounded w-full px-3 py-2"
+                    disabled
                   />
                 </div>
                 <div>
@@ -292,36 +284,18 @@ const AdmissionList = () => {
                     className="border rounded w-full px-3 py-2"
                   >
                     <option value="">Select Status</option>
-                    <option value="Pending">Pending</option>
                     <option value="Accepted">Accepted</option>
+                    <option value="Pending">Pending</option>
                     <option value="Rejected">Rejected</option>
                   </select>
                 </div>
-                <div>
-                  <label className="block mb-2">Student Number</label>
-                  <input
-                    type="text"
-                    name="studentNumber"
-                    value={formData.studentNumber}
-                    onChange={handleInputChange}
-                    className="border rounded w-full px-3 py-2"
-                    disabled
-                  />
-                </div>
               </div>
               <div className="flex justify-end">
-                <button
-                  type="submit"
-                  className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-                >
-                  Save Changes
-                </button>
-                <button
-                  type="button"
-                  onClick={closeModal}
-                  className="ml-2 bg-gray-300 text-black px-4 py-2 rounded hover:bg-gray-400"
-                >
+                <button type="button" onClick={closeModal} className="mr-4 px-4 py-2 bg-gray-300 rounded-md">
                   Cancel
+                </button>
+                <button type="submit" className="px-4 py-2 bg-blue-500 text-white rounded-md">
+                  Save Changes
                 </button>
               </div>
             </form>

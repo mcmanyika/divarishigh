@@ -73,8 +73,12 @@ const UserTypeSelector = ({ userEmail }) => {
       formData.phone
     ) {
       try {
+        const createdAt = new Date().toISOString(); // Get current timestamp
         const userRef = ref(database, `userTypes/${formData.userID}`); // Updated to userID
-        await set(userRef, formData);
+        await set(userRef, {
+          ...formData,
+          createdAt, // Add the timestamp field
+        });
         toast.success('User data saved successfully', {
           position: 'bottom-center',
         });
