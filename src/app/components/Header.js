@@ -125,41 +125,31 @@ const Header = ({ session }) => {
             </div>
             <div className='flex-1 text-right relative'>
               {session ? (
-                <>
-                  <span onClick={togglePopover} className="cursor-pointer">
-                    Hi {session.user.name}
-                  </span>
-                  {showPopover && (
-                    <div ref={popoverRef} className="absolute right-0 mt-2 w-48 bg-white text-black p-2 rounded shadow-md">
-                      <Link href="/admin/dashboard">
-                        <p
-                          className="text-sm text-left flex items-center cursor-pointer"
-                          onClick={() => setShowPopover(false)}
-                        >
-                          <FaHome className="mr-2" /> Dashboard
-                        </p>
-                      </Link>
-                      <button
-                        onClick={() => signOut()}
-                        className="mt-4 w-full bg-main text-white p-1 rounded "
-                      >
-                        Sign Out
-                      </button>
-                    </div>
-                  )}
-                </>
+                <div className="text-right">
+                <Link href="/admin/dashboard" className="inline-flex items-center space-x-2 text-white">
+                  <FaHome />
+                  <span className='pr-3'>My Dashboard </span> |
+                  <button
+                    onClick={() => signOut('google')}
+                    className=" text-white p-1 rounded"
+                  >
+                    Sign Out
+                  </button>
+                </Link>
+              </div>
               ) : (
                 <>
-                  Welcome Guest, &nbsp;
+                 <span className='pr-3'>Welcome Guest</span>|
                   <button
                     onClick={() => signIn('google')}
-                    className=" text-white p-1 rounded hover:bg-main2"
+                    className=" text-white p-1 rounded "
                   >
                     Sign In
                   </button>
                 </>
               )}
             </div>
+            
           </div>
         </div>
       )}
