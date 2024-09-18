@@ -35,12 +35,14 @@ const NewStudents = () => {
       >
         <div className="flex items-center justify-center h-full p-10">
           <div className="text-white text-center">
-            <h2 className="text-2xl md:text-4xl font-thin">More Information</h2>
-            <p className="mt-4 text-base md:text-lg">Here is some more information for new students.</p>
-            <Link href="/admissions">
-              <button className="inline-block mt-4 px-6 py-2 bg-main text-white rounded-full transition duration-300">
-                Go to Admissions
-              </button>
+            <h2 className="text-2xl md:text-4xl font-thin">Student Application</h2>
+            <p className="mt-4 text-base md:text-lg">As a new student you can now apply online, click below to start the process.</p>
+            <Link href='/admin/dashboard'>
+            <button
+              className="inline-block mt-4 px-6 py-2 bg-main text-white rounded-full transition duration-300"
+            >
+              Apply Now
+            </button>
             </Link>
             <button
               onClick={handleOverlayToggle}
