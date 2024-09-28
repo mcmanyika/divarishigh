@@ -36,8 +36,6 @@ export default function Login() {
 
       if (res.error) {
         setError(res.error); // Show error if sign-in fails
-      } else {
-        // Redirection will happen in useEffect after successful login
       }
     } catch (err) {
       setError('Login failed. Please try again.');
@@ -51,7 +49,6 @@ export default function Login() {
     setLoading(true);
     try {
       await signIn('google');
-      // Redirection will happen in useEffect after successful login
     } catch (error) {
       console.error('Error signing in:', error);
       setLoading(false);
@@ -65,8 +62,8 @@ export default function Login() {
           <Image
             src="/images/logo.png"
             alt="GlenView 2 High School"
-            width={90}
-            height={90}
+            width={60}
+            height={60}
             className="mx-auto mb-4 rounded-full"
           />
         </Link>
@@ -75,7 +72,7 @@ export default function Login() {
         
         {!session && (
           <>
-            {/* <form onSubmit={handleSignInWithCredentials}>
+            <form onSubmit={handleSignInWithCredentials}>
               <input
                 type="email"
                 placeholder="Email"
@@ -95,17 +92,17 @@ export default function Login() {
               <button
                 type="submit"
                 className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition duration-200 w-full"
-                disabled={loading}
+                disabled={loading}  // Both buttons disabled if loading
               >
                 {loading ? 'Logging in...' : 'Sign in'}
               </button>
             </form>
-            <p className="mt-6">OR</p> */}
+            <p className="mt-6">OR</p>
 
             <button
               onClick={handleGoogleSignIn}
               className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition duration-200 mt-4 w-full"
-              disabled={loading}
+              disabled={loading}  // Both buttons disabled if loading
             >
               {loading ? 'Logging in...' : 'Sign in with Google'}
             </button>

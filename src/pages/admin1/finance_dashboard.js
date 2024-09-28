@@ -1,20 +1,17 @@
-import React from 'react'
 import { useState, useEffect } from 'react';
 import { ref, get } from 'firebase/database';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react'; // Import useSession for session handling
 import { database } from '../../../utils/firebaseConfig'; // Adjust the path if needed
 import { setUserID } from '../../app/store'; // Adjust the path if needed
+
+import withAuth from '../../../utils/withAuth'; // withAuth HOC for authentication
+import AdminLayout from './adminLayout'; // Layout component for the admin dashboard
+import PaymentsList from '../../app/components/finance/PaymentsList'; // PaymentsList component
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; // FontAwesome icons
 import { faSpinner } from '@fortawesome/free-solid-svg-icons'; // Spinner icon
 
-
-import ClassRoutineForm from '../../app/components/student/ClassRoutineForm'
-import RoutineList  from '../../app/components/admin/RoutineList'
-import AdminLayout from './adminLayout'
-import withAuth from '../../../utils/withAuth';
-
-function ClassRoutine() {
+const FinanceDashboard = () => {
   const { data: session, status } = useSession(); // Get session and status from next-auth
   const [userType, setUserType] = useState(null); // State for user type
   const [loading, setLoading] = useState(true); // Loading state
@@ -73,15 +70,15 @@ function ClassRoutine() {
 
   return (
     <AdminLayout>
-      <div className='w-full flex flex-col lg:flex-row'>
-        <div className='w-full lg:w-1/4 m-3 ml-0'>
-          <ClassRoutineForm />
-        </div>
-        <div className='w-full lg:w-3/4 m-3 lg:ml-0 lg:mt-0'>
-          <RoutineList />
+      <div className="flex flex-col">
+        <div className="w-full">
+          <div className="bg-white border shadow-sm rounded mt-4 p-4">
+            <PaymentsList /> {/* Display Payments List */}
+          </div>
         </div>
       </div>
     </AdminLayout>
-  )
-}
-export default withAuth(ClassRoutine);
+  );
+};
+
+export default withAuth(FinanceDashboard); // Export component wrapped with authentication HOC

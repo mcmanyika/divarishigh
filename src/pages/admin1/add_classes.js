@@ -8,13 +8,12 @@ import { setUserID } from '../../app/store'; // Adjust the path if needed
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; // FontAwesome icons
 import { faSpinner } from '@fortawesome/free-solid-svg-icons'; // Spinner icon
 
-
-import ClassRoutineForm from '../../app/components/student/ClassRoutineForm'
-import RoutineList  from '../../app/components/admin/RoutineList'
-import AdminLayout from './adminLayout'
+import AdminLayout from './adminLayout';
+import UploadClassNameForm from '../../app/components/teachers/UploadClassNameForm';
 import withAuth from '../../../utils/withAuth';
+import TeacherClasses from '../../app/components/teachers/TeacherClasses';
 
-function ClassRoutine() {
+function AddClasses() {
   const { data: session, status } = useSession(); // Get session and status from next-auth
   const [userType, setUserType] = useState(null); // State for user type
   const [loading, setLoading] = useState(true); // Loading state
@@ -73,15 +72,19 @@ function ClassRoutine() {
 
   return (
     <AdminLayout>
-      <div className='w-full flex flex-col lg:flex-row'>
-        <div className='w-full lg:w-1/4 m-3 ml-0'>
-          <ClassRoutineForm />
+      <div className="flex flex-col md:flex-row">
+        <div className="w-full md:w-1/2 lg:w-1/3">
+          <UploadClassNameForm />
         </div>
-        <div className='w-full lg:w-3/4 m-3 lg:ml-0 lg:mt-0'>
-          <RoutineList />
+        <div className="w-full md:w-1/2 lg:w-4/5 bg-white m-2">
+        <div className='text-2xl m-2 p-4'>My Classes</div>
+          <div className="h-3/4 overflow-y-auto">
+            <TeacherClasses />
+          </div>
         </div>
       </div>
     </AdminLayout>
-  )
+  );
 }
-export default withAuth(ClassRoutine);
+
+export default withAuth(AddClasses);

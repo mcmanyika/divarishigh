@@ -8,13 +8,11 @@ import { setUserID } from '../../app/store'; // Adjust the path if needed
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; // FontAwesome icons
 import { faSpinner } from '@fortawesome/free-solid-svg-icons'; // Spinner icon
 
-
-import ClassRoutineForm from '../../app/components/student/ClassRoutineForm'
-import RoutineList  from '../../app/components/admin/RoutineList'
-import AdminLayout from './adminLayout'
+import StudentsApplications from '../../app/components/student/StudentsApplications';
+import AdminLayout from './adminLayout';
 import withAuth from '../../../utils/withAuth';
 
-function ClassRoutine() {
+const AdmissionList = () => {
   const { data: session, status } = useSession(); // Get session and status from next-auth
   const [userType, setUserType] = useState(null); // State for user type
   const [loading, setLoading] = useState(true); // Loading state
@@ -73,15 +71,8 @@ function ClassRoutine() {
 
   return (
     <AdminLayout>
-      <div className='w-full flex flex-col lg:flex-row'>
-        <div className='w-full lg:w-1/4 m-3 ml-0'>
-          <ClassRoutineForm />
-        </div>
-        <div className='w-full lg:w-3/4 m-3 lg:ml-0 lg:mt-0'>
-          <RoutineList />
-        </div>
-      </div>
+        <StudentsApplications />
     </AdminLayout>
   )
 }
-export default withAuth(ClassRoutine);
+export default withAuth(AdmissionList);
