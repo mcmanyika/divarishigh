@@ -10,7 +10,7 @@ const Accounts = () => {
 
   const [admissions, setAdmissions] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(10); // Number of admissions per page
+  const [itemsPerPage] = useState(12); // Number of admissions per page
   const [selectedAdmission, setSelectedAdmission] = useState(null); // For modal data
   const [modalOpen, setModalOpen] = useState(false); // For modal visibility
   const [formData, setFormData] = useState({}); // For the form data
