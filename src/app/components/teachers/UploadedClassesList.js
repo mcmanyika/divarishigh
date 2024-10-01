@@ -12,7 +12,7 @@ const UploadedClassesList = () => {
   const [sortKey, setSortKey] = useState('className'); // Default sort by className
   const [sortOrder, setSortOrder] = useState('asc'); // Default sort order
   const [currentPage, setCurrentPage] = useState(1); // For pagination
-  const classesPerPage = 5; // Number of classes per page
+  const classesPerPage = 15; // Number of classes per page
 
   useEffect(() => {
     const classesRef = ref(database, "classes");
@@ -28,6 +28,8 @@ const UploadedClassesList = () => {
             className: classData.className,
             teacherFirstName: classData.teacherFirstName,
             teacherLastName: classData.teacherLastName,
+            teacherID: classData.teacherID,  // Added teacheruserID
+            teacherEmail: classData.teacherEmail,    // Added teacherEmail
           });
         }
       });
@@ -45,12 +47,14 @@ const UploadedClassesList = () => {
   const filteredClasses = classes.filter((classData) =>
     classData.className.toLowerCase().includes(searchTerm.toLowerCase()) ||
     classData.teacherFirstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    classData.teacherLastName.toLowerCase().includes(searchTerm.toLowerCase())
+    classData.teacherLastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    classData.teacherID?.toLowerCase().includes(searchTerm.toLowerCase()) ||  // Include teacheruserID in filter
+    classData.teacherEmail?.toLowerCase().includes(searchTerm.toLowerCase())      // Include teacherEmail in filter
   );
 
   // Sort classes
   const sortedClasses = filteredClasses.sort((a, b) => {
-    const comparison = a[sortKey].localeCompare(b[sortKey]);
+    const comparison = a[sortKey]?.localeCompare(b[sortKey]);
     return sortOrder === 'asc' ? comparison : -comparison;
   });
 
@@ -96,6 +100,12 @@ const UploadedClassesList = () => {
               <tr className="bg-gray-200">
                 <th 
                   className="border border-gray-300 px-4 py-2 cursor-pointer" 
+                  onClick={() => handleHeaderClick('teacheruserID')}
+                >
+                  Teacher ID {sortKey === 'teacherID' && (sortOrder === 'asc' ? '↑' : '↓')}
+                </th>
+                <th 
+                  className="border border-gray-300 px-4 py-2 cursor-pointer" 
                   onClick={() => handleHeaderClick('className')}
                 >
                   Class Name {sortKey === 'className' && (sortOrder === 'asc' ? '↑' : '↓')}
@@ -112,14 +122,22 @@ const UploadedClassesList = () => {
                 >
                   Teacher Last Name {sortKey === 'teacherLastName' && (sortOrder === 'asc' ? '↑' : '↓')}
                 </th>
+                <th 
+                  className="border border-gray-300 px-4 py-2 cursor-pointer" 
+                  onClick={() => handleHeaderClick('teacherEmail')}
+                >
+                  Teacher Email {sortKey === 'teacherEmail' && (sortOrder === 'asc' ? '↑' : '↓')}
+                </th>
               </tr>
             </thead>
             <tbody>
               {currentClasses.map((classData, index) => (
                 <tr key={index} className="hover:bg-gray-100 capitalize">
+                  <td className="border border-gray-300 px-4 py-2">{classData.teacherID || 'N/A'}</td>
                   <td className="border border-gray-300 px-4 py-2">{classData.className}</td>
                   <td className="border border-gray-300 px-4 py-2">{classData.teacherFirstName || 'N/A'}</td>
                   <td className="border border-gray-300 px-4 py-2">{classData.teacherLastName || 'N/A'}</td>
+                  <td className="border border-gray-300 px-4 py-2">{classData.teacherEmail || 'N/A'}</td>
                 </tr>
               ))}
             </tbody>

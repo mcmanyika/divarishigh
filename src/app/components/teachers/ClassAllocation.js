@@ -13,7 +13,7 @@ const ClassAllocation = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [selectedTeacher, setSelectedTeacher] = useState('');
   const [className, setClassName] = useState('');
-  const [teacherDetails, setTeacherDetails] = useState({ firstName: '', lastName: '' });
+  const [teacherDetails, setTeacherDetails] = useState({ firstName: '', lastName: '', email: '', userID: '' });
 
   useEffect(() => {
     if (status === 'authenticated') {
@@ -51,17 +51,19 @@ const ClassAllocation = () => {
   const handleClassSubmit = async (e) => {
     e.preventDefault();
 
-    if (!className) {
-      toast.error("Please select a class name.");
+    if (!className || !selectedTeacher) {
+      toast.error("Please select a class name and a teacher.");
       return;
     }
 
-    const uploadedBy = session?.user?.email || ""; // Get the logged-in user's email
+    const uploadedBy = session?.user?.email || ''; // Get the logged-in user's email
     const classData = {
       className,
       uploadedBy,
       teacherFirstName: teacherDetails.firstName,
       teacherLastName: teacherDetails.lastName,
+      teacherEmail: teacherDetails.email,
+      teacherID: teacherDetails.userID,
     };
 
     try {
@@ -70,7 +72,7 @@ const ClassAllocation = () => {
       // Clear the form after submission
       setClassName('');
       setSelectedTeacher('');
-      setTeacherDetails({ firstName: '', lastName: '' });
+      setTeacherDetails({ firstName: '', lastName: '', email: '', userID: '' });
     } catch (error) {
       console.error("Error uploading class name: ", error);
       toast.error("Failed to upload class name. Please try again.");
@@ -79,7 +81,12 @@ const ClassAllocation = () => {
 
   const handleTeacherSelect = (teacher) => {
     setSelectedTeacher(teacher.id);
-    setTeacherDetails({ firstName: teacher.firstName, lastName: teacher.lastName });
+    setTeacherDetails({
+      firstName: teacher.firstName,
+      lastName: teacher.lastName,
+      email: teacher.email,
+      userID: teacher.id, // Assuming `id` is the teacher's user ID
+    });
   };
 
   if (isLoading) {
@@ -96,7 +103,9 @@ const ClassAllocation = () => {
 
   return (
     <div className="w-full text-sm p-4 bg-white">
-        <div className="text-xl font-bold pb-4">Allocate Teacher To Class</div>
+      <div className="text-xl font-bold pb-4">Allocate Teacher To Class</div>
+
+      {/* Select Teacher */}
       <select
         value={selectedTeacher}
         onChange={(e) => handleTeacherSelect(teachers.find(teacher => teacher.id === e.target.value))}
@@ -133,7 +142,6 @@ const ClassAllocation = () => {
             Allocate Teacher
           </button>
         </form>
-        
       </div>
     </div>
   );
