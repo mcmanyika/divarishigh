@@ -130,7 +130,7 @@ const ClassAllocation = () => {
             type="submit"
             className="mt-4 bg-blue-500 text-white py-2 px-4 rounded"
           >
-            Upload Class Name
+            Allocate Teacher
           </button>
         </form>
         

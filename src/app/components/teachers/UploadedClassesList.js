@@ -79,7 +79,7 @@ const UploadedClassesList = () => {
   const totalPages = Math.ceil(filteredClasses.length / classesPerPage);
 
   return (
-    <div className="bg-white border shadow-sm rounded p-4 mt-0 m-4">
+    <div className="bg-white border shadow-sm rounded p-4 mt-2 md:m-4 md:mt-0">
       
       <input
         type="text"
