@@ -5,16 +5,20 @@ import { ref, onValue, query, orderByChild, equalTo } from 'firebase/database';
 import { database } from '../../../utils/firebaseConfig'; // Assuming you have firebaseConfig set up properly
 import { useGlobalState, setIsOverlayVisible } from '../store';
 import { useSession, signIn, signOut } from 'next-auth/react';
+import { FaFacebook } from 'react-icons/fa';
 
 const Header2 = () => {
   const { data: session } = useSession();
   const [titles, setTitles] = useState([]);
+  const [schoolName, setSchoolName] = useState(''); // State for school name
+  const [facebookLink, setFacebookLink] = useState(''); // State for Facebook link
   const [isOpen, setIsOpen] = useState(false); // State to manage mobile menu visibility
   const [isOverlayVisible] = useGlobalState('isOverlayVisible');
 
   useEffect(() => {
     const fetchData = async () => {
       try {
+        // Fetching titles
         const titleRef = ref(database, 'title'); // Reference to 'title' collection in Firebase
         const statusQuery = query(titleRef, orderByChild('status'), equalTo('Active')); // Query to filter by status 'Active'
 
@@ -42,6 +46,20 @@ const Header2 = () => {
             setTitles([]); // Handle no data case
           }
         });
+
+        // Fetching school name and Facebook link from the 'account' table
+        const accountRef = ref(database, 'account');
+        onValue(accountRef, (snapshot) => {
+          const accountData = snapshot.val();
+          if (accountData) {
+            const accountKeys = Object.keys(accountData);
+            if (accountKeys.length > 0) {
+              const account = accountData[accountKeys[0]]; // Assuming there's only one account entry
+              setSchoolName(account.schoolName); // Set the school name
+              setFacebookLink(account.facebook); // Set the Facebook link
+            }
+          }
+        });
       } catch (error) {
         console.error('Firebase Error:', error);
         // Handle error fetching data
@@ -62,16 +80,16 @@ const Header2 = () => {
 
   return (
     <header className="fixed top-0 z-50 w-full bg-main text-white p-4 transition-all duration-500 ease-in-out">
-        <div className='top-0 w-full text-white p-0 text-right'>
-          <div className='container mx-auto text-xs p-2 mb-2'>
-            {session ? <span>Hi {session.user.name}</span> : <>Welcome Guest </>}, &nbsp; 
-            {session ? (
-              <button onClick={() => signOut()}> Sign Out</button>
-            ) : (
-              <button onClick={() => signIn('google')} className=" text-white font-thin  p-1 rounded hover:bg-main2"> Sign In</button>
-            )}
-          </div>
+      <div className='top-0 w-full text-white p-0 text-right'>
+        <div className='container mx-auto text-xs p-2 mb-2'>
+          {session ? <span>Hi {session.user.name}</span> : <>Welcome Guest </>}, &nbsp; 
+          {session ? (
+            <button onClick={() => signOut()}> Sign Out</button>
+          ) : (
+            <button onClick={() => signIn('google')} className="text-white font-thin p-1 rounded hover:bg-main2"> Sign In</button>
+          )}
         </div>
+      </div>
       <nav className="max-w-5xl mx-auto flex justify-between items-center">
         <div className="flex items-center w-4/5 space-x-2">
           <Link href='/'>
@@ -83,19 +101,23 @@ const Header2 = () => {
               className="rounded"
             />
           </Link>
-          {/* Toggle visibility based on isOpen state */}
-          <h1 className={`text-sm md:text-xl font-normal uppercase ${isOpen ? 'hidden' : 'block'}`}>Divaris Makaharis High</h1>
+          <h1 className={`text-sm md:text-xl font-normal uppercase ${isOpen ? 'hidden' : 'block'}`}>{schoolName}</h1>
         </div>
-        <div className="md:hidden"> {/* Display menu icon on mobile */}
-          <button onClick={toggleMenu} className="text-white focus:outline-none">
-            <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              {isOpen ? (
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              ) : (
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16m-7 6h7" />
-              )}
-            </svg>
-          </button>
+        <div className="flex items-center space-x-4">
+          <a href={facebookLink} target="_blank" rel="noopener noreferrer" className="text-white hover:text-gray-900">
+            <FaFacebook className="h-5 w-5" />
+          </a>
+          <div className="md:hidden"> {/* Display menu icon on mobile */}
+            <button onClick={toggleMenu} className="text-white focus:outline-none">
+              <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                {isOpen ? (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                ) : (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16m-7 6h7" />
+                )}
+              </svg>
+            </button>
+          </div>
         </div>
         <ul className={`md:flex ${isOpen ? 'flex' : 'hidden'} md:space-x-4 md:w-full mt-4 md:mt-0 text-right`}>
           {titles.map((rw) => (

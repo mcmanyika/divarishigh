@@ -28,12 +28,19 @@ const AdmissionsList = () => {
           id: key,
           ...data[key],
         }));
-        setAdmissions(admissionsArray);
+        
+        // Assuming there's a 'createdAt' field in each admission that contains a timestamp
+        const sortedAdmissions = admissionsArray.sort((a, b) => {
+          return new Date(b.createdAt) - new Date(a.createdAt); // Sort by latest
+        });
+  
+        setAdmissions(sortedAdmissions);
       } else {
         setAdmissions([]);
       }
     });
   }, []);
+  
 
   const filteredAdmissions = admissions.filter((admission) =>
     Object.values(admission).some((value) =>
@@ -106,8 +113,8 @@ const AdmissionsList = () => {
           {currentAdmissions.map((admission) => (
             <tr key={admission.id}>
               <td className="border border-gray-200 px-4 py-2">{admission.id}</td>
-              <td className="border border-gray-200 px-4 py-2 capitalize">{admission.firstName}</td>
-              <td className="border border-gray-200 px-4 py-2 capitalize">{admission.lastName}</td>
+              <td className="border border-gray-200 px-4 py-2">{admission.firstName}</td>
+              <td className="border border-gray-200 px-4 py-2">{admission.lastName}</td>
               <td className="border border-gray-200 px-4 py-2">{admission.status}</td>
               <td className="border border-gray-200 px-4 py-2">
                 <button

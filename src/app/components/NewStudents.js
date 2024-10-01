@@ -9,7 +9,8 @@ const NewStudents = () => {
   };
 
   return (
-    <div className="relative flex items-center justify-center  overflow-hidden">
+    <section id='admissions'>
+    <div  className="relative flex items-center justify-center  overflow-hidden">
       <div
         className="absolute inset-0 bg-cover bg-center"
         style={{ backgroundImage: "url('/images/book.png')" }}
@@ -54,6 +55,7 @@ const NewStudents = () => {
         </div>
       </div>
     </div>
+    </section>
   );
 };
 
