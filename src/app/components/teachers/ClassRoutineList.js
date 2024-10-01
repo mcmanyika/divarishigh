@@ -71,7 +71,7 @@ const ClassRoutineList = () => {
     <div className="p-6 bg-white rounded shadow mt-3">
       <h2 className="text-xl font-semibold mb-4">My Class Routines</h2>
       {classRoutines.length === 0 ? (
-        <p>No upcoming routines found for your email.</p>
+        <p>No upcoming class routines found for you.</p>
       ) : (
         <>
           <table className="min-w-full text-sm bg-white text-left">
