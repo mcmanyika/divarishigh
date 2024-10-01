@@ -7,7 +7,7 @@ import { useSession } from 'next-auth/react';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const TeacherList = () => {
+const ClassAllocation = () => {
   const { data: session, status } = useSession();
   const [teachers, setTeachers] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -96,13 +96,13 @@ const TeacherList = () => {
 
   return (
     <div className="w-full text-sm p-4 bg-white">
-      <h2 className="text-xl font-semibold mb-4">Select a Teacher</h2>
+        <div className="text-xl font-bold pb-4">Allocate Teacher To Class</div>
       <select
         value={selectedTeacher}
         onChange={(e) => handleTeacherSelect(teachers.find(teacher => teacher.id === e.target.value))}
         className="p-2 border border-gray-300 rounded w-full mb-4"
       >
-        <option value="" disabled>Select a teacher...</option>
+        <option value="" disabled>Select a Teacher...</option>
         {teachers.map((teacher) => (
           <option key={teacher.id} value={teacher.id}>
             {`${teacher.firstName || 'N/A'} ${teacher.lastName || 'N/A'}`}
@@ -111,7 +111,6 @@ const TeacherList = () => {
       </select>
 
       <div className="bg-white border shadow-sm rounded p-4 ml-0 m-2">
-        <div className="text-2xl font-bold pb-4">Upload Class Name</div>
         <form onSubmit={handleClassSubmit} className="space-y-4">
           <div className="mt-2 grid grid-cols-3 gap-4">
             {["1A", "2A", "3A", "4A", "5A", "6A"].map((option) => (
@@ -140,4 +139,4 @@ const TeacherList = () => {
   );
 };
 
-export default TeacherList;
+export default ClassAllocation;

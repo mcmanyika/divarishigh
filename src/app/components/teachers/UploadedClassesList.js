@@ -11,6 +11,8 @@ const UploadedClassesList = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [sortKey, setSortKey] = useState('className'); // Default sort by className
   const [sortOrder, setSortOrder] = useState('asc'); // Default sort order
+  const [currentPage, setCurrentPage] = useState(1); // For pagination
+  const classesPerPage = 5; // Number of classes per page
 
   useEffect(() => {
     const classesRef = ref(database, "classes");
@@ -39,20 +41,30 @@ const UploadedClassesList = () => {
     };
   }, [uploadedBy]);
 
-  // Filtered and sorted classes
-  const filteredClasses = classes
-    .filter((classData) =>
-      classData.className.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      classData.teacherFirstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      classData.teacherLastName.toLowerCase().includes(searchTerm.toLowerCase())
-    )
-    .sort((a, b) => {
-      const comparison = a[sortKey].localeCompare(b[sortKey]);
-      return sortOrder === 'asc' ? comparison : -comparison;
-    });
+  // Filter classes based on search term
+  const filteredClasses = classes.filter((classData) =>
+    classData.className.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    classData.teacherFirstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    classData.teacherLastName.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  // Sort classes
+  const sortedClasses = filteredClasses.sort((a, b) => {
+    const comparison = a[sortKey].localeCompare(b[sortKey]);
+    return sortOrder === 'asc' ? comparison : -comparison;
+  });
+
+  // Get current classes for pagination
+  const indexOfLastClass = currentPage * classesPerPage;
+  const indexOfFirstClass = indexOfLastClass - classesPerPage;
+  const currentClasses = sortedClasses.slice(indexOfFirstClass, indexOfLastClass);
+
+  // Change page
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
+    setCurrentPage(1); // Reset to first page when searching
   };
 
   const handleHeaderClick = (key) => {
@@ -64,9 +76,10 @@ const UploadedClassesList = () => {
     }
   };
 
+  const totalPages = Math.ceil(filteredClasses.length / classesPerPage);
+
   return (
     <div className="bg-white border shadow-sm rounded p-4 mt-0 m-4">
-      <div className="text-2xl font-bold pb-4">Assigned Classes</div>
       
       <input
         type="text"
@@ -76,40 +89,71 @@ const UploadedClassesList = () => {
         className="border border-gray-300 rounded px-2 py-1 mb-4"
       />
 
-      {filteredClasses.length > 0 ? (
-        <table className="min-w-full border-collapse border border-gray-300">
-          <thead>
-            <tr className="bg-gray-200">
-              <th 
-                className="border border-gray-300 px-4 py-2 cursor-pointer" 
-                onClick={() => handleHeaderClick('className')}
-              >
-                Class Name {sortKey === 'className' && (sortOrder === 'asc' ? '↑' : '↓')}
-              </th>
-              <th 
-                className="border border-gray-300 px-4 py-2 cursor-pointer" 
-                onClick={() => handleHeaderClick('teacherFirstName')}
-              >
-                Teacher First Name {sortKey === 'teacherFirstName' && (sortOrder === 'asc' ? '↑' : '↓')}
-              </th>
-              <th 
-                className="border border-gray-300 px-4 py-2 cursor-pointer" 
-                onClick={() => handleHeaderClick('teacherLastName')}
-              >
-                Teacher Last Name {sortKey === 'teacherLastName' && (sortOrder === 'asc' ? '↑' : '↓')}
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredClasses.map((classData, index) => (
-              <tr key={index} className="hover:bg-gray-100 capitalize">
-                <td className="border border-gray-300 px-4 py-2">{classData.className}</td>
-                <td className="border border-gray-300 px-4 py-2">{classData.teacherFirstName || 'N/A'}</td>
-                <td className="border border-gray-300 px-4 py-2">{classData.teacherLastName || 'N/A'}</td>
+      {currentClasses.length > 0 ? (
+        <>
+          <table className="min-w-full border-collapse border border-gray-300">
+            <thead>
+              <tr className="bg-gray-200">
+                <th 
+                  className="border border-gray-300 px-4 py-2 cursor-pointer" 
+                  onClick={() => handleHeaderClick('className')}
+                >
+                  Class Name {sortKey === 'className' && (sortOrder === 'asc' ? '↑' : '↓')}
+                </th>
+                <th 
+                  className="border border-gray-300 px-4 py-2 cursor-pointer" 
+                  onClick={() => handleHeaderClick('teacherFirstName')}
+                >
+                  Teacher First Name {sortKey === 'teacherFirstName' && (sortOrder === 'asc' ? '↑' : '↓')}
+                </th>
+                <th 
+                  className="border border-gray-300 px-4 py-2 cursor-pointer" 
+                  onClick={() => handleHeaderClick('teacherLastName')}
+                >
+                  Teacher Last Name {sortKey === 'teacherLastName' && (sortOrder === 'asc' ? '↑' : '↓')}
+                </th>
               </tr>
+            </thead>
+            <tbody>
+              {currentClasses.map((classData, index) => (
+                <tr key={index} className="hover:bg-gray-100 capitalize">
+                  <td className="border border-gray-300 px-4 py-2">{classData.className}</td>
+                  <td className="border border-gray-300 px-4 py-2">{classData.teacherFirstName || 'N/A'}</td>
+                  <td className="border border-gray-300 px-4 py-2">{classData.teacherLastName || 'N/A'}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+
+          {/* Pagination Controls */}
+          <div className="flex justify-center mt-4">
+            <button
+              onClick={() => paginate(currentPage - 1)}
+              disabled={currentPage === 1}
+              className="px-3 py-1 mx-1 border rounded bg-gray-100 hover:bg-gray-200"
+            >
+              Previous
+            </button>
+            {Array.from({ length: totalPages }, (_, index) => (
+              <button
+                key={index + 1}
+                onClick={() => paginate(index + 1)}
+                className={`px-3 py-1 mx-1 border rounded ${
+                  currentPage === index + 1 ? 'bg-blue-500 text-white' : 'bg-gray-100 hover:bg-gray-200'
+                }`}
+              >
+                {index + 1}
+              </button>
             ))}
-          </tbody>
-        </table>
+            <button
+              onClick={() => paginate(currentPage + 1)}
+              disabled={currentPage === totalPages}
+              className="px-3 py-1 mx-1 border rounded bg-gray-100 hover:bg-gray-200"
+            >
+              Next
+            </button>
+          </div>
+        </>
       ) : (
         <p>No classes uploaded yet.</p>
       )}

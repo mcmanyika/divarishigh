@@ -11,7 +11,7 @@ import { faSpinner } from '@fortawesome/free-solid-svg-icons'; // Spinner icon
 import AdminLayout from './adminLayout';
 import withAuth from '../../../utils/withAuth';
 import UploadedClassesList from '../../app/components/teachers/UploadedClassesList';
-import TeacherList from '../../app/components/teachers/TeacherList';
+import ClassAllocation from '../../app/components/teachers/ClassAllocation';
 
 function AddClasses() {
   const { data: session, status } = useSession(); // Get session and status from next-auth
@@ -74,7 +74,7 @@ function AddClasses() {
     <AdminLayout>
       <div className="flex flex-col md:flex-row">
         <div className="w-full md:w-1/2 lg:w-1/3">
-          <TeacherList />
+          <ClassAllocation />
         </div>
         <div className="w-full md:w-1/2 lg:w-4/5">
           <div className="overflow-y-auto">
