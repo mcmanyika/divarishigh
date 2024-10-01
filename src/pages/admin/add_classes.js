@@ -77,7 +77,6 @@ function AddClasses() {
           <UploadClassNameForm />
         </div>
         <div className="w-full md:w-1/2 lg:w-4/5 bg-white m-2">
-        <div className='text-2xl m-2 p-4'>My Classes</div>
           <div className="h-3/4 overflow-y-auto">
             <TeacherClasses />
           </div>
