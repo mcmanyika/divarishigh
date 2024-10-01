@@ -118,7 +118,7 @@ const UserTypeSelector = ({ userEmail }) => {
 
   return (
     <div className="p-4 bg-white shadow-md rounded-md">
-      <h2 className="text-2xl font-semibold mb-4">User Details Form</h2>
+      <h2 className="text-2xl font-semibold mb-4">Account Details Registration</h2>
       <form onSubmit={handleSubmit}>
         <div className="grid grid-cols-1 gap-4 mb-4">
           <div>
@@ -151,7 +151,7 @@ const UserTypeSelector = ({ userEmail }) => {
               className="w-full p-2 border border-gray-300 rounded"
               required
             >
-              <option value="" disabled>Select gender...</option>
+              <option value="" disabled>Select Gender...</option>
               <option value="Male">Male</option>
               <option value="Female">Female</option>
             </select>
