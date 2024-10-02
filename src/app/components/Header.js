@@ -33,14 +33,14 @@ const Header = () => {
                 status: data[key].status,
                 category: data[key].category,
               }))
-              .filter(a => a.category === 'title')
+              .filter(a => a.category === 'title' && a.status === 'Active') // Filter by active status
               .sort((a, b) => a.title.localeCompare(b.title));
             setTitles(titlesArray);
           } else {
             setTitles([]);
           }
         });
-
+  
         // Fetching school name and Facebook link
         const accountRef = ref(database, 'account');
         onValue(accountRef, (snapshot) => {
@@ -57,19 +57,20 @@ const Header = () => {
         console.error('Firebase Error:', error);
       }
     };
-
+  
     fetchData();
-
+  
     const handleScroll = () => {
       setIsSticky(window.scrollY > 600);
     };
-
+  
     window.addEventListener('scroll', handleScroll);
-
+  
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
+  
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
