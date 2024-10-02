@@ -64,6 +64,7 @@ const CombinedExamsList = () => {
     .slice(-10);  // Get the last 10 exams
 
   return (
+    
     <div className="w-full bg-white rounded px-4 sm:px-8 pt-6 pb-8 mt-4 mb-4">
       <h2 className="text-xl sm:text-2xl font-semibold mb-4 sm:mb-8 text-center">Recent Exams Results</h2>
 
