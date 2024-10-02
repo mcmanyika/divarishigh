@@ -137,7 +137,7 @@ const UploadedClassesList = () => {
                   <td className="border border-gray-300 px-4 py-2">{classData.className}</td>
                   <td className="border border-gray-300 px-4 py-2">{classData.teacherFirstName || 'N/A'}</td>
                   <td className="border border-gray-300 px-4 py-2">{classData.teacherLastName || 'N/A'}</td>
-                  <td className="border border-gray-300 px-4 py-2">{classData.teacherEmail || 'N/A'}</td>
+                  <td className="border border-gray-300 px-4 py-2 lowercase">{classData.teacherEmail || 'N/A'}</td>
                 </tr>
               ))}
             </tbody>

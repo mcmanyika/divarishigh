@@ -92,7 +92,7 @@ const ClassRoutineList = () => {
                 <th className="py-2 px-4 border-b cursor-pointer" onClick={() => handleSort('room')}>
                   Room {sortField === 'room' && (sortDirection === 'asc' ? '↑' : '↓')}
                 </th>
-                <th className="py-2 px-4 border-b">Actions</th>
+                {/* <th className="py-2 px-4 border-b">Actions</th> */}
               </tr>
             </thead>
             <tbody>
@@ -103,14 +103,14 @@ const ClassRoutineList = () => {
                   <td className="py-2 px-4 border-b">{routine.subject}</td>
                   <td className="py-2 px-4 border-b">{routine.studentclass}</td>
                   <td className="py-2 px-4 border-b">{routine.room}</td>
-                  <td className="py-2 px-4 border-b">
+                  {/* <td className="py-2 px-4 border-b">
                     <button 
                       className="text-red-500 hover:underline" 
                       onClick={() => handleDelete(routine.id)}
                     >
                       <FaTrashAlt className="w-5 h-5" />
                     </button>
-                  </td>
+                  </td> */}
                 </tr>
               ))}
             </tbody>
