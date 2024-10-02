@@ -128,7 +128,7 @@ const Header2 = () => {
             <li key={rw.id}>
               <div className="cursor-pointer py-2 px-4 hover:text-gray-300 text-sm font-sans font-thin uppercase" onClick={toggleMenu}>
                 <Link href={rw.link}>
-                  <span>{rw.title}</span>
+                <div className="hover:text-gray-300 text-sm font-sans font-thin uppercase pb-2 border-b-2 border-transparent hover:border-white">{rw.title}</div>
                 </Link>
               </div>
             </li>
