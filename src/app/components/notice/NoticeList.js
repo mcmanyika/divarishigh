@@ -53,14 +53,14 @@ const NoticeList = () => {
 
   return (
     <div className="space-y-4 p-4 m-2">
-      <div className="">
+      <div className="text-left">
         {notices.length > 0 ? (
           <ul className="space-y-2">
             {notices.map((notice) => (
               <li key={notice.id} className="p-1 pt-2 pb-4 border-b">
                 <button className={`text-sm ${getRandomColor()} p-2 mb-3 pl-6 pr-6 rounded-2xl text-white`}>{formatDate(notice.date)}</button>
                 <p className="text-base text-gray-700">{notice.details}</p>
-                <p className="text-sm text-gray-500">{notice.postedBy}</p>
+                {/* <p className="text-sm text-gray-500">{notice.postedBy}</p> */}
               </li>
             ))}
           </ul>
