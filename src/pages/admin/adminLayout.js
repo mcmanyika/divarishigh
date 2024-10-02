@@ -122,7 +122,7 @@ const AdminLayout = ({ children }) => {
       )}
 
       <div className="flex-1 flex flex-col transition-all duration-300 ease-in-out">
-        <header className="flex items-center justify-between bg-blue-400 text-white p-4 md:hidden">
+        <header className="flex items-center justify-between bg-main text-white p-4 md:hidden">
           <div className="flex items-center">
             <FaBars className="cursor-pointer text-2xl mr-4" onClick={toggleMobileSidebar} />
             <Link href='/'>

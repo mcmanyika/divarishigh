@@ -32,6 +32,13 @@ const ClassRoutineList = () => {
     });
   }, [session?.user?.email]);
 
+  // Handle sorting by updating the sortField and sortDirection
+  const handleSort = (field) => {
+    const isAsc = sortField === field && sortDirection === 'asc';
+    setSortField(field);
+    setSortDirection(isAsc ? 'desc' : 'asc');
+  };
+
   // Sort routines based on the selected field and direction
   const sortedRoutines = [...classRoutines].sort((a, b) => {
     const aValue = a[sortField];
@@ -60,7 +67,7 @@ const ClassRoutineList = () => {
     const routineRef = ref(database, `classRoutine/${id}`);
     remove(routineRef)
       .then(() => {
-        setClassRoutines(classRoutines.filter(routine => routine.id !== id));
+        setClassRoutines(classRoutines.filter((routine) => routine.id !== id));
       })
       .catch((error) => {
         console.error('Error deleting routine:', error);
