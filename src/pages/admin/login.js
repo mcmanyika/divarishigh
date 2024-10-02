@@ -59,8 +59,10 @@ export default function Login() {
   };
 
   return (
-    <SmartBlankLayout>
-      <div className="max-w-lg mx-auto p-6 bg-white bg-opacity-75 rounded shadow-md text-center">
+    <>
+      <div className="flex items-center justify-center min-h-screen bg-cover bg-center"
+      style={{ backgroundImage: "url('/images/banner1.png')" }}>
+      <div className="w-7xl mx-auto p-6 bg-white bg-opacity-75 rounded shadow-md text-center">
         <Link href='/'>
           <Image
             src="/images/logo.png"
@@ -114,6 +116,7 @@ export default function Login() {
 
         {session && <p>Redirecting to dashboard...</p>}
       </div>
-    </SmartBlankLayout>
+      </div>
+    </>
   );
 }
