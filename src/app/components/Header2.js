@@ -5,7 +5,7 @@ import { ref, onValue, query, orderByChild, equalTo } from 'firebase/database';
 import { database } from '../../../utils/firebaseConfig'; // Assuming you have firebaseConfig set up properly
 import { useGlobalState, setIsOverlayVisible } from '../store';
 import { useSession, signIn, signOut } from 'next-auth/react';
-import { FaFacebook } from 'react-icons/fa';
+import { FaFacebook, FaHome } from 'react-icons/fa';
 
 const Header2 = () => {
   const { data: session } = useSession();
@@ -69,6 +69,60 @@ const Header2 = () => {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // Fetching titles
+        const titleRef = ref(database, 'title');
+        onValue(titleRef, (snapshot) => {
+          const data = snapshot.val();
+          if (data) {
+            const titlesArray = Object.keys(data)
+              .map((key) => ({
+                id: key,
+                title: data[key].title,
+                link: data[key].link,
+                status: data[key].status,
+                category: data[key].category,
+              }))
+              .filter(a => a.category === 'title')
+              .sort((a, b) => a.title.localeCompare(b.title));
+            setTitles(titlesArray);
+          } else {
+            setTitles([]);
+          }
+        });
+
+        // Fetching school name and Facebook link
+        const accountRef = ref(database, 'account');
+        onValue(accountRef, (snapshot) => {
+          const accountData = snapshot.val();
+          if (accountData) {
+            const accountKeys = Object.keys(accountData);
+            if (accountKeys.length > 0) {
+              setSchoolName(accountData.schoolName); // Set school name
+              setFacebookLink(accountData.facebook); // Set Facebook link
+            }
+          }
+        });
+      } catch (error) {
+        console.error('Firebase Error:', error);
+      }
+    };
+
+    fetchData();
+
+    const handleScroll = () => {
+      setIsSticky(window.scrollY > 600);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
   // Function to toggle mobile menu
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -79,17 +133,49 @@ const Header2 = () => {
   };
 
   return (
-    <header className="fixed top-0 z-50 w-full bg-main text-white p-4 transition-all duration-500 ease-in-out">
-      <div className='top-0 w-full text-white p-0 text-right'>
-        <div className='container mx-auto text-xs p-2 mb-2'>
-          {session ? <span>Hi {session.user.name}</span> : <>Welcome Guest </>}, &nbsp; 
-          {session ? (
-            <button onClick={() => signOut()}> Sign Out</button>
-          ) : (
-            <button onClick={() => signIn('google')} className="text-white font-thin p-1 rounded hover:bg-main2"> Sign In</button>
-          )}
+    <header className="fixed top-0 z-50 w-full bg-main text-white font-thin pb-4 transition-all duration-500 ease-in-out">
+      <div className='top-0 w-full text-white p-0'>
+          <div className='container mx-auto flex text-sm font-thin p-2 mb-2 justify-between'>
+            <div className='flex-1 md:flex space-x-2 hidden'>
+              <span>Follow Us</span>
+              {facebookLink && (
+                <a
+                  href={facebookLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-white hover:text-gray-900"
+                >
+                  <FaFacebook className="h-5 w-5" />
+                </a>
+              )}
+            </div>
+            <div className='flex-1 text-right relative'>
+              {session ? (
+                <div className="text-right">
+                  <Link href="/admin/dashboard" className="inline-flex items-center space-x-2 text-white">
+                    <FaHome />
+                    <span className='pr-3'>My Dashboard </span> |
+                    <button
+                      onClick={() => signOut('google')}
+                      className="text-white p-1 rounded"
+                    >
+                      Sign Out
+                    </button>
+                  </Link>
+                </div>
+              ) : (
+                <>
+                  <span className='pr-3'>Welcome Guest</span>|
+                  <Link href='/admin/login'>
+                    <button className="text-white p-1 rounded ">
+                      Sign In
+                    </button>
+                  </Link>
+                </>
+              )}
+            </div>
+          </div>
         </div>
-      </div>
       <nav className="max-w-5xl mx-auto flex justify-between items-center">
         <div className="flex items-center w-4/5 space-x-2">
           <Link href='/'>
@@ -102,22 +188,6 @@ const Header2 = () => {
             />
           </Link>
           <h1 className={`text-sm md:text-xl font-normal uppercase ${isOpen ? 'hidden' : 'block'}`}>{schoolName}</h1>
-        </div>
-        <div className="flex items-center space-x-4">
-          <a href={facebookLink} target="_blank" rel="noopener noreferrer" className="text-white hover:text-gray-900">
-            <FaFacebook className="h-5 w-5" />
-          </a>
-          <div className="md:hidden"> {/* Display menu icon on mobile */}
-            <button onClick={toggleMenu} className="text-white focus:outline-none">
-              <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                {isOpen ? (
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                ) : (
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16m-7 6h7" />
-                )}
-              </svg>
-            </button>
-          </div>
         </div>
         <ul className={`md:flex ${isOpen ? 'flex' : 'hidden'} md:space-x-4 md:w-full mt-4 md:mt-0 text-right`}>
           {titles.map((rw) => (

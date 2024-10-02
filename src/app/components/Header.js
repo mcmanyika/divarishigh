@@ -149,7 +149,7 @@ const Header = () => {
               )}
             </div>
           </div>
-        </div>
+        </div> 
       )}
       <nav className="max-w-4xl mx-auto flex justify-between items-center p-4">
         <div className={`flex items-center space-x-2 ${isOpen ? 'hidden md:flex' : 'block'}`}>
