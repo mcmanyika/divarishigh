@@ -9,8 +9,8 @@ const Layout = ({ children, templateText }) => {
     <>
       <div className="flex flex-col bg-cover bg-center mb-10">
         <Header2 />
-        <div className='w-full p-10 pt-28 md:p-20 md:pt-40 bg-slate-50 text-center text-3xl md:text-6xl'>
-          {templateText ? templateText : 'Template'} {/* Default text or passed prop */}
+        <div className='w-full p-10 pt-28 md:p-20 md:pt-40 md:pb-4 bg-slate-50 text-center text-3xl md:text-6xl'>
+          {templateText ? templateText : ''} {/* Default text or passed prop */}
         </div>
         <main className="container mx-auto pt-10">
           {children}
