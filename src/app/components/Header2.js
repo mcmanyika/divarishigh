@@ -18,11 +18,9 @@ const Header2 = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Fetching titles where status is 'Active'
+        // Fetching titles
         const titleRef = ref(database, 'title');
-        const statusQuery = query(titleRef, orderByChild('status'), equalTo('Active'));
-
-        onValue(statusQuery, (snapshot) => {
+        onValue(titleRef, (snapshot) => {
           const data = snapshot.val();
           if (data) {
             const titlesArray = Object.keys(data)
@@ -33,36 +31,42 @@ const Header2 = () => {
                 status: data[key].status,
                 category: data[key].category,
               }))
-              .filter(a => a.category === 'title') // Filter for category 'title'
-              .sort((a, b) => {
-                if (a.title === 'Admissions') return 1;
-                if (b.title === 'Admissions') return -1;
-                if (a.title === 'Alumni') return 1;
-                if (b.title === 'Alumni') return -1;
-                return a.title.localeCompare(b.title);
-              });
+              .filter(a => a.category === 'title' && a.status === 'Active') // Filter by active status
+              .sort((a, b) => a.title.localeCompare(b.title));
             setTitles(titlesArray);
           } else {
-            setTitles([]); // Handle no data case
+            setTitles([]);
           }
         });
-
+  
         // Fetching school name and Facebook link
         const accountRef = ref(database, 'account');
         onValue(accountRef, (snapshot) => {
           const accountData = snapshot.val();
           if (accountData) {
-            const account = Object.values(accountData)[0]; // Assuming there's only one account
-            setSchoolName(account.schoolName || ''); // Set school name
-            setFacebookLink(account.facebook || ''); // Set Facebook link
+            const accountKeys = Object.keys(accountData);
+            if (accountKeys.length > 0) {
+              setSchoolName(accountData.schoolName); // Set school name
+              setFacebookLink(accountData.facebook); // Set Facebook link
+            }
           }
         });
       } catch (error) {
         console.error('Firebase Error:', error);
       }
     };
-
+  
     fetchData();
+  
+    const handleScroll = () => {
+      setIsSticky(window.scrollY > 600);
+    };
+  
+    window.addEventListener('scroll', handleScroll);
+  
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
   }, []);
 
   const toggleMenu = () => setIsOpen(!isOpen);
@@ -76,15 +80,15 @@ const Header2 = () => {
           <div className='flex-1 md:flex space-x-2 hidden'>
             <span>Follow Us</span>
             {facebookLink && (
-              <a
-                href={facebookLink}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-white hover:text-gray-900"
-              >
-                <FaFacebook className="h-5 w-5" />
-              </a>
-            )}
+                <a
+                  href={facebookLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-white hover:text-gray-900"
+                >
+                  <FaFacebook className="h-5 w-5" />
+                </a>
+              )}
           </div>
           <div className='flex-1 text-right relative'>
             {session ? (
