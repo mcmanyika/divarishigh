@@ -26,7 +26,7 @@ const AdminDashboard = () => {
           </div>
 
           {/* Gender Pie Chart */}
-          <div className="w-full md:w-1/2 bg-white border shadow-sm rounded p-4 overflow-y-auto md:h-auto h-80">
+          <div className="w-full md:w-1/2 bg-white border shadow-sm rounded p-4">
             <GenderPieChart />
           </div>
         </div>
