@@ -13,7 +13,7 @@ const Hero = () => {
   const carouselData = [
     {
       title: "Our Vision",
-      description: "To be e a trailblazer in the provision of quality education",
+      description: "To be a trailblazer in the provision of quality education",
       imageUrl: "https://firebasestorage.googleapis.com/v0/b/divaris-3e59f.appspot.com/o/images%2FDSC_6074.jpg?alt=media&token=274e6ddf-f997-4fe6-812f-3e9e13472b33",
     },
     {
@@ -84,7 +84,7 @@ const Hero = () => {
 
   return (
     <div className="relative h-screen flex items-center justify-center overflow-hidden">
-      <div className="absolute inset-0 flex  transition-transform duration-1000 ease-in-out" style={{ transform: `translateX(${currentIndex * -100}%)` }}>
+      <div className="absolute inset-0 flex transition-transform duration-1000 ease-in-out" style={{ transform: `translateX(${currentIndex * -100}%)` }}>
         {carouselData.map((slide, index) => (
           <div key={index} className="min-w-full h-full bg-cover bg-center md:bg-bottom" style={{ backgroundImage: `url(${slide.imageUrl})` }}></div>
         ))}
@@ -97,32 +97,32 @@ const Hero = () => {
             alt="Logo"
             width={100}
             height={100}
-            className="rounded w-12 h-12 md:w-24 md:h-24 top"
+            className="rounded w-12 h-12 md:w-24 md:h-24"
             onClick={handleMenuClick}
           />
         </Link>
       </div>
       {isOverlayVisible && (
-        <div className="fixed inset-0 bg-black bg-opacity-100 flex items-center justify-center z-50">
+        <div className="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center z-50 p-4">
           <div className="absolute top-4 right-4 text-white">
             <button onClick={handleMenuClick}>
               <XIcon className="h-8 w-8" />
             </button>
           </div>
-          <div className="max-w-96 mx-auto text-center">
+          <div className="max-w-md mx-auto text-center">
             {titles.map((rw) => (
               <div key={rw.id}>
                 <Link href={`${rw.link}`}>
-                  <div className="text-gray-300 hover:text-white text-3xl md:text-6xl uppercase p-3">{rw.title}</div>
+                  <div className="text-gray-300 hover:text-white text-2xl md:text-3xl lg:text-4xl uppercase p-3">{rw.title}</div>
                 </Link>
               </div>
             ))}
           </div>
         </div>
       )}
-      <section className="relative text-white p-10 md:p-20 text-center">
-        <h1 className="text-2xl md:text-5xl font-thin font-sans">{currentSlide.title}</h1>
-        <p className="mt-4 text-sm md:text-xl text-thin font-sans">{currentSlide.description}</p>
+      <section className="relative text-white p-6 md:p-10 text-center">
+        <h1 className="text-xl md:text-4xl font-thin font-sans">{currentSlide.title}</h1>
+        <p className="mt-2 text-sm md:text-lg font-sans">{currentSlide.description}</p>
       </section>
     </div>
   );
