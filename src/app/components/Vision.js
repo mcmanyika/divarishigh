@@ -3,7 +3,7 @@ import React from 'react';
 const Vision = () => {
   return (
     <section id='vision'>
-    <div className="relative parallax  min-h-80 bg-top" style={{ backgroundImage: "url('https://firebasestorage.googleapis.com/v0/b/divaris-3e59f.appspot.com/o/images%2FDSC_6057.jpg?alt=media&token=7e0c21b3-2ef1-4421-b2fd-0ecec9133474')" }}>
+    <div className="relative parallax  min-h-80 bg-top" style={{ backgroundImage: "url('https://firebasestorage.googleapis.com/v0/b/divaris-3e59f.appspot.com/o/images%2FDSC_5929.jpg?alt=media&token=b6c69906-8efa-4e81-a09b-386e4457a0c3')" }}>
       <div className="absolute inset-0 bg-main opacity-50"></div>
       <div className="relative max-w-7xl mx-auto z-10 flex flex-col md:flex-row items-center justify-between h-full text-white p-4">
         <div className="flex-1 text-center  p-4">

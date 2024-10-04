@@ -12,6 +12,7 @@ import Values from '../app/components/Values';
 import Vision from '../app/components/Vision';
 import Curriculum from '../app/components/Curriculum';
 import ManagementTeam from '../app/components/ManagementTeam';
+import ImageGallery from '../app/components/ImageGallery';
 
 export default function Home() {
   const { data: session } = useSession();
@@ -23,9 +24,9 @@ export default function Home() {
       <Socials />
       <Values />
       <Vision />
-      <Curriculum />
       <NewStudents />
-      <ManagementTeam />
+      <Curriculum />
+      <ImageGallery />
       <Map />
       <ContactUs />
     </Layout>
