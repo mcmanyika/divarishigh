@@ -3,7 +3,7 @@ import Image from 'next/image';
 
 const ImageGallery = () => {
   return (
-    <section className="w-full mx-auto p-0 mb-2">
+    <section id='gallery' className="w-full mx-auto p-0 mb-2">
       <div className="flex flex-col md:flex-row gap-1">
         {/* First Column: Single Image with double height */}
         <div className="flex-1 relative w-full h-[24rem] md:h-[40.2rem] overflow-hidden"> {/* Adjust height for mobile */}
@@ -42,8 +42,8 @@ const ImageGallery = () => {
           <div className="relative w-full h-[12rem] md:h-[20rem] overflow-hidden">
             <div className="w-full h-full transform transition-transform duration-500 hover:scale-105">
               <Image
-                src="https://firebasestorage.googleapis.com/v0/b/divaris-3e59f.appspot.com/o/images%2FDSC_6070.jpg?alt=media&token=57216548-6eef-4b47-95ab-888ccdc92800"
-                alt="Sub Image 3"
+                src="https://firebasestorage.googleapis.com/v0/b/divaris-3e59f.appspot.com/o/images%2FDSC_5976.jpg?alt=media&token=43c7dd26-0fc4-4c1b-b6f5-b1e58d4bfed1"
+                alt="Sub Image 4"
                 layout="fill"
                 objectFit="cover"
               />
@@ -52,8 +52,8 @@ const ImageGallery = () => {
           <div className="relative w-full h-[12rem] md:h-[20rem] overflow-hidden">
             <div className="w-full h-full transform transition-transform duration-500 hover:scale-105">
               <Image
-                src="https://firebasestorage.googleapis.com/v0/b/divaris-3e59f.appspot.com/o/images%2FDSC_5976.jpg?alt=media&token=43c7dd26-0fc4-4c1b-b6f5-b1e58d4bfed1"
-                alt="Sub Image 4"
+                src="https://firebasestorage.googleapis.com/v0/b/divaris-3e59f.appspot.com/o/images%2FDSC_6070.jpg?alt=media&token=57216548-6eef-4b47-95ab-888ccdc92800"
+                alt="Sub Image 3"
                 layout="fill"
                 objectFit="cover"
               />

@@ -24,9 +24,9 @@ export default function Home() {
       <Socials />
       <Values />
       <Vision />
-      <NewStudents />
       <Curriculum />
       <ImageGallery />
+      {/* <NewStudents /> */}
       <Map />
       <ContactUs />
     </Layout>
