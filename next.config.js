@@ -7,7 +7,7 @@ module.exports = {
           protocol: 'https',
           hostname: 'firebasestorage.googleapis.com',
           port: '',
-          pathname: '/v0/b/glenview2-b3d45.appspot.com/o/**',
+          pathname: '//v0/b/divaris-3e59f.appspot.com/o/**',
         },
         
       ],

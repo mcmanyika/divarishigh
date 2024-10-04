@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from 'react';
 import { FaFacebook, FaHome } from 'react-icons/fa';
 import Link from 'next/link';
+import Image from 'next/image';
 import { ref, onValue } from 'firebase/database';
 import { database } from '../../../utils/firebaseConfig';
 import { useGlobalState, setIsOverlayVisible } from '../store';
@@ -154,6 +155,15 @@ const Header = () => {
       )}
       <nav className="max-w-4xl mx-auto flex justify-between items-center p-4">
         <div className={`flex items-center space-x-2 ${isOpen ? 'hidden md:flex' : 'block'}`}>
+        {/* <Link href='/'>
+            <Image
+              src="/images/logo.png"
+              alt="Logo"
+              width={50}
+              height={50}
+              className="rounded"
+            />
+          </Link> */}
           <h1 className="text-sm md:text-2xl font-normal uppercase flex">{schoolName}</h1>
         </div>
         {isSticky && (

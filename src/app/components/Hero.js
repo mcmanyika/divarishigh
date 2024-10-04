@@ -14,12 +14,12 @@ const Hero = () => {
     {
       title: "Excellence in Education",
       description: "Providing a well-rounded, high quality, and relevant education for learners",
-      imageUrl: "/images/divaris.jpeg",
+      imageUrl: "https://firebasestorage.googleapis.com/v0/b/divaris-3e59f.appspot.com/o/images%2FDSC_6074.jpg?alt=media&token=274e6ddf-f997-4fe6-812f-3e9e13472b33",
     },
     {
       title: "Our Vision",
       description: "To be e a trailblazer in the provision of quality education",
-      imageUrl: "/images/banner4.png",
+      imageUrl: "https://firebasestorage.googleapis.com/v0/b/divaris-3e59f.appspot.com/o/images%2FDSC_5865.jpg?alt=media&token=70f5041a-7e6d-4572-a845-4fc8b6bb2c4a",
     }
   ];
 
@@ -79,9 +79,9 @@ const Hero = () => {
 
   return (
     <div className="relative h-screen flex items-center justify-center overflow-hidden">
-      <div className="absolute inset-0 flex transition-transform duration-1000 ease-in-out" style={{ transform: `translateX(${currentIndex * -100}%)` }}>
+      <div className="absolute inset-0 flex  transition-transform duration-1000 ease-in-out" style={{ transform: `translateX(${currentIndex * -100}%)` }}>
         {carouselData.map((slide, index) => (
-          <div key={index} className="min-w-full h-full bg-cover bg-center md:bg-top" style={{ backgroundImage: `url(${slide.imageUrl})` }}></div>
+          <div key={index} className="min-w-full h-full bg-cover bg-center md:bg-bottom" style={{ backgroundImage: `url(${slide.imageUrl})` }}></div>
         ))}
       </div>
       <div className="absolute inset-0 bg-main opacity-20"></div>
