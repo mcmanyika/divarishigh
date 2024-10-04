@@ -61,7 +61,7 @@ export default function Login() {
   return (
     <>
       <div className="flex items-center justify-center min-h-screen bg-cover bg-center"
-      style={{ backgroundImage: "url('/images/banner1.png')" }}>
+      style={{ backgroundImage: "url('https://firebasestorage.googleapis.com/v0/b/divaris-3e59f.appspot.com/o/images%2FDSC_5929.jpg?alt=media&token=b6c69906-8efa-4e81-a09b-386e4457a0c3')" }}>
       <div className="w-7xl mx-auto p-6 bg-white bg-opacity-75 rounded shadow-md text-center">
         <Link href='/'>
           <Image
