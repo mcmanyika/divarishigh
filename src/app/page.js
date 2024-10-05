@@ -26,7 +26,6 @@ export default function Home() {
       <Vision />
       <Curriculum />
       <ImageGallery />
-      {/* <NewStudents /> */}
       <Map />
       <ContactUs />
     </Layout>
