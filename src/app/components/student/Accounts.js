@@ -127,7 +127,7 @@ const Accounts = () => {
       </div>
 
       {/* Grid of Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {currentAdmissions.map((admission) => (
           <div
             key={admission.id}
@@ -136,7 +136,7 @@ const Accounts = () => {
           >
             <p className="text-lg font-bold mb-2 capitalize">{admission.firstName} {admission.lastName}</p>
             <p className="text-sm mb-1"><span className="font-semibold">Email:</span> {admission.email}</p>
-            <p className="text-sm mb-1"><span className="font-semibold">Class:</span> {admission.class}</p>
+            { admission.class && (<p className="text-sm mb-1"><span className="font-semibold">Class:</span> {admission.class}</p>) }
             <p className="text-sm mb-1"><span className="font-semibold">Phone:</span> {admission.phone}</p>
             <p className="text-sm mb-1"><span className="font-semibold">Status:</span> {admission.status}</p>
           </div>

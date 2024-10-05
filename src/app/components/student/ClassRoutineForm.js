@@ -147,12 +147,22 @@ const ClassRoutineForm = () => {
               required
             >
               <option value="">Select Subject</option>
-              <option value="Mathematics">Mathematics</option>
               <option value="English">English</option>
-              <option value="Science">Science</option>
+              <option value="Math">Math</option>
+              <option value="Biology">Biology</option>
+              <option value="Chemistry">Chemistry</option>
+              <option value="Physics">Physics</option>
+              <option value="Combined Science">Combined Science</option>
+              <option value="Computer Science">Computer Science</option>
+              <option value="I.C.T">I.C.T</option>
+              <option value="Business Studies">Business Studies</option>
+              <option value="Accounts">Accounts</option>
               <option value="History">History</option>
+              <option value="Geography">Geography</option>
+              <option value="Travel and Tourism">Travel and Tourism</option>
             </select>
           </div>
+
 
           {/* Teacher dropdown - dynamically populated */}
           <div className="m-4">

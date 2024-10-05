@@ -12,13 +12,13 @@ const Hero = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const carouselData = [
     {
-      title: "Our Vision",
-      description: "To be a trailblazer in the provision of quality education",
+      title: "Explore Your Creativity And Talent With Us",
+      description: "",
       imageUrl: "https://firebasestorage.googleapis.com/v0/b/divaris-3e59f.appspot.com/o/images%2FDSC_6074.jpg?alt=media&token=274e6ddf-f997-4fe6-812f-3e9e13472b33",
     },
     {
-      title: "Excellence in Education",
-      description: "Providing a well-rounded, high quality, and relevant education for learners",
+      title: "Start Your Beautiful and Bright Future",
+      description: "",
       imageUrl: "https://firebasestorage.googleapis.com/v0/b/divaris-3e59f.appspot.com/o/images%2FDSC_5865.jpg?alt=media&token=70f5041a-7e6d-4572-a845-4fc8b6bb2c4a",
     },
     {
@@ -120,9 +120,11 @@ const Hero = () => {
           </div>
         </div>
       )}
-      <section className="relative text-white p-6 md:p-10 text-center">
-        <h1 className="text-xl md:text-4xl font-thin font-sans">{currentSlide.title}</h1>
-        <p className="mt-2 text-sm md:text-lg font-sans">{currentSlide.description}</p>
+      <section className="relative  text-white p-6 md:p-10 text-center">
+        <div className='max-w-2xl mx-auto'>
+          <h1 className="text-xl md:text-5xl font-thin font-sans">{currentSlide.title}</h1>
+          <p className="mt-2 text-sm md:text-lg font-sans">{currentSlide.description}</p>
+        </div>
       </section>
     </div>
   );
