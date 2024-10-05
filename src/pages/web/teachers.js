@@ -8,6 +8,8 @@ const Teacher = () => {
   const templateText = "Teachers"; // The correct templateText for this page
   const backgroundImage = ""; // Replace with the actual image path
   const [teachers, setTeachers] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 6; // Adjust this number as needed
 
   useEffect(() => {
     const admissionsRef = ref(database, 'userTypes');
@@ -31,16 +33,27 @@ const Teacher = () => {
     });
   }, []);
 
+  // Calculate the current teachers to display
+  const indexOfLastTeacher = currentPage * itemsPerPage;
+  const indexOfFirstTeacher = indexOfLastTeacher - itemsPerPage;
+  const currentTeachers = teachers.slice(indexOfFirstTeacher, indexOfLastTeacher);
+
+  // Handle page change
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+  // Calculate total pages
+  const totalPages = Math.ceil(teachers.length / itemsPerPage);
+
   return (
     <Layout templateText={templateText} backgroundImage={backgroundImage}>
       <div className=''>
         <div className='max-w-6xl mx-auto p-10'>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6">
-            {teachers.map((teacher) => (
+            {currentTeachers.map((teacher) => (
               <div key={teacher.id} className="p-4 ">
                 {/* Display the teacher's profile image */}
                 <Image
-                  src={teacher.image || 'https://firebasestorage.googleapis.com/v0/b/divaris-3e59f.appspot.com/o/images%2Fteachers%2FDSC_6136.jpg?alt=media&token=bc7f0d37-c375-4fa6-adce-3c6a3e125cae'}  // Default image if no profileImage
+                  src={teacher.image || ''}  // Default image if no profileImage
                   alt={`${teacher.firstName} ${teacher.lastName}`} 
                   className="rounded-tr-full rounded-tl-full rounded-br-full mx-auto mb-4"
                   width={250}
@@ -49,6 +62,18 @@ const Teacher = () => {
                 {/* Display teacher's name */}
                 <h3 className="text-lg font-semibold capitalize text-center">{teacher.firstName} {teacher.lastName}</h3> 
               </div>
+            ))}
+          </div>
+          {/* Pagination Controls */}
+          <div className="flex justify-center mt-4">
+            {Array.from({ length: totalPages }, (_, index) => (
+              <button
+                key={index + 1}
+                onClick={() => paginate(index + 1)}
+                className={`mx-1 px-3 py-1 border rounded ${currentPage === index + 1 ? 'bg-blue-500 text-white' : 'bg-white text-blue-500'}`}
+              >
+                {index + 1}
+              </button>
             ))}
           </div>
         </div>
