@@ -35,7 +35,7 @@ const Header = () => {
                 status: data[key].status,
                 category: data[key].category,
               }))
-              .filter((a) => a.category === 'title' && a.status === 'Active') // Filter by active status
+              .filter((a) => a.category === 'title' && a.status === 'Active' && !(a.title === 'Staff')) // Filter by active status
               .sort((a, b) => a.title.localeCompare(b.title));
             setTitles(titlesArray);
           } else {

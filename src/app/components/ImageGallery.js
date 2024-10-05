@@ -3,7 +3,7 @@ import Image from 'next/image';
 
 const ImageGallery = () => {
   return (
-    <section id='gallery' className="w-full mx-auto p-0 mb-2">
+    <section id='gallery' className="w-full mx-auto p-0">
       <div className="flex flex-col md:flex-row gap-1">
         {/* First Column: Single Image with double height */}
         <div className="flex-1 relative w-full h-[24rem] md:h-[40.2rem] overflow-hidden"> {/* Adjust height for mobile */}
