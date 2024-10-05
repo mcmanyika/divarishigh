@@ -221,8 +221,11 @@ const Header = () => {
                 Apply Now
               </button>
             </Link>
-            <button onClick={overlayToggle} className="block mt-4 underline text-sm text-gray-400">
-              Close
+            <button
+              onClick={overlayToggle}
+              className="absolute top-4 right-4 text-white text-xl font-semibold"
+            >
+              &times; {/* Close icon */}
             </button>
           </div>
         </div>
