@@ -1,10 +1,38 @@
-// components/EditAdmissionForm.js
-
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { ref, onValue } from 'firebase/database';
+import { database } from '../../../../../utils/firebaseConfig'; // Adjust the path to your firebaseConfig
+import { toast } from 'react-toastify'; // Import toast for notifications
 
 const EditAdmissionForm = ({ formData, handleInputChange, handleSubmit, closeModal }) => {
+  const [classOptions, setClassOptions] = useState([]);
+
+  useEffect(() => {
+    const fetchClasses = async () => {
+      const classRef = ref(database, 't_dict'); // Reference to the t_acct table
+      onValue(classRef, (snapshot) => {
+        const data = snapshot.val();
+        if (data) {
+          const classArray = Object.keys(data).map((key) => ({
+            id: key,
+            ...data[key],
+          }));
+          setClassOptions(classArray);
+        } else {
+          setClassOptions([]);
+        }
+      });
+    };
+
+    fetchClasses(); // Call the function to fetch classes
+  }, []); // Empty dependency array to fetch classes once on mount
+
+  const handleFormSubmit = (event) => {
+    handleSubmit(event); // Call the passed handleSubmit function
+    toast.success('Changes saved successfully!'); // Show success toast
+  };
+
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleFormSubmit}>
       <div className="grid grid-cols-1 text-sm md:grid-cols-3 gap-4 mb-4">
         <div>
           <label className="block mb-2">Admission ID</label>
@@ -79,13 +107,19 @@ const EditAdmissionForm = ({ formData, handleInputChange, handleSubmit, closeMod
         </div>
         <div>
           <label className="block mb-2">Class</label>
-          <input
-            type="text"
-            name="class"
-            value={formData.class}
+          <select
+            name="class" // Ensure this matches your formData structure
+            value={formData.class} // Ensure this matches your formData structure
             onChange={handleInputChange}
             className="border rounded w-full px-3 py-2"
-          />
+          >
+            <option value="">Select Class</option>
+            {classOptions.map((classOption) => (
+              <option key={classOption.id} value={classOption.title}>
+                {classOption.title} {/* Change this if your title field is named differently */}
+              </option>
+            ))}
+          </select>
         </div>
         <div>
           <label className="block mb-2">Phone</label>
@@ -111,17 +145,6 @@ const EditAdmissionForm = ({ formData, handleInputChange, handleSubmit, closeMod
             <option value="Rejected">Rejected</option>
           </select>
         </div>
-        {/* <div>
-          <label className="block mb-2">Student Number</label>
-          <input
-            type="text"
-            name="studentNumber"
-            value={formData.studentNumber}
-            onChange={handleInputChange}
-            className="border rounded w-full px-3 py-2"
-            disabled
-          />
-        </div> */}
       </div>
       <div className="flex justify-end">
         <button
