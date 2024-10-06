@@ -75,10 +75,11 @@ const BlogList = () => {
                     {/* Display only images from blog content */}
                     {blog.content && (
                       <div className="blog-content">
-                        {/* Extract images from the content */}
+                    <Link href={`/blog/${blog.id}`}>
                         {blog.content.replace(/<img /g, '<img class="rounded-xxl" ').match(/<img[^>]*src="([^"]*)"[^>]*>/g)?.map((imgTag, index) => (
                           <div key={index} className="image-container rounded-xxl" dangerouslySetInnerHTML={{ __html: imgTag }} />
                         ))}
+                        </Link>
                       </div>
                     )}
                   </div>
