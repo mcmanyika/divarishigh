@@ -32,6 +32,23 @@ body {
     width: 100%;
   }
   
+  .rounded-xxl {
+    border-top-left-radius: 2.5rem;  /* Top-left corner */
+    border-top-right-radius: 2.5rem; /* Top-right corner */
+    border-bottom-right-radius: 2.5rem; /* Bottom-right corner */
+    border-bottom-left-radius: 0; /* No rounding on bottom-left corner */
+  }
+  
+.image-container {
+  transition: transform 0.3s ease; /* Smooth transition for the zoom effect */
+  overflow: hidden; /* Prevent overflow if needed */
+}
+
+.image-container:hover {
+  transform: scale(1.05); /* Scale up the image slightly on hover */
+}
+
+
   
   /* styles.css */
 

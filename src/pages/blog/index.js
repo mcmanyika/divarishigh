@@ -13,7 +13,7 @@ import 'suneditor/dist/css/suneditor.min.css'; // Import SunEditor styles
 const BlogList = () => {
   const [blogs, setBlogs] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [postsPerPage] = useState(10); // Change this value to set how many blogs per page
+  const [postsPerPage, setPostsPerPage] = useState(10); // Change this value to set how many blogs per page
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -68,23 +68,32 @@ const BlogList = () => {
           <p>No blogs found.</p>
         ) : (
           <>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {currentBlogs.map((blog) => (
-                <div key={blog.id} className="p-4  hover:shadow-md">
+                <div key={blog.id} className="p-4 shadow rounded hover:shadow-md">
+                  <div className="text-gray-700 pt-2 mb-4">
+                    {/* Display only images from blog content */}
+                    {blog.content && (
+                      <div className="blog-content">
+                        {/* Extract images from the content */}
+                        {blog.content.replace(/<img /g, '<img class="rounded-xxl" ').match(/<img[^>]*src="([^"]*)"[^>]*>/g)?.map((imgTag, index) => (
+                          <div key={index} className="image-container rounded-xxl" dangerouslySetInnerHTML={{ __html: imgTag }} />
+                        ))}
+                      </div>
+                    )}
+                  </div>
+
                   <Link href={`/blog/${blog.id}`}>
                     <div className="text-blue-500 text-2xl line-clamp-1 hover:underline capitalize">{blog.title}</div>
                   </Link>
                   <p className="text-sm text-gray-600">By {blog.author}</p>
-                  <div className="text-gray-700 pt-2">
-                    <div className="truncate-text text-xl">
-                      {/* Check if blog content contains an image */}
-                      {(blog.content) && (
-                        <div
-                          className="blog-content text-lg line-clamp-2"
-                          dangerouslySetInnerHTML={{ __html: blog.content }} // Render rich text content
-                        />
-                      )}
-                    </div>
+                  {/* Read More Button */}
+                  <div className="mt-8">
+                    <Link href={`/blog/${blog.id}`}>
+                      <button className="rounded-full bg-yellow-500 hover:bg-yellow-300 text-white px-4 py-2">
+                        Read More
+                      </button>
+                    </Link>
                   </div>
                 </div>
               ))}
