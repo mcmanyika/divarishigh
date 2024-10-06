@@ -5,10 +5,14 @@ import { toast } from 'react-toastify'; // Import toast for notifications
 
 const EditAdmissionForm = ({ formData, handleInputChange, handleSubmit, closeModal }) => {
   const [classOptions, setClassOptions] = useState([]);
+  const [filteredClassOptions, setFilteredClassOptions] = useState([]);
+  const [genderOptions, setGenderOptions] = useState([]);
+  const [religionOptions, setReligionOptions] = useState([]);
+  const [statusOptions, setStatusOptions] = useState([]); // State for status options
 
   useEffect(() => {
     const fetchClasses = async () => {
-      const classRef = ref(database, 't_dict'); // Reference to the t_acct table
+      const classRef = ref(database, 't_dict'); // Reference to the t_dict table
       onValue(classRef, (snapshot) => {
         const data = snapshot.val();
         if (data) {
@@ -23,10 +27,60 @@ const EditAdmissionForm = ({ formData, handleInputChange, handleSubmit, closeMod
       });
     };
 
+    const fetchGenderAndReligion = async () => {
+      const genderRef = ref(database, 't_dict'); // Reference to the t_dict table
+      onValue(genderRef, (snapshot) => {
+        const data = snapshot.val();
+        if (data) {
+          const genderArray = Object.keys(data)
+            .filter(key => data[key].category === 'Gender')
+            .map(key => ({
+              id: key,
+              ...data[key],
+            }));
+          setGenderOptions(genderArray);
+
+          const religionArray = Object.keys(data)
+            .filter(key => data[key].category === 'Religion')
+            .map(key => ({
+              id: key,
+              ...data[key],
+            }));
+          setReligionOptions(religionArray);
+
+          const statusArray = Object.keys(data)
+            .filter(key => data[key].category === 'Account Status') // Fetching status
+            .map(key => ({
+              id: key,
+              ...data[key],
+            }));
+          setStatusOptions(statusArray); // Set status options
+        } else {
+          setGenderOptions([]);
+          setReligionOptions([]);
+          setStatusOptions([]); // Reset status options
+        }
+      });
+    };
+
     fetchClasses(); // Call the function to fetch classes
-  }, []); // Empty dependency array to fetch classes once on mount
+    fetchGenderAndReligion(); // Call the function to fetch gender, religion, and status
+  }, []); // Empty dependency array to fetch once on mount
+
+  // Filter classes based on the selected level
+  useEffect(() => {
+    const filterClassesByLevel = () => {
+      const filteredClasses = classOptions.filter(
+        (classOption) => classOption.category === 'level' // Match category with the selected level
+      );
+      setFilteredClassOptions(filteredClasses);
+    };
+
+    filterClassesByLevel();
+  }, [classOptions, formData.level]); // Run this effect when classOptions or level changes
 
   const handleFormSubmit = (event) => {
+    event.preventDefault(); // Prevent default form submission
     handleSubmit(event); // Call the passed handleSubmit function
     toast.success('Changes saved successfully!'); // Show success toast
   };
@@ -67,13 +121,19 @@ const EditAdmissionForm = ({ formData, handleInputChange, handleSubmit, closeMod
         </div>
         <div>
           <label className="block mb-2">Gender</label>
-          <input
-            type="text"
+          <select
             name="gender"
             value={formData.gender}
             onChange={handleInputChange}
             className="border rounded w-full px-3 py-2"
-          />
+          >
+            <option value="">Select Gender</option>
+            {genderOptions.map((genderOption) => (
+              <option key={genderOption.id} value={genderOption.title}>
+                {genderOption.title}
+              </option>
+            ))}
+          </select>
         </div>
         <div>
           <label className="block mb-2">Date of Birth</label>
@@ -87,13 +147,19 @@ const EditAdmissionForm = ({ formData, handleInputChange, handleSubmit, closeMod
         </div>
         <div>
           <label className="block mb-2">Religion</label>
-          <input
-            type="text"
+          <select
             name="religion"
             value={formData.religion}
             onChange={handleInputChange}
             className="border rounded w-full px-3 py-2"
-          />
+          >
+            <option value="">Select Religion</option>
+            {religionOptions.map((religionOption) => (
+              <option key={religionOption.id} value={religionOption.title}>
+                {religionOption.title}
+              </option>
+            ))}
+          </select>
         </div>
         <div>
           <label className="block mb-2">Email</label>
@@ -114,7 +180,7 @@ const EditAdmissionForm = ({ formData, handleInputChange, handleSubmit, closeMod
             className="border rounded w-full px-3 py-2"
           >
             <option value="">Select Class</option>
-            {classOptions.map((classOption) => (
+            {filteredClassOptions.map((classOption) => (
               <option key={classOption.id} value={classOption.title}>
                 {classOption.title} {/* Change this if your title field is named differently */}
               </option>
@@ -134,15 +200,17 @@ const EditAdmissionForm = ({ formData, handleInputChange, handleSubmit, closeMod
         <div>
           <label className="block mb-2">Status</label>
           <select
-            name="status"
-            value={formData.status}
+            name="status" // Ensure this matches your formData structure
+            value={formData.status} // Ensure this matches your formData structure
             onChange={handleInputChange}
             className="border rounded w-full px-3 py-2"
           >
             <option value="">Select Status</option>
-            <option value="Pending">Pending</option>
-            <option value="Accepted">Accepted</option>
-            <option value="Rejected">Rejected</option>
+            {statusOptions.map((statusOption) => (
+              <option key={statusOption.id} value={statusOption.title}>
+                {statusOption.title}
+              </option>
+            ))}
           </select>
         </div>
       </div>

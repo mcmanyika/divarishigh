@@ -162,7 +162,7 @@ const AdmissionsList = () => {
               handleInputChange={handleInputChange}
               handleSubmit={handleSubmit}
               closeModal={closeModal}
-            />
+            /> 
           </div>
         </div>
       )}
