@@ -1,11 +1,13 @@
-// BlogForm.js
-import React from 'react';
+import React, { useState } from 'react';
 import { SunEditor } from 'suneditor-react'; // Import SunEditor
 import 'suneditor/dist/css/suneditor.min.css'; // Import SunEditor styles
 import { toast } from 'react-toastify'; // Toast for notifications
 import { ref, push } from 'firebase/database'; // Firebase functions
+import { useRouter } from 'next/router'; // Import useRouter for redirect
 
 const BlogForm = ({ title, setTitle, content, setContent, author }) => {
+    const router = useRouter(); // Initialize useRouter for navigation
+
     const handleSubmit = (e) => {
         e.preventDefault();
         const blogsRef = ref(database, 'blogs');
@@ -20,14 +22,19 @@ const BlogForm = ({ title, setTitle, content, setContent, author }) => {
 
         push(blogsRef, newBlog)
             .then(() => {
-                setTitle('');
-                setContent('');
+                setTitle(''); // Clear title input
+                setContent(''); // Clear content input
                 toast.update(toastId, {
                     render: 'Blog post created successfully!',
                     type: 'success',
                     isLoading: false,
                     autoClose: 3000,
                 });
+
+                // Redirect to /admin/dashboard after a short delay
+                setTimeout(() => {
+                    router.push('/admin/dashboard');
+                }, 3000); // Redirect after 3 seconds
             })
             .catch((error) => {
                 toast.update(toastId, {
