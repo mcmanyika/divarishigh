@@ -4,7 +4,7 @@ import Footer from '../components/Footer';
 import 'react-toastify/dist/ReactToastify.css';
 import '../globals.css';
 
-const Layout = ({ children, templateText, backgroundImage }) => {
+const Layout = ({ children, backgroundImage }) => {
   return (
     <>
         <Header2 />
@@ -14,10 +14,10 @@ const Layout = ({ children, templateText, backgroundImage }) => {
           backgroundImage: `url(${backgroundImage})`,
         }}
       >
-        <div className="flex-grow flex items-center justify-center mt-32 bg-slate-50 bg-opacity-80 text-center text-3xl md:text-6xl py-20">
+        {/* <div className="flex-grow flex items-center justify-center mt-32 bg-slate-50 bg-opacity-80 text-center text-3xl md:text-6xl py-20">
           {templateText ? templateText : ''} {/* Default text or passed prop */}
-        </div>
-        <main className="w-full flex-grow">
+        {/* </div>  */}
+        <main className="w-full flex-grow mt-52">
           {children}
         </main>
       </div>

@@ -57,7 +57,7 @@ const BlogList = () => {
 
   return (
     <Layout templateText="Latest News">
-      <div className="bg-white mt-3 p-4">
+      <div className="max-w-6xl mx-auto bg-white mt-3 p-4">
         {loading ? (
           <div className="flex justify-center">
             <FaSpinner className="animate-spin text-blue-500" size={40} /> {/* Spinner icon */}
@@ -70,7 +70,7 @@ const BlogList = () => {
           <>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {currentBlogs.map((blog) => (
-                <div key={blog.id} className="p-4 border rounded hover:shadow-md">
+                <div key={blog.id} className="p-4  hover:shadow-md">
                   <Link href={`/blog/${blog.id}`}>
                     <div className="text-blue-500 text-2xl line-clamp-1 hover:underline capitalize">{blog.title}</div>
                   </Link>
@@ -78,9 +78,9 @@ const BlogList = () => {
                   <div className="text-gray-700 pt-2">
                     <div className="truncate-text text-xl">
                       {/* Check if blog content contains an image */}
-                      {!/<img\s+[^>]*src=/.test(blog.content) && (
+                      {(blog.content) && (
                         <div
-                          className="blog-content line-clamp-2"
+                          className="blog-content text-lg line-clamp-2"
                           dangerouslySetInnerHTML={{ __html: blog.content }} // Render rich text content
                         />
                       )}
