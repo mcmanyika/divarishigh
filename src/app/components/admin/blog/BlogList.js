@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { ref, get, remove } from 'firebase/database'; // Import remove
 import { database } from '../../../../../utils/firebaseConfig'; // Adjust the path if needed
 import { useRouter } from 'next/router'; // Import useRouter
+import Link from 'next/link';
+
 
 const BlogList = () => {
   const router = useRouter();
@@ -84,7 +86,16 @@ const BlogList = () => {
         <tbody>
           {currentPosts.map((post) => (
             <tr key={post.id}>
-              <td className="border px-4 py-2">{post.title}</td>
+              <td className="border px-4 py-2">
+              <Link
+                  href={`/blog/${post.id}`}
+                  className="text-blue-500 hover:underline"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {post.title}
+              </Link>
+              </td>
               <td className="border px-4 py-2">{post.category}</td>
               <td className="border px-4 py-2">{new Date(post.createdAt).toLocaleString()}</td>
               <td className="border px-4 py-2">{post.status}</td>
