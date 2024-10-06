@@ -28,7 +28,7 @@ const About = () => {
         </div>
         <div className="max-w-3xl mx-auto p-8">
           <p className='text-center font-sans text-xl font-thin'>
-            {aboutContent || 'Loading...'} {/* Display the content or a fallback while loading */}
+            {aboutContent || ''} {/* Display the content or a fallback while loading */}
           </p>
         </div>
       </div>
