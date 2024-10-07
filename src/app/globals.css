@@ -8,9 +8,12 @@ body {
     color: #333; /* Example text color */
   }
 
-  .bg-main {
+  /* .bg-main {
     background-color: #6c3a44
-  }
+  } */
+   .bg-main {
+    background-color: #121212;
+   }
   .bg-main2{
     background-color: #6c3a4424;
   }
