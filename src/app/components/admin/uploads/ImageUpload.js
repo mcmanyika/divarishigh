@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { storage, database } from '../../../../../utils/firebaseConfig'; // Adjust the path as necessary
 import { ref, set } from 'firebase/database';
 import { ref as storageRef, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const ImageUpload = () => {
   const [selectedImage, setSelectedImage] = useState(null);
@@ -21,11 +23,15 @@ const ImageUpload = () => {
   const handleUpload = async () => {
     if (!selectedImage || !title || !description) {
       setError('Please fill in all fields and select an image.');
+      toast.error('Please fill in all fields and select an image.');
       return;
     }
 
     setUploading(true);
-    const imageRef = storageRef(storage, `images/${selectedImage.name}`);
+    
+    // Sanitize the file name
+    const sanitizedFileName = selectedImage.name.replace(/[.#$[\]]/g, '');
+    const imageRef = storageRef(storage, `images/${sanitizedFileName}`);
 
     try {
       // Upload the image to Firebase Storage
@@ -35,9 +41,9 @@ const ImageUpload = () => {
       const url = await getDownloadURL(imageRef);
 
       // Store the image URL along with title and description in Firebase Realtime Database
-      await set(ref(database, 'images/' + selectedImage.name), {
+      await set(ref(database, 'images/' + sanitizedFileName), {
         url,
-        name: selectedImage.name,
+        name: sanitizedFileName,
         title,
         description,
         createdAt: new Date().toISOString(),
@@ -48,8 +54,10 @@ const ImageUpload = () => {
       setTitle(''); // Reset title
       setDescription(''); // Reset description
       setError('');
+      toast.success('Image uploaded successfully!'); // Success toast
     } catch (err) {
       setError('Failed to upload image: ' + err.message);
+      toast.error('Failed to upload image: ' + err.message); // Error toast
     } finally {
       setUploading(false);
     }
