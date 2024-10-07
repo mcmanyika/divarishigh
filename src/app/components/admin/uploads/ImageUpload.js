@@ -25,24 +25,24 @@ const ImageUpload = () => {
     }
 
     setUploading(true);
-    const imageRef = storageRef(storage, `images/`);
-    
+    const imageRef = storageRef(storage, `images/${selectedImage.name}`);
+
     try {
       // Upload the image to Firebase Storage
       await uploadBytes(imageRef, selectedImage);
-      
+
       // Get the download URL of the uploaded image
       const url = await getDownloadURL(imageRef);
-      
+
       // Store the image URL along with title and description in Firebase Realtime Database
       await set(ref(database, 'images/' + selectedImage.name), {
         url,
         name: selectedImage.name,
         title,
         description,
-        createdAt: new Date().toISOString()
+        createdAt: new Date().toISOString(),
       });
-      
+
       // Reset the state after successful upload
       setSelectedImage(null);
       setTitle(''); // Reset title

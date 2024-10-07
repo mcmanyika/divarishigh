@@ -53,7 +53,7 @@ const Teacher = () => {
               <div key={teacher.id} className="p-4 ">
                 {/* Display the teacher's profile image */}
                 <Image
-                  src={teacher.image || ''}  // Default image if no profileImage
+                  src={teacher.image || 'https://firebasestorage.googleapis.com/v0/b/divaris-3e59f.appspot.com/o/images%2FScreen%20Shot%202024-10-07%20at%207.33.37%20AM.png?alt=media&token=6bfce0ff-85a0-40e6-845c-18b7df25c826'}  // Default image if no profileImage
                   alt={`${teacher.firstName} ${teacher.lastName}`} 
                   className="rounded-tr-full rounded-tl-full rounded-br-full mx-auto mb-4"
                   width={250}
