@@ -7,13 +7,21 @@ body {
   font-family: "Montserrat", sans-serif;/* Assuming 'Inter' is imported */
     color: #333; /* Example text color */
   }
-  .the-title {
+  .sm-title {
     font-family: "Montserrat", sans-serif;
-    font-size: 8.8rem;
-    font-weight: bold;
+    font-size: 3.8rem;
+    font-weight: 100;
     line-height: 1em;
     margin-top: 0px;
     margin-bottom: 0px;
+}
+.lg-title {
+  font-family: "Montserrat", sans-serif;
+  font-size: 8.8rem;
+  font-weight: 100;
+  line-height: 1em;
+  margin-top: 0px;
+  margin-bottom: 0px;
 }
 
   .bg-dash {
