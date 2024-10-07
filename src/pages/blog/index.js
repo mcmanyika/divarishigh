@@ -57,7 +57,7 @@ const BlogList = () => {
 
   return (
     <Layout templateText="Latest News">
-      <div className="max-w-6xl mx-auto bg-white mt-3 p-4">
+      <div className="max-w-5xl mx-auto bg-white mt-3 p-4">
         {loading ? (
           <div className="flex justify-center">
             <FaSpinner className="animate-spin text-blue-500" size={40} /> {/* Spinner icon */}
