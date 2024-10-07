@@ -17,7 +17,7 @@ const Layout = ({ children, backgroundImage }) => {
         {/* <div className="flex-grow flex items-center justify-center mt-32 bg-slate-50 bg-opacity-80 text-center text-3xl md:text-6xl py-20">
           {templateText ? templateText : ''} {/* Default text or passed prop */}
         {/* </div>  */}
-        <main className="w-full flex-grow  mt-52">
+        <main className="w-full flex-grow  mt-40">
           {children}
         </main>
       </div>

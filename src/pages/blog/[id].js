@@ -30,7 +30,7 @@ const BlogDetails = () => {
 
   return (
     <Layout>
-      <div className="max-w-6xl mx-auto text-2xl m-5">
+      <div className="max-w-5xl mx-auto text-2xl m-5">
         {blog && (
           <div className="text-gray-800 mb-6">
             <h1 className="capitalize text-4xl font-semibold">{blog.title}</h1>
