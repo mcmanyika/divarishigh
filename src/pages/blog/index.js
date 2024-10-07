@@ -70,7 +70,7 @@ const BlogList = () => {
           <>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {currentBlogs.map((blog) => (
-                <div key={blog.id} className="p-4 shadow rounded hover:shadow-md">
+                <div key={blog.id} className="p-4 rounded-xxl shadow rounded hover:shadow-md">
                   <div className="text-gray-700 pt-2 mb-4">
                     {/* Display only images from blog content */}
                     {blog.content && (
@@ -91,7 +91,7 @@ const BlogList = () => {
                   {/* Read More Button */}
                   <div className="mt-8">
                     <Link href={`/blog/${blog.id}`}>
-                      <button className="rounded-full bg-yellow-500 hover:bg-yellow-300 text-white px-4 py-2">
+                      <button className="rounded-xxl bg-yellow-500 hover:bg-yellow-300 text-white px-4 py-2">
                         Read More
                       </button>
                     </Link>

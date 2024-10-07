@@ -4,13 +4,21 @@
 
 
 body {
-    font-family: 'sans','Inter', sans-serif; /* Assuming 'Inter' is imported */
+  font-family: "Montserrat", sans-serif;/* Assuming 'Inter' is imported */
     color: #333; /* Example text color */
   }
+  .the-title {
+    font-family: "Montserrat", sans-serif;
+    font-size: 8.8rem;
+    font-weight: bold;
+    line-height: 1em;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
 
-  /* .bg-main {
+  .bg-dash {
     background-color: #6c3a44
-  } */
+  }
    .bg-main {
     background-color: #121212;
    }

@@ -102,7 +102,7 @@ const AdminLayout = ({ children }) => {
   return (
     <div className="flex min-h-screen text-base bg-gray-100 relative">
 
-      <aside className={`fixed z-40 transform ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-300 md:relative md:translate-x-0 w-42 bg-main text-white p-4 min-h-screen rounded-tr-xl flex flex-col`}>
+      <aside className={`fixed z-40 transform ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-300 md:relative md:translate-x-0 w-42 bg-dash text-white p-4 min-h-screen rounded-tr-xl flex flex-col`}>
         <div className="flex justify-center items-center pt-10 mb-20">
         <Link href='/'>
           {logoUrl ? (
@@ -122,7 +122,7 @@ const AdminLayout = ({ children }) => {
       )}
 
       <div className="flex-1 flex flex-col transition-all duration-300 ease-in-out">
-        <header className="flex items-center justify-between bg-main text-white p-4 md:hidden">
+        <header className="flex items-center justify-between bg-dash text-white p-4 md:hidden">
           <div className="flex items-center">
             <FaBars className="cursor-pointer text-2xl mr-4" onClick={toggleMobileSidebar} />
             <Link href='/'>
