@@ -96,7 +96,6 @@ const Header = () => {
     if (session) {
       return (
         <div className="text-right">
-          <span className="text-white pr-3">{session.user.email}</span> {/* Display email here */}
           <Link href="/admin/dashboard" className="inline-flex items-center space-x-2 text-white">
             <FaHome />
             <span className="pr-3">My Dashboard</span> |

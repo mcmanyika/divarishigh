@@ -1,5 +1,5 @@
 import { authOptions } from "../pages/api/auth/[...nextauth]";
-import { getServerSession, Session } from "next-auth";
+import { getServerSession, Session } from "next-auth"; // Import Session type
 import { Inter } from "next/font/google";
 import "./globals.css";
 import SessionProvider from "./SessionProvider";
@@ -7,7 +7,7 @@ import SessionProvider from "./SessionProvider";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "DIVARIS MAKAHARIS HIGH",
+  title: "Divaris Makaharis High School",
 };
 
 export default async function RootLayout({ 
@@ -15,14 +15,7 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-  let session: Session | null = null;
-  try {
-    session = await getServerSession(authOptions) as Session | null;
-  } catch (error) {
-    console.error("Error fetching session:", error);
-    // Handle error accordingly, e.g., show a notification or redirect
-  }
-
+  const session = (await getServerSession()) as Session | null; // Assert the type
   return (
     <html lang="en">
       <body className={inter.className}>
