@@ -7,7 +7,7 @@ import SessionProvider from "./SessionProvider";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "Divaris Makaharis High School",
+  title: "GLENVIEW 2 HIGH SCHOOL",
 };
 
 export default async function RootLayout({ 
@@ -15,7 +15,7 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-  const session = (await getServerSession()) as Session | null; // Assert the type
+  const session = (await getServerSession(authOptions)) as Session | null; // Assert the type
   return (
     <html lang="en">
       <body className={inter.className}>
@@ -26,3 +26,5 @@ export default async function RootLayout({
     </html>
   );
 }
+
+

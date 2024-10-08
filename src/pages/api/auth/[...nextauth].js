@@ -37,10 +37,7 @@ export const authOptions = {
     }),
   ],
   secret: process.env.NEXTAUTH_SECRET,
-  // No need for `jwt: true`, NextAuth will handle it automatically if you're using JWT.
-  session: {
-    strategy: 'jwt', // Define the session strategy as JWT
-  },
+  
   pages: {
     signIn: '/admin/login',
   },
