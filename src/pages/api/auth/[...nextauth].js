@@ -1,8 +1,8 @@
 import NextAuth from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
 import CredentialsProvider from 'next-auth/providers/credentials';
-import { verifyPassword } from './auth'; // Utility to verify passwords (bcrypt)
-import { getUserByEmail } from '../../../../utils/firebaseConfig'; // Fetch user by email
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../../../../utils/firebaseConfig'; // Adjust import to your file structure
 
 export const authOptions = {
   providers: [
@@ -10,46 +10,50 @@ export const authOptions = {
       clientId: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     }),
+
     CredentialsProvider({
       name: 'Credentials',
       credentials: {
-        email: { label: 'Email', type: 'email', placeholder: 'your-email@example.com' },
+        email: { label: 'Email', type: 'email', placeholder: 'email@example.com' },
         password: { label: 'Password', type: 'password' },
       },
+
       async authorize(credentials) {
-        // Fetch user by email from the database
-        const user = await getUserByEmail(credentials.email);
+        const { email, password } = credentials;
 
-        // If no user found, return null
-        if (!user) {
-          throw new Error('No user found with this email');
+        try {
+          const userCredential = await signInWithEmailAndPassword(auth, email, password);
+          const user = userCredential.user;
+
+          return {
+            id: user.uid,
+            email: user.email,
+            name: user.displayName || email, // Use email if displayName is not available
+          };
+        } catch (error) {
+          throw new Error('Invalid email or password');
         }
-
-        // Verify password using bcrypt
-        const isValid = await verifyPassword(credentials.password, user.passwordHash);
-
-        // If password doesn't match, throw an error
-        if (!isValid) {
-          throw new Error('Invalid password');
-        }
-
-        // If everything is fine, return user object
-        return user;
       },
     }),
   ],
   secret: process.env.NEXTAUTH_SECRET,
   pages: {
-    signIn: '/admin/login', // Optional: Custom sign-in page
+    signIn: '/admin/login',
   },
+  session: {
+    jwt: true, // Use JSON Web Tokens for session
+  },
+
   callbacks: {
-    async session({ session, token, user }) {
-      session.user.id = token.sub;
+    async session({ session, token }) {
+      session.user.id = token.id; // Add user ID to the session object
+      session.user.email = token.email; // Ensure email is added to the session
       return session;
     },
     async jwt({ token, user }) {
       if (user) {
-        token.id = user.id;
+        token.id = user.id; // Assign the user ID to the token
+        token.email = user.email; // Assign the user email to the token
       }
       return token;
     },

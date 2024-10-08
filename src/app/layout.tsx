@@ -1,5 +1,5 @@
 import { authOptions } from "../pages/api/auth/[...nextauth]";
-import { getServerSession, Session } from "next-auth"; // Import Session type
+import { getServerSession, Session } from "next-auth";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import SessionProvider from "./SessionProvider";
@@ -15,7 +15,14 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-  const session = (await getServerSession(authOptions)) as Session | null; // Assert the type
+  let session: Session | null = null;
+  try {
+    session = await getServerSession(authOptions) as Session | null;
+  } catch (error) {
+    console.error("Error fetching session:", error);
+    // Handle error accordingly, e.g., show a notification or redirect
+  }
+
   return (
     <html lang="en">
       <body className={inter.className}>
@@ -26,5 +33,3 @@ export default async function RootLayout({
     </html>
   );
 }
-
-

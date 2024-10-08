@@ -1,5 +1,6 @@
 import { createGlobalState } from 'react-hooks-global-state';
 
+// Initial state including an email field
 const initialState = {
   isOverlayVisible: false,
   user: null,
@@ -11,11 +12,13 @@ const initialState = {
   studentId: '',
   admissionId: '',
   status: '',
-  routineCount: 0
+  routineCount: 0,
+  email: '' // Added email field
 };
 
 const { useGlobalState, getGlobalState, setGlobalState } = createGlobalState(initialState);
 
+// Setter functions
 const setUser = (user) => setGlobalState('user', user);
 const setSchoolName = (schoolName) => setGlobalState('schoolName', schoolName);
 const setStudentClass = (studentClass) => setGlobalState('studentClass', studentClass);
@@ -28,6 +31,10 @@ const setUserType = (userType) => setGlobalState('userType', userType);
 const setRoutineCount = (routineCount) => setGlobalState('routineCount', routineCount);
 const setIsOverlayVisible = (isOverlayVisible) => setGlobalState('isOverlayVisible', isOverlayVisible);
 
+// New setter function for email
+const setEmail = (email) => setGlobalState('email', email); // Added function to set email
+
+// Exporting everything including the new email setter
 export { 
   useGlobalState, 
   getGlobalState, 
@@ -41,5 +48,6 @@ export {
   setStudentId,
   setTeacherId,
   setRoutineCount,
-  setIsOverlayVisible 
+  setIsOverlayVisible,
+  setEmail // Exporting the new email setter
 };
