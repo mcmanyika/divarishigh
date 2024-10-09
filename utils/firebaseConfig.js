@@ -4,7 +4,7 @@ import { getStorage } from 'firebase/storage';
 import { getAuth } from 'firebase/auth'
 
 const firebaseConfig = {
-  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+  apiKey: 'AIzaSyCCpiVwkk8CFcviS1t2VT3CqUzhPfgHs-4',
   authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
   projectId: 'divaris-3e59f', // Ensure this matches your Firebase project
   storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
