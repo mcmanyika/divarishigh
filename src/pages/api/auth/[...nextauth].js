@@ -15,11 +15,7 @@ export const authOptions = {
       clientId: process.env.AUTH0_CLIENT_ID,
       clientSecret: process.env.AUTH0_CLIENT_SECRET,
       issuer: process.env.AUTH0_ISSUER, 
-      authorization: {
-        params: {
-          redirect_uri: `${process.env.NEXTAUTH_URL}/api/auth/callback/auth0`, // Ensure the correct callback URL is passed
-        },
-      },
+      
     }),
  
     CredentialsProvider({
