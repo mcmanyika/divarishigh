@@ -7,7 +7,7 @@ import SessionProvider from "./SessionProvider";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "GLENVIEW 2 HIGH SCHOOL",
+  title: "Divaris Makaharis HIGH SCHOOL",
 };
 
 export default async function RootLayout({ 
