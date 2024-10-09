@@ -61,16 +61,16 @@ export default function Login() {
         {!session && 
         <div className='w-96'>
           <button
-            onClick={handleGoogleSignIn}
-            className="px-4 py-2 bg-red-500 text-white rounded  transition duration-200 mt-4 w-full"
-          >
-            Sign in with Google
-          </button>
-          <button
             onClick={handleAuth0SignIn}
             className="px-4 py-2 bg-white text-gray-800 rounded  transition duration-200 mt-4 w-full"
           >
             Sign in with Auth0
+          </button>
+          <button
+            onClick={handleGoogleSignIn}
+            className="px-4 py-2 bg-red-500 text-white rounded  transition duration-200 mt-4 w-full"
+          >
+            Sign in with Google
           </button>
         </div> }
 
