@@ -30,6 +30,15 @@ export default function Login() {
     }
   };
 
+  const handleAuth0SignIn = async () => {
+    try {
+      await signIn('auth0');
+    } catch (error) {
+      console.error('Error signing in with Auth0:', error);
+      setError(error.message);
+    }
+  };
+
   const toggleSignUp = () => {
     setIsSignUp(!isSignUp); // Toggle between login and signup
     setError(null); // Clear any existing errors
@@ -51,24 +60,15 @@ export default function Login() {
         {error && <p className="text-red-500 mb-4">{error}</p>}
         {!session && 
         <div className='w-96'>
-          {isSignUp ? <SignUp /> : <SignIn />} {/* Toggle SignIn or SignUp based on state */}
-          <p className="mt-6">OR</p>
-
           <button
-            onClick={handleGoogleSignIn}
-            className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition duration-200 mt-4 w-full"
+            onClick={handleAuth0SignIn}
+            className="px-4 py-2 bg-white text-gray-800 rounded  transition duration-200 mt-4 w-full"
           >
-            Sign in with Google
+            Sign in with Auth0
           </button>
-          <p className="mt-4">
-            {isSignUp ? "Already have an account?" : "Don't have an account?"}
-            <button onClick={toggleSignUp} className="text-blue-500 ml-1 underline">
-              {isSignUp ? 'Sign in' : 'Sign up'}
-            </button>
-          </p>
         </div> }
 
-        {session && <div className='w-96'>Redirecting to dashboard...</div>}
+        {session && <div className='w-96'>Redirecting to Dashboard...</div>}
       </div>
     </div>
   );
