@@ -18,13 +18,16 @@ const ClassRoutineList = () => {
     const routineRef = ref(database, 'classRoutine');
     onValue(routineRef, (snapshot) => {
       const routines = [];
+      const currentDate = new Date();
+      const twoDaysAgo = new Date(currentDate);
+      twoDaysAgo.setDate(currentDate.getDate() - 2); // Get the date two days ago
+
       snapshot.forEach((childSnapshot) => {
         const routine = childSnapshot.val();
         const routineDate = new Date(routine.date);
-        const currentDate = new Date();
 
-        // Only include routines with a date that is current or in the future
-        if (routine.email === session.user.email && routineDate >= currentDate) {
+        // Only include routines within the last two days
+        if (routine.email === session.user.email && routineDate >= twoDaysAgo) {
           routines.push({ id: childSnapshot.key, ...routine });
         }
       });
@@ -78,7 +81,7 @@ const ClassRoutineList = () => {
     <div className="p-6 bg-white rounded shadow mt-3">
       <h2 className="text-xl font-semibold mb-4">My Class Routines</h2>
       {classRoutines.length === 0 ? (
-        <p>No upcoming class routines found for you.</p>
+        <p>No class routines found for you within the last two days.</p>
       ) : (
         <>
           <table className="min-w-full text-sm bg-white text-left">
