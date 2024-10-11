@@ -76,9 +76,9 @@ const BlogList = () => {
                     {blog.content && (
                       <div className="blog-content">
                     <Link href={`/blog/${blog.id}`}>
-                        {blog.content.replace(/<img /g, '<img class="rounded-xxl" ').match(/<img[^>]*src="([^"]*)"[^>]*>/g)?.map((imgTag, index) => (
-                          <div key={index} className="image-container rounded-xxl" dangerouslySetInnerHTML={{ __html: imgTag }} />
-                        ))}
+                    {blog.content.replace(/<img /g, '<img class="rounded-xxl max-h-40 w-full" ').match(/<img[^>]*src="([^"]*)"[^>]*>/g)?.map((imgTag, index) => (
+                            <div key={index} className="image-container rounded-xxl" dangerouslySetInnerHTML={{ __html: imgTag }} />
+                          ))}
                         </Link>
                       </div>
                     )}
