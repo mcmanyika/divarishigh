@@ -12,17 +12,17 @@ const Hero = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const carouselData = [
     {
-      title: "Explore Your Creativity And Talent With Us",
+      title: "",
       description: "",
       imageUrl: "https://firebasestorage.googleapis.com/v0/b/divaris-3e59f.appspot.com/o/images%2FDSC_6074.jpg?alt=media&token=274e6ddf-f997-4fe6-812f-3e9e13472b33",
     },
     {
-      title: "Start Your Beautiful and Bright Future",
+      title: "",
       description: "",
       imageUrl: "https://firebasestorage.googleapis.com/v0/b/divaris-3e59f.appspot.com/o/images%2FDSC_5865.jpg?alt=media&token=70f5041a-7e6d-4572-a845-4fc8b6bb2c4a",
     },
     {
-      title: "Sporting Activities",
+      title: "",
       description: "",
       imageUrl: "https://firebasestorage.googleapis.com/v0/b/divaris-3e59f.appspot.com/o/images%2FDSC_6007.jpg?alt=media&token=5ae04479-67ff-4d52-849a-1a27491fe2c7",
     }
