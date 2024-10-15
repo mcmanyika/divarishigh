@@ -19,9 +19,9 @@ const Teacher = () => {
         const teachersArray = Object.keys(data)
           .filter(key => {
             const teacher = data[key];
-            return teacher.userType === 'teacher' && 
-                   !(teacher.userID === 'TCHR-327373'); 
-          }) 
+            // Filter by userType and ensure they have an image
+            return teacher.userType === 'teacher' && teacher.image && !(teacher.userID === 'TCHR-327373');
+          })
           .map((key) => ({
             id: key,
             ...data[key],
@@ -50,10 +50,10 @@ const Teacher = () => {
         <div className='max-w-6xl mx-auto p-10'>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6">
             {currentTeachers.map((teacher) => (
-              <div key={teacher.id} className="p-4 ">
+              <div key={teacher.id} className="p-4">
                 {/* Display the teacher's profile image */}
                 <Image
-                  src={teacher.image || 'https://firebasestorage.googleapis.com/v0/b/divaris-3e59f.appspot.com/o/images%2FScreen%20Shot%202024-10-07%20at%207.33.37%20AM.png?alt=media&token=6bfce0ff-85a0-40e6-845c-18b7df25c826'}  // Default image if no profileImage
+                  src={teacher.image} // No fallback image, only teachers with images are displayed
                   alt={`${teacher.firstName} ${teacher.lastName}`} 
                   className="rounded-tr-full rounded-tl-full rounded-br-full mx-auto mb-4"
                   width={250}
