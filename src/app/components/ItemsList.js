@@ -43,7 +43,7 @@ const ItemList = () => {
   }, []);
 
   return (
-    <div className='grid grid-cols-1 md:grid-cols-2'>
+    <div className='grid grid-cols-1 md:grid-cols-3'>
       {titles.length > 0 && titles.map((rw) => (
         <div key={rw.id} className='min-w-32'>
           <Link href={`${rw.link}`}>
