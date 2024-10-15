@@ -186,14 +186,15 @@ const Products = () => {
                       alt={product.name}
                       width={640}
                       height={640}
-                      className="w-full h-40 object-cover rounded"
+                      className="w-full h-60 object-cover cursor-pointer rounded"
+                      onClick={() => handleIconClick(product)}
                     />
                     {/* Shopping Cart Icon */}
-                    <FontAwesomeIcon
-                      icon={faShoppingCart}
-                      onClick={() => handleIconClick(product)}
-                      className="absolute bottom-2 right-2 text-white border border-white rounded-full w-4 h-4 p-1 opacity-0 transition-opacity duration-300 group-hover:opacity-100 cursor-pointer"
-                    />
+                      <FontAwesomeIcon
+                        icon={faShoppingCart}
+                        onClick={() => handleIconClick(product)}
+                        className="absolute bottom-2 right-2 text-white border border-white rounded-full w-4 h-4 p-1 opacity-0 transition-opacity duration-300 group-hover:opacity-100 cursor-pointer"
+                      />
                   </div>
                   <div className=' cursor-pointer' onClick={() => handleIconClick(product)}>
                     <h2 className="text-lg font-bold mt-2">{product.name}</h2>
@@ -233,36 +234,36 @@ const Products = () => {
                 alt={selectedProduct.name}
                 width={640}
                 height={640}
-                className="w-full h-40 object-cover pb-2 rounded"
+                className="w-full h-90 object-cover pb-2 rounded"
               />
               <h2 className="text-2xl font-bold mb-2">{selectedProduct.name}</h2>
               <p className="text-lg font-semibold mt-2">${selectedProduct.price.toFixed(2)}</p>
 
               <h3 className="mt-4 font-bold">Choose a variant:</h3>
-<div className="mt-2 flex space-x-2">
-  {Object.keys(selectedProduct.variants || {}).map((variant) => (
-    <label
-      key={variant}
-      className="cursor-pointer flex items-center justify-center border-2 border-gray-300 rounded-md p-2 transition hover:bg-gray-100"
-    >
-      <input
-        type="radio"
-        value={variant}
-        checked={selectedVariant === variant}
-        onChange={() => handleVariantChange(variant)}
-        className="hidden peer"
-      />
-      <span
-        className={`block w-6 h-6 rounded-sm ${
-          selectedVariant === variant
-            ? 'bg-blue-500 border-blue-500'
-            : 'bg-white border-gray-300'
-        } peer-checked:bg-blue-500 peer-checked:border-blue-500`}
-      ></span>
-      <span className="ml-2">{variant} - {selectedProduct.variants[variant].stock} in stock</span>
-    </label>
-  ))}
-</div>
+              <div className="mt-2 flex space-x-2">
+                {Object.keys(selectedProduct.variants || {}).map((variant) => (
+                  <label
+                    key={variant}
+                    className="cursor-pointer flex items-center justify-center border-2 border-gray-300 rounded-md p-2 transition hover:bg-gray-100"
+                  >
+                    <input
+                      type="radio"
+                      value={variant}
+                      checked={selectedVariant === variant}
+                      onChange={() => handleVariantChange(variant)}
+                      className="hidden peer"
+                    />
+                    <span
+                      className={`block w-6 h-6 rounded-sm ${
+                        selectedVariant === variant
+                          ? 'bg-blue-500 border-blue-500'
+                          : 'bg-white border-gray-300'
+                      } peer-checked:bg-blue-500 peer-checked:border-blue-500`}
+                    ></span>
+                    <span className="ml-2">{variant} - {selectedProduct.variants[variant].stock} in stock</span>
+                  </label>
+                ))}
+              </div>
 
               <div className="mt-4">
                 <div className='w-full'>
