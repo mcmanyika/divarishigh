@@ -20,16 +20,17 @@ export const CartProvider = ({ children }) => {
     }
   }, []);
 
-  const addToCart = (product, variant) => {
+  // Updated addToCart function with size instead of variant
+  const addToCart = (product, size) => {
     setCart(prevCart => {
-      const existingItem = prevCart.find(item => item.product.id === product.id && item.variant === variant);
+      const existingItem = prevCart.find(item => item.product.id === product.id && item.size === size);
       const updatedCart = existingItem
         ? prevCart.map(item =>
-            item.product.id === product.id && item.variant === variant
+            item.product.id === product.id && item.size === size
               ? { ...item, quantity: item.quantity + 1 }
               : item
           )
-        : [...prevCart, { product, variant, quantity: 1 }];
+        : [...prevCart, { product, size, quantity: 1 }];
 
       // Save updated cart to localStorage
       localStorage.setItem('cart', JSON.stringify(updatedCart));
@@ -37,9 +38,10 @@ export const CartProvider = ({ children }) => {
     });
   };
 
-  const removeFromCart = (productId, variant) => {
+  // Updated removeFromCart function with size
+  const removeFromCart = (productId, size) => {
     setCart(prevCart => {
-      const updatedCart = prevCart.filter(item => !(item.product.id === productId && item.variant === variant));
+      const updatedCart = prevCart.filter(item => !(item.product.id === productId && item.size === size));
 
       // Save updated cart to localStorage
       localStorage.setItem('cart', JSON.stringify(updatedCart));
@@ -47,13 +49,14 @@ export const CartProvider = ({ children }) => {
     });
   };
 
-  const updateQuantity = (productId, variant, quantity) => {
+  // Updated updateQuantity function with size
+  const updateQuantity = (productId, size, quantity) => {
     if (quantity <= 0) {
-      removeFromCart(productId, variant);
+      removeFromCart(productId, size);
     } else {
       setCart(prevCart => {
         const updatedCart = prevCart.map(item =>
-          item.product.id === productId && item.variant === variant
+          item.product.id === productId && item.size === size
             ? { ...item, quantity }
             : item
         );
@@ -71,7 +74,6 @@ export const CartProvider = ({ children }) => {
     // Clear the cart in localStorage
     localStorage.removeItem('cart');
   };
-  
 
   return (
     <CartContext.Provider value={{ cart, addToCart, removeFromCart, updateQuantity, clearCart, totalItems }}>

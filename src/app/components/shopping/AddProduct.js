@@ -4,16 +4,8 @@ import { database } from '../../../../utils/firebaseConfig'; // Adjust the path 
 import { toast } from 'react-toastify';
 
 const categories = [
-  'Textbooks',
-  'Stationery',
-  'Art Supplies',
-  'Educational Toys',
-  'Classroom Resources',
-  'Electronics (e.g., calculators, projectors)',
   'Uniforms',
   'Sports Equipment',
-  'Learning Tools (e.g., flashcards, educational games)',
-  'Others'
 ];
 
 // Predefined sizes for the dropdown
