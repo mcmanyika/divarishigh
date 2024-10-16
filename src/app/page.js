@@ -10,6 +10,7 @@ import Vision from '../app/components/Vision';
 import Curriculum from '../app/components/Curriculum';
 import ImageGallery from '../app/components/ImageGallery';
 
+
 export default function Home() {
   return (
     <Layout>
@@ -22,7 +23,6 @@ export default function Home() {
       <ImageGallery />
       <Map />
       <ContactUs />
-
     </Layout>
   );
 }
