@@ -50,7 +50,7 @@ const AdminLayout = ({ children }) => {
 
             if (userID.startsWith('ADM')) {
               filteredTitles = filteredTitles.filter(title =>
-                ['Dashboard'].includes(title.title)
+                ['Dashboard', 'Store'].includes(title.title)
               );
             }
 

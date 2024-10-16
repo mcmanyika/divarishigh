@@ -1,7 +1,7 @@
 // components/TitleList.js
 
 import Link from 'next/link';
-import { FaSignOutAlt, FaTachometerAlt, FaPencilRuler, FaCalendarAlt, FaClipboardList, FaUserGraduate, FaHome, FaCashRegister } from 'react-icons/fa';
+import { FaSignOutAlt, FaTachometerAlt, FaShoppingBag, FaPencilRuler, FaCalendarAlt, FaClipboardList, FaUserGraduate, FaHome, FaCashRegister } from 'react-icons/fa';
 import { MdOutlineLibraryBooks } from 'react-icons/md';
 import { LiaChalkboardTeacherSolid } from 'react-icons/lia';
 import { IoPeopleOutline } from 'react-icons/io5';
@@ -20,6 +20,7 @@ const iconMapping = {
     RiAdminFill: RiAdminFill,
     FaHome: FaHome,
     FaCashRegister: FaCashRegister,
+    FaShoppingBag: FaShoppingBag
   };
 
   const TitleList = ({ titles, onSignOut }) => {
