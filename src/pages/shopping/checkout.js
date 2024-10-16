@@ -6,8 +6,8 @@ import Layout from '../../app/components/Layout2';
 import { useCart } from '../../context/CartContext';
 import axios from 'axios';
 
-// Initialize Stripe
-const stripePromise = loadStripe(process.env.STRIPE_PUBLIC_KEY);
+// Initialize Stripe only once
+const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
 
 const Checkout = () => {
   const { cart } = useCart();
@@ -36,23 +36,28 @@ const Checkout = () => {
     e.preventDefault();
     setLoading(true);
 
-    const stripe = await stripePromise;
-
-    // Prepare items for Stripe Checkout
-    const items = cart.map((item) => ({
-      name: item.product.name,
-      price: item.product.price,
-      quantity: item.quantity,
-    }));
-
-    // Prepare customer information
-    const customerInfo = {
-      name: formData.name,
-      email: formData.email,
-      address: formData.address,
-    };
-
     try {
+      const stripe = await stripePromise;  // await the Stripe instance
+
+      if (!stripe) {
+        console.error("Stripe has not been initialized");
+        return;
+      }
+
+      // Prepare items for Stripe Checkout
+      const items = cart.map((item) => ({
+        name: item.product.name,
+        price: item.product.price,
+        quantity: item.quantity,
+      }));
+
+      // Prepare customer information
+      const customerInfo = {
+        name: formData.name,
+        email: formData.email,
+        address: formData.address,
+      };
+
       // Create a checkout session
       const { data } = await axios.post('/api/checkout_session', { items, customerInfo });
 
