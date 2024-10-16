@@ -2,12 +2,13 @@ import Image from 'next/image';
 import Layout from '../../app/components/Layout2';
 import { useCart } from '../../context/CartContext';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 const Cart = () => {
   const { cart, removeFromCart, updateQuantity } = useCart();
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
 
-  // Handle quantity change with size instead of variant
   const handleQuantityChange = (productId, size, newQuantity) => {
     updateQuantity(productId, size, parseInt(newQuantity));
   };
@@ -15,9 +16,12 @@ const Cart = () => {
   // Calculate total price of items in the cart
   const totalPrice = cart.reduce((total, item) => total + item.product.price * item.quantity, 0).toFixed(2);
 
-  // Redirect to checkout page
+  // Handle checkout redirection with loading state
   const handleCheckout = () => {
-    router.push('/shopping/checkout'); // Adjust the path if your checkout page is located elsewhere
+    setLoading(true);
+    setTimeout(() => {
+      router.push('/shopping/checkout');
+    }, 1000); // Simulate delay for UX
   };
 
   return (
@@ -42,14 +46,20 @@ const Cart = () => {
                 {cart.map((item, index) => (
                   <tr key={index}>
                     <td className="border px-4 py-2">
-                      <Image src={item.product.imageUrl} width={60} height={30} alt={item.product.name} />
+                      <Image
+                        src={item.product.imageUrl}
+                        width={60}
+                        height={30}
+                        alt={item.product.name}
+                        className="object-contain"
+                      />
                     </td>
                     <td className="border px-4 py-2">{item.product.name}</td>
                     <td className="border px-4 py-2">
                       <input
                         type="number"
                         value={item.quantity}
-                        min="0"
+                        min="1"
                         onChange={(e) =>
                           handleQuantityChange(item.product.id, item.size, e.target.value)
                         }
@@ -82,9 +92,9 @@ const Cart = () => {
               <button
                 onClick={handleCheckout}
                 className="bg-green-600 text-white px-4 py-2 rounded"
-                disabled={cart.length === 0}
+                disabled={loading || cart.length === 0}
               >
-                Proceed to Checkout
+                {loading ? 'Processing...' : 'Proceed to Checkout'}
               </button>
             </div>
           </>
