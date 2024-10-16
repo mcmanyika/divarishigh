@@ -38,7 +38,7 @@ const Header = () => {
               (a) =>
                 a.category === 'title' &&
                 a.status === 'Active' &&
-                !(a.title === 'Staff')
+                !(a.title === 'Staff' || a.title === 'Store')
             )
             .sort((a, b) => a.title.localeCompare(b.title));
           setTitles(titlesArray);
@@ -158,7 +158,7 @@ const Header = () => {
             <li key={rw.id} className="pt-4">
               <Link href={`${rw.link}`} passHref>
                 <div className="hover:text-gray-300 text-sm font-sans font-thin uppercase pb-2 border-b-2 border-transparent hover:border-white">
-                  {rw.title}
+                  {rw.title} 
                 </div>
               </Link>
             </li>
