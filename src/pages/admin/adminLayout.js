@@ -56,7 +56,7 @@ const AdminLayout = ({ children }) => {
 
             if (userID.startsWith('TCHR')) {
               filteredTitles = filteredTitles.filter(title =>
-                ['Dashboard',  'Exams', 'Notice', 'Events'].includes(title.title)
+                ['Dashboard',  'Assignments', 'Exams', 'Notice', 'Events'].includes(title.title)
               );
             }
 
