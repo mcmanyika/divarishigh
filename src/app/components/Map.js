@@ -7,8 +7,8 @@ const mapContainerStyle = {
 };
 
 const center = {
-  lat: -17.771555, // Updated Latitude
-  lng: 30.986481,  // Updated Longitude
+  lat: -17.7732540, // Updated Latitude
+  lng: 30.9904660,  // Updated Longitude
 };
 
 const Map = () => {
