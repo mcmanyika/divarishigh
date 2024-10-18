@@ -75,10 +75,10 @@ const Assignments = () => {
   return (
     <AdminLayout>
       <div className='w-full flex flex-col md:flex-row'>
-        <div className='w-full md:w-1/4 m-1'>
+        <div className='w-full md:w-2/4 m-1'>
           <CreateAssignment />
         </div>
-        <div className='w-full md:w-3/4 m-1'>
+        <div className='w-full md:w-2/4 m-1'>
           <TeacherAssignmentsList />
         </div>
       </div>

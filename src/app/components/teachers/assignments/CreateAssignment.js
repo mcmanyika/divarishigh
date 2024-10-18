@@ -13,6 +13,7 @@ const CreateAssignment = () => {
     assignmentName: '',
     assignmentDueDate: '', // The due date for the assignment
     assignmentClass: '',
+    description: '', // Added description field
   });
   const [isLoading, setIsLoading] = useState(false);
 
@@ -47,10 +48,10 @@ const CreateAssignment = () => {
   };
 
   const handleCreateAssignment = async () => {
-    const { assignmentName, assignmentClass, assignmentDueDate } = formValues;
+    const { assignmentName, assignmentClass, assignmentDueDate, description } = formValues;
 
     // Basic form validation
-    if (!assignmentName || !assignmentClass || !assignmentDueDate) {
+    if (!assignmentName || !assignmentClass || !assignmentDueDate || !description) {
       toast.error('Please fill out all fields before creating the assignment.');
       return;
     }
@@ -64,6 +65,7 @@ const CreateAssignment = () => {
         assignmentClass,
         createdDate: Date.now(), // Current timestamp for created date
         assignmentDueDate, // User-provided due date
+        description, // Include the description in the assignment data
       };
 
       // Push the assignment data
@@ -97,6 +99,7 @@ const CreateAssignment = () => {
         assignmentName: '',
         assignmentDueDate: '',
         assignmentClass: '',
+        description: '', // Reset description field
       });
       toast.success('Assignment created and successfully assigned to students!');
     } catch (error) {
@@ -110,16 +113,7 @@ const CreateAssignment = () => {
   return (
     <div className="w-full text-sm mx-auto bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
       <h2 className="text-2xl font-semibold mb-4">Create New Assignment</h2>
-      <div className="mb-4">
-        <label className="block text-gray-700 text-sm font-bold mb-2">Assignment Name</label>
-        <input
-          type="text"
-          name="assignmentName"
-          value={formValues.assignmentName}
-          onChange={handleInputChange}
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-        />
-      </div>
+
       <div className="mb-4">
         <label className="block text-gray-700 text-sm font-bold mb-2">Assignment Due Date</label>
         <input
@@ -149,6 +143,26 @@ const CreateAssignment = () => {
             <option disabled>No classes available</option>
           )}
         </select>
+      </div>
+      <div className="mb-4">
+        <label className="block text-gray-700 text-sm font-bold mb-2">Assignment Title</label>
+        <input
+          type="text"
+          name="assignmentName"
+          value={formValues.assignmentName}
+          onChange={handleInputChange}
+          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+        />
+      </div>
+      <div className="mb-4">
+        <label className="block text-gray-700 text-sm font-bold mb-2">Description</label>
+        <textarea
+          name="description"
+          value={formValues.description}
+          onChange={handleInputChange}
+          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          rows="4" // Adjust the height of the textarea
+        ></textarea>
       </div>
       <input type="hidden" value={email} readOnly />
       <button

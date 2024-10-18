@@ -81,7 +81,8 @@ const TeacherAssignmentsList = () => {
             .map((key) => ({
               id: key,
               ...assignmentsData[key],
-            }));
+            }))
+            .sort((a, b) => new Date(b.createdDate) - new Date(a.createdDate)); 
           setAssignments(teacherAssignments);
 
           // Fetch students for each class of the assignment
@@ -182,11 +183,9 @@ const TeacherAssignmentsList = () => {
   const currentAssignment = assignments[currentPage];
 
   return (
-    <div className="w-full mx-auto bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-      <h2 className="text-2xl font-semibold mb-4">Your Created Assignments and Students</h2>
-
+    <div className="w-full text-md mx-auto bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
       <div className="mb-8">
-        <h3 className="text-xl font-bold mb-2">Assignment: {currentAssignment.assignmentName}</h3>
+        <h2 className="text-xl font-bold mb-2">Assignment: {currentAssignment.assignmentName}</h2>
         <p>Class: {currentAssignment.assignmentClass}</p>
         <p>Due Date: {new Date(currentAssignment.assignmentDueDate).toLocaleDateString()}</p>
         <p>Created Date: {new Date(currentAssignment.createdDate).toLocaleDateString()}</p>
@@ -198,7 +197,7 @@ const TeacherAssignmentsList = () => {
               <tr>
                 <th className="border-b px-4 py-2">User ID</th>
                 <th className="border-b px-4 py-2">Name</th>
-                <th className="border-b px-4 py-2">Class</th>
+                {/* <th className="border-b px-4 py-2">Class</th> */}
                 <th className="border-b px-4 py-2">Email</th>
                 <th className="border-b px-4 py-2">Action</th>
               </tr>
@@ -208,7 +207,7 @@ const TeacherAssignmentsList = () => {
                 <tr key={student.id}>
                   <td className="border-b px-4 py-2">{student.userID}</td>
                   <td className="border-b px-4 py-2">{student.firstName} {student.lastName}</td>
-                  <td className="border-b px-4 py-2">{student.class}</td>
+                  {/* <td className="border-b px-4 py-2">{student.class}</td> */}
                   <td className="border-b px-4 py-2">{student.email}</td>
                   <td className="border-b px-4 py-2">
                     {uploadedScores[currentAssignment.id] && uploadedScores[currentAssignment.id][student.userID] ? (
