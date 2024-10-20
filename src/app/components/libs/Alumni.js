@@ -39,7 +39,7 @@ const Alumni = () => {
           </div>
           <button
             onClick={handleRedirect}
-            className="bg-main text-white px-6 py-2 rounded hover:bg-blue-600 mt-auto"
+            className="bg-main text-white px-6 py-2 rounded hover:bg-yellow-800 mt-auto"
           >
             Become a Mentor
           </button>
@@ -69,7 +69,7 @@ const Alumni = () => {
           </div>
           <button
             onClick={handleRedirect}
-            className="bg-main text-white px-6 py-2 rounded hover:bg-blue-600 mt-auto"
+            className="bg-main text-white px-6 py-2 rounded hover:bg-yellow-800  mt-auto"
           >
             Support Our School
           </button>
@@ -85,7 +85,7 @@ const Alumni = () => {
           </div>
           <button
             onClick={handleRedirect}
-            className="bg-main text-white px-6 py-2 rounded hover:bg-blue-600 mt-auto"
+            className="bg-main text-white px-6 py-2 rounded hover:bg-yellow-800 mt-auto"
           >
             Join a Volunteer Program
           </button>
