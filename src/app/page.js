@@ -9,6 +9,7 @@ import Values from '../app/components/Values';
 import Vision from '../app/components/Vision';
 import Curriculum from '../app/components/Curriculum';
 import ImageGallery from '../app/components/ImageGallery';
+import Alumni from '../app/components/libs/Alumni'
 
 
 export default function Home() {
@@ -21,6 +22,7 @@ export default function Home() {
       <Vision />
       <Curriculum />
       <ImageGallery />
+      <Alumni />
       <Map />
       <ContactUs />
     </Layout>

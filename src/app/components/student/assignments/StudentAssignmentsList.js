@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { ref, onValue } from 'firebase/database';
+import { ref, onValue, set, get } from 'firebase/database';
 import { database } from '../../../../../utils/firebaseConfig'; // Adjust path as necessary
 import { useSession } from 'next-auth/react';
+import { toast } from 'react-toastify'; // Import Toast functions
+import 'react-toastify/dist/ReactToastify.css'; // Import the CSS for Toast
 
 const StudentAssignmentsList = () => {
   const { data: session } = useSession();
@@ -11,8 +13,10 @@ const StudentAssignmentsList = () => {
   const [userID, setUserID] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [selectedAssignment, setSelectedAssignment] = useState(null);
-  const [currentPage, setCurrentPage] = useState(1); // For tracking current page
-  const itemsPerPage = 2; // Number of items per page
+  const [submission, setSubmission] = useState(''); // State to hold submission text
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
+  const [hasSubmitted, setHasSubmitted] = useState(false); // State to check submission
 
   useEffect(() => {
     if (session) {
@@ -52,17 +56,51 @@ const StudentAssignmentsList = () => {
     }
   }, [studentClass, userID]);
 
-  const handleShowModal = (assignment) => {
+  const handleShowModal = async (assignment) => {
     setSelectedAssignment(assignment);
     setShowModal(true);
+    setSubmission(''); // Reset submission text
+
+    // Check if a submission already exists for the selected assignment
+    const submissionRef = ref(database, `submissions/${userID}/${assignment.id}`);
+    const submissionSnapshot = await get(submissionRef);
+    setHasSubmitted(submissionSnapshot.exists()); // Set the hasSubmitted state
   };
 
   const handleCloseModal = () => {
     setShowModal(false);
     setSelectedAssignment(null);
+    setHasSubmitted(false); // Reset submission state when closing modal
   };
 
-  // Pagination logic
+  const handleSubmissionChange = (e) => {
+    setSubmission(e.target.value); // Update submission text state
+  };
+
+  const handleSubmitAssignment = async () => {
+    if (submission.trim() === '') {
+      toast.error('Please provide a submission before submitting.'); // Error toast
+      return;
+    }
+
+    const submissionRef = ref(database, `submissions/${userID}/${selectedAssignment.id}`);
+    const submissionData = {
+      submissionText: submission,
+      submittedAt: new Date().toISOString(),
+      teacherEmail: selectedAssignment.email, // Include teacher's email in the submission
+    };
+
+    try {
+      await set(submissionRef, submissionData); // Save submission to Firebase
+      toast.success('Assignment submitted successfully!'); // Success toast
+      setSubmission(''); // Clear the submission input
+      handleCloseModal(); // Close modal after submission
+    } catch (error) {
+      console.error('Error submitting assignment:', error);
+      toast.error('Failed to submit assignment. Please try again.'); // Error toast
+    }
+  };
+
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentAssignments = assignments.slice(indexOfFirstItem, indexOfLastItem);
@@ -91,6 +129,7 @@ const StudentAssignmentsList = () => {
 
   return (
     <div className="w-full text-sm text-md mx-auto rounded px-8 pt-6 pb-8 mb-4">
+      
       <h2 className="text-xl font-bold mb-4">Your Assignments</h2>
       {currentAssignments.map((assignment) => (
         <div
@@ -101,6 +140,7 @@ const StudentAssignmentsList = () => {
           <h3 className="text-lg font-semibold mb-2">{assignment.assignmentName}</h3>
           <p><strong>Due Date:</strong> {new Date(assignment.assignmentDueDate).toLocaleDateString()}</p>
           <p><strong>Created Date:</strong> {new Date(assignment.createdDate).toLocaleDateString()}</p>
+          <p><strong>Teacher</strong>: {assignment.email}</p> {/* Display teacher email */}
         </div>
       ))}
 
@@ -131,8 +171,30 @@ const StudentAssignmentsList = () => {
             <h3 className="text-2xl font-bold mb-4">{selectedAssignment.assignmentName}</h3>
             <p>{selectedAssignment.assignmentDescription || 'No description available'}</p>
             
+            {hasSubmitted ? (
+              <div className="text-red-600 font-bold mt-4">
+                You have already submitted this assignment.
+              </div>
+            ) : (
+              <>
+                <textarea
+                  value={submission}
+                  onChange={handleSubmissionChange}
+                  placeholder="Write your submission here..."
+                  className="w-full h-24 p-2 border border-gray-300 rounded mb-4"
+                />
+                {/* Submit Assignment Button */}
+                <button
+                  className="mt-4 bg-main3 text-white font-bold py-2 px-4 rounded"
+                  onClick={handleSubmitAssignment}
+                >
+                  Submit Assignment
+                </button>
+              </>
+            )}
+
             <button
-              className="mt-4 bg-main3 text-white font-bold py-2 px-4 rounded"
+              className="mt-4 bg-gray-500 text-white font-bold py-2 px-4 rounded ml-2"
               onClick={handleCloseModal}
             >
               Close

@@ -5,6 +5,7 @@ import Students from '../../app/components/teachers/utils/Students';
 import StudentGenderCount from '../../app/components/teachers/utils/StudentGenderCount';
 import ExamResults from '../../app/components/exams/ExamResults';
 import ClassRoutineList from '../../app/components/teachers/ClassRoutineList';
+import TeacherSubmittedAssignments from '../../app/components/teachers/assignments/TeacherSubmittedAssignments';
 
 const TeacherDashboard = () => {
 
@@ -14,8 +15,9 @@ const TeacherDashboard = () => {
         <div className="w-full">
           <StudentGenderCount />
           <div className="w-full flex mt-4">
-            <div className="bg-white flex-1 border shadow-sm rounded relative">
-              <ClassRoutineList />
+            <div className="w-full flex border shadow-sm rounded relative">
+              <div className='flex-1 m-1'><ClassRoutineList /></div>
+              <div className='flex-1 m-1'><TeacherSubmittedAssignments /></div>
             </div>
           </div>
           <div className="w-full flex mt-4">
