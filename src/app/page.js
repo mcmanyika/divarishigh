@@ -22,7 +22,7 @@ export default function Home() {
       <Vision />
       <Curriculum />
       <ImageGallery />
-      <Alumni />
+      {/* <Alumni /> */}
       <Map />
       <ContactUs />
     </Layout>

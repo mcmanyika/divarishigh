@@ -15,7 +15,7 @@ const TeacherDashboard = () => {
         <div className="w-full">
           <StudentGenderCount />
           <div className="w-full flex mt-4">
-            <div className="w-full flex border shadow-sm rounded relative">
+            <div className="w-full flex relative">
               <div className='flex-1 m-1'><ClassRoutineList /></div>
               <div className='flex-1 m-1'><TeacherSubmittedAssignments /></div>
             </div>
