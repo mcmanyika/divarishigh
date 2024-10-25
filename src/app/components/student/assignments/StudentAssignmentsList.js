@@ -11,17 +11,19 @@ const StudentAssignmentsList = () => {
   const [loading, setLoading] = useState(true);
   const [studentClass, setStudentClass] = useState('');
   const [userID, setUserID] = useState('');
+  const [firstName, setFirstName] = useState(''); // State for firstName
+  const [lastName, setLastName] = useState('');   // State for lastName
   const [showModal, setShowModal] = useState(false);
   const [selectedAssignment, setSelectedAssignment] = useState(null);
   const [submission, setSubmission] = useState(''); // State to hold submission text
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 5;
+  const itemsPerPage = 3;
   const [hasSubmitted, setHasSubmitted] = useState(false); // State to check submission
 
   useEffect(() => {
     if (session) {
       const studentEmail = session.user.email;
-      // Fetch the logged-in student's class and user ID
+      // Fetch the logged-in student's class, firstName, lastName, and userID
       const studentRef = ref(database, 'userTypes');
       onValue(studentRef, (snapshot) => {
         const studentsData = snapshot.val();
@@ -29,6 +31,8 @@ const StudentAssignmentsList = () => {
         if (student) {
           setStudentClass(student.class);
           setUserID(student.userID);
+          setFirstName(student.firstName); // Set firstName
+          setLastName(student.lastName);   // Set lastName
         }
       });
     }
@@ -88,6 +92,9 @@ const StudentAssignmentsList = () => {
       submissionText: submission,
       submittedAt: new Date().toISOString(),
       teacherEmail: selectedAssignment.email, // Include teacher's email in the submission
+      firstName,  // Include firstName in the submission
+      lastName,   // Include lastName in the submission
+      userID,     // Include userID in the submission
     };
 
     try {
@@ -169,7 +176,7 @@ const StudentAssignmentsList = () => {
         <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center z-50">
           <div className="bg-white rounded-lg shadow-lg w-11/12 md:w-1/2 p-6">
             <h3 className="text-2xl font-bold mb-4">{selectedAssignment.assignmentName}</h3>
-            <p>{selectedAssignment.assignmentDescription || 'No description available'}</p>
+            <p className='pt-2 pb-2 capitalize'>{selectedAssignment.description || 'No description available'}</p>
             
             {hasSubmitted ? (
               <div className="text-red-600 font-bold mt-4">

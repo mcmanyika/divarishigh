@@ -30,7 +30,7 @@ const TeacherSubmittedAssignments = () => {
                 filteredSubmissions.push({
                   assignmentId,
                   studentId,
-                  studentName: `${submission.studentFirstName} ${submission.studentLastName}`,
+                  studentName: `${submission.firstName} ${submission.lastName}`,
                   submissionText: submission.submissionText,
                   submittedAt: submission.submittedAt,
                 });
@@ -74,11 +74,10 @@ const TeacherSubmittedAssignments = () => {
     <div className="w-full bg-white text-sm text-md mx-auto rounded px-8 pt-6 pb-8 mb-4">
       <h2 className="text-xl font-bold mb-4">Submitted Assignments</h2>
       {currentSubmissions.map((submission) => (
-        <div key={submission.assignmentId} className="mb-6 p-4 border border-gray-200 rounded-lg">
-          <h3 className="text-lg font-semibold mb-2">Assignment ID: {submission.assignmentId}</h3>
-          <p><strong>Submitted by:</strong> {submission.studentName}</p>
-          <p><strong>Submission:</strong> {submission.submissionText}</p>
-          <p><strong>Submitted At:</strong> {new Date(submission.submittedAt).toLocaleString()}</p>
+        <div key={submission.assignmentId} className="flex mb-4 p-2 border border-gray-200 rounded-lg">
+          {/* <div>{submission.assignmentId}</div> */}
+          <div className='w-60 p-1'>{submission.studentName}</div>
+          <div className='w-60 p-1'>{new Date(submission.submittedAt).toLocaleString()}</div>
         </div>
       ))}
 
