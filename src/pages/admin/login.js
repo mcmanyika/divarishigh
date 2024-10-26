@@ -46,9 +46,9 @@ export default function Login() {
 
   return (
     <div className="flex items-center justify-center min-h-screen">
-      <div className='flex-1 h-screen bg-cover bg-center' style={{ backgroundImage: `url('https://firebasestorage.googleapis.com/v0/b/divaris-3e59f.appspot.com/o/images%2FDSC_5929.jpg?alt=media&token=b6c69906-8efa-4e81-a09b-386e4457a0c3')` }}>
+      <div className='md:visible md:flex-1 h-screen bg-cover bg-center' style={{ backgroundImage: `url('https://firebasestorage.googleapis.com/v0/b/divaris-3e59f.appspot.com/o/images%2FDSC_5929.jpg?alt=media&token=b6c69906-8efa-4e81-a09b-386e4457a0c3')` }}>
       </div>
-      <div className='flex-1'>
+      <div className='w-full md:flex-1'>
         <div className=" p-6 bg-white bg-opacity-75 text-center">
           <Link href='/'>
             <Image
@@ -78,7 +78,7 @@ export default function Login() {
             </button>
           </div> }
 
-          {session && <div className='w-96'>Redirecting to Dashboard...</div>}
+          {session && <div className='w-full text-center'>Redirecting to Dashboard...</div>}
         </div>
       </div>
     </div>

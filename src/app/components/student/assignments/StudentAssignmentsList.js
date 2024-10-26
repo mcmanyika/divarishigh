@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { ref, onValue, set, get } from 'firebase/database';
-import { database } from '../../../../../utils/firebaseConfig'; // Adjust path as necessary
+import { database } from '../../../../../utils/firebaseConfig';
 import { useSession } from 'next-auth/react';
-import { toast } from 'react-toastify'; // Import Toast functions
-import 'react-toastify/dist/ReactToastify.css'; // Import the CSS for Toast
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import dynamic from 'next/dynamic';
+const SunEditor = dynamic(() => import('suneditor-react'), { ssr: false });
+import 'suneditor/dist/css/suneditor.min.css';
 
 const StudentAssignmentsList = () => {
   const { data: session } = useSession();
@@ -11,19 +14,19 @@ const StudentAssignmentsList = () => {
   const [loading, setLoading] = useState(true);
   const [studentClass, setStudentClass] = useState('');
   const [userID, setUserID] = useState('');
-  const [firstName, setFirstName] = useState(''); // State for firstName
-  const [lastName, setLastName] = useState('');   // State for lastName
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [selectedAssignment, setSelectedAssignment] = useState(null);
-  const [submission, setSubmission] = useState(''); // State to hold submission text
+  const [submission, setSubmission] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 3;
-  const [hasSubmitted, setHasSubmitted] = useState(false); // State to check submission
+  const [hasSubmitted, setHasSubmitted] = useState(false);
 
+  // Fetch student information on component mount
   useEffect(() => {
     if (session) {
       const studentEmail = session.user.email;
-      // Fetch the logged-in student's class, firstName, lastName, and userID
       const studentRef = ref(database, 'userTypes');
       onValue(studentRef, (snapshot) => {
         const studentsData = snapshot.val();
@@ -31,59 +34,59 @@ const StudentAssignmentsList = () => {
         if (student) {
           setStudentClass(student.class);
           setUserID(student.userID);
-          setFirstName(student.firstName); // Set firstName
-          setLastName(student.lastName);   // Set lastName
+          setFirstName(student.firstName);
+          setLastName(student.lastName);
         }
+      }, (error) => {
+        console.error("Error fetching student data:", error);
+        toast.error("Failed to load student data.");
       });
     }
   }, [session]);
 
+  // Fetch assignments based on student's class
   useEffect(() => {
     if (studentClass && userID) {
-      // Fetch assignments based on the student's class
       const assignmentsRef = ref(database, 'assignment');
       onValue(assignmentsRef, (snapshot) => {
         const assignmentsData = snapshot.val();
         if (assignmentsData) {
           const filteredAssignments = Object.keys(assignmentsData)
-            .filter(
-              (key) => assignmentsData[key].assignmentClass === studentClass
-            )
-            .map((key) => ({
-              id: key,
-              ...assignmentsData[key],
-            }));
+            .filter((key) => assignmentsData[key].assignmentClass === studentClass)
+            .map((key) => ({ id: key, ...assignmentsData[key] }));
           setAssignments(filteredAssignments);
         }
+        setLoading(false);
+      }, (error) => {
+        console.error("Error fetching assignments:", error);
+        toast.error("Failed to load assignments.");
         setLoading(false);
       });
     }
   }, [studentClass, userID]);
 
+  // Show modal with assignment details and check submission status
   const handleShowModal = async (assignment) => {
     setSelectedAssignment(assignment);
     setShowModal(true);
-    setSubmission(''); // Reset submission text
+    setSubmission('');
 
-    // Check if a submission already exists for the selected assignment
     const submissionRef = ref(database, `submissions/${userID}/${assignment.id}`);
     const submissionSnapshot = await get(submissionRef);
-    setHasSubmitted(submissionSnapshot.exists()); // Set the hasSubmitted state
+    setHasSubmitted(submissionSnapshot.exists());
   };
 
+  // Close modal
   const handleCloseModal = () => {
     setShowModal(false);
     setSelectedAssignment(null);
-    setHasSubmitted(false); // Reset submission state when closing modal
+    setHasSubmitted(false);
   };
 
-  const handleSubmissionChange = (e) => {
-    setSubmission(e.target.value); // Update submission text state
-  };
-
+  // Submit assignment
   const handleSubmitAssignment = async () => {
     if (submission.trim() === '') {
-      toast.error('Please provide a submission before submitting.'); // Error toast
+      toast.error('Please provide a submission before submitting.');
       return;
     }
 
@@ -91,23 +94,25 @@ const StudentAssignmentsList = () => {
     const submissionData = {
       submissionText: submission,
       submittedAt: new Date().toISOString(),
-      teacherEmail: selectedAssignment.email, // Include teacher's email in the submission
-      firstName,  // Include firstName in the submission
-      lastName,   // Include lastName in the submission
-      userID,     // Include userID in the submission
+      teacherEmail: selectedAssignment.email,
+      firstName,
+      lastName,
+      userID,
+      assignmentName: selectedAssignment.assignmentName, // Include assignment name
     };
 
     try {
-      await set(submissionRef, submissionData); // Save submission to Firebase
-      toast.success('Assignment submitted successfully!'); // Success toast
-      setSubmission(''); // Clear the submission input
-      handleCloseModal(); // Close modal after submission
+      await set(submissionRef, submissionData);
+      toast.success('Assignment submitted successfully!');
+      setSubmission('');
+      handleCloseModal();
     } catch (error) {
       console.error('Error submitting assignment:', error);
-      toast.error('Failed to submit assignment. Please try again.'); // Error toast
+      toast.error('Failed to submit assignment. Please try again.');
     }
   };
 
+  // Pagination logic
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentAssignments = assignments.slice(indexOfFirstItem, indexOfLastItem);
@@ -115,28 +120,18 @@ const StudentAssignmentsList = () => {
   const totalPages = Math.ceil(assignments.length / itemsPerPage);
 
   const handleNextPage = () => {
-    if (currentPage < totalPages) {
-      setCurrentPage(currentPage + 1);
-    }
+    if (currentPage < totalPages) setCurrentPage(currentPage + 1);
   };
 
   const handlePreviousPage = () => {
-    if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
-    }
+    if (currentPage > 1) setCurrentPage(currentPage - 1);
   };
 
-  if (loading) {
-    return <div>Loading assignments...</div>;
-  }
-
-  if (assignments.length === 0) {
-    return <div>No assignments found for your class or user.</div>;
-  }
+  if (loading) return <div>Loading assignments...</div>;
+  if (!assignments.length) return <div>No assignments found for your class or user.</div>;
 
   return (
     <div className="w-full text-sm text-md mx-auto rounded px-8 pt-6 pb-8 mb-4">
-      
       <h2 className="text-xl font-bold mb-4">Your Assignments</h2>
       {currentAssignments.map((assignment) => (
         <div
@@ -147,65 +142,75 @@ const StudentAssignmentsList = () => {
           <h3 className="text-lg font-semibold mb-2">{assignment.assignmentName}</h3>
           <p><strong>Due Date:</strong> {new Date(assignment.assignmentDueDate).toLocaleDateString()}</p>
           <p><strong>Created Date:</strong> {new Date(assignment.createdDate).toLocaleDateString()}</p>
-          <p><strong>Teacher</strong>: {assignment.email}</p> {/* Display teacher email */}
+          <p><strong>Teacher:</strong> {assignment.email}</p>
         </div>
       ))}
 
-      {/* Pagination Controls */}
-      <div className="flex justify-between items-center mt-4">
-        <button
-          onClick={handlePreviousPage}
-          disabled={currentPage === 1}
-          className={`px-4 py-2 rounded ${currentPage === 1 ? 'bg-gray-300' : 'bg-blue-500 text-white'}`}
-        >
-          Previous
-        </button>
-        <span>
-          Page {currentPage} of {totalPages}
-        </span>
-        <button
-          onClick={handleNextPage}
-          disabled={currentPage === totalPages}
-          className={`px-4 py-2 rounded ${currentPage === totalPages ? 'bg-gray-300' : 'bg-blue-500 text-white'}`}
-        >
-          Next
-        </button>
-      </div>
+      {/* Pagination controls */}
+      {totalPages > 1 && (
+        <div className="flex justify-between items-center mt-4">
+          <button
+            onClick={handlePreviousPage}
+            disabled={currentPage === 1}
+            className={`px-4 py-2 rounded ${currentPage === 1 ? 'bg-gray-300' : 'bg-blue-500 text-white'}`}
+          >
+            Previous
+          </button>
+          <span>Page {currentPage} of {totalPages}</span>
+          <button
+            onClick={handleNextPage}
+            disabled={currentPage === totalPages}
+            className={`px-4 py-2 rounded ${currentPage === totalPages ? 'bg-gray-300' : 'bg-blue-500 text-white'}`}
+          >
+            Next
+          </button>
+        </div>
+      )}
 
+      {/* Assignment submission modal */}
       {showModal && selectedAssignment && (
-        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center z-50">
-          <div className="bg-white rounded-lg shadow-lg w-11/12 md:w-1/2 p-6">
-            <h3 className="text-2xl font-bold mb-4">{selectedAssignment.assignmentName}</h3>
-            <p className='pt-2 pb-2 capitalize'>{selectedAssignment.description || 'No description available'}</p>
-            
-            {hasSubmitted ? (
-              <div className="text-red-600 font-bold mt-4">
-                You have already submitted this assignment.
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+          <div className="bg-white p-8 w-full h-full overflow-y-auto">
+            <div className="flex">
+              <div className="flex-1">
+                <h3 className="text-2xl font-bold mb-4">{selectedAssignment.assignmentName}</h3>
+                <p className="pt-2 pb-2 capitalize">{selectedAssignment.description || 'No description available'}</p>
               </div>
-            ) : (
-              <>
-                <textarea
-                  value={submission}
-                  onChange={handleSubmissionChange}
-                  placeholder="Write your submission here..."
-                  className="w-full h-24 p-2 border border-gray-300 rounded mb-4"
-                />
-                {/* Submit Assignment Button */}
+              <div className="flex-1">
+                {hasSubmitted ? (
+                  <div className="text-red-600 font-bold mt-4">You have already submitted this assignment.</div>
+                ) : (
+                  <>
+                    <SunEditor
+                      setContents={submission}
+                      onChange={setSubmission}
+                      setOptions={{
+                        height: 550,
+                        buttonList: [
+                          ['undo', 'redo', 'bold', 'italic', 'underline'],
+                          ['list', 'align', 'fontSize', 'formatBlock'],
+                          ['link', 'image', 'video'],
+                          ['fullScreen', 'showBlocks', 'codeView'],
+                          ['preview', 'print'],
+                        ],
+                      }}
+                    />
+                    <button
+                      className="mt-4 bg-main3 text-white font-bold py-2 px-4 rounded"
+                      onClick={handleSubmitAssignment}
+                    >
+                      Submit Assignment
+                    </button>
+                  </>
+                )}
                 <button
-                  className="mt-4 bg-main3 text-white font-bold py-2 px-4 rounded"
-                  onClick={handleSubmitAssignment}
+                  className="mt-4 bg-gray-500 text-white font-bold py-2 px-4 rounded ml-2"
+                  onClick={handleCloseModal}
                 >
-                  Submit Assignment
+                  Close
                 </button>
-              </>
-            )}
-
-            <button
-              className="mt-4 bg-gray-500 text-white font-bold py-2 px-4 rounded ml-2"
-              onClick={handleCloseModal}
-            >
-              Close
-            </button>
+              </div>
+            </div>
           </div>
         </div>
       )}
