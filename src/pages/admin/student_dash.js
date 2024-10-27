@@ -72,7 +72,7 @@ const StudentDash = () => {
           ) : (
             <div>
               {studentStatus === "Accepted" ? (
-                <div>
+                <div className='h-screen overflow-y-auto'>
                   <NoticeCount />
                   <div className="w-full flex flex-col md:flex-row mt-4">
                     <div className="md:w-2/4 bg-white p-4 m-2">

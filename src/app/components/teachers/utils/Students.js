@@ -15,6 +15,10 @@ const Students = () => {
   const [selectedStudent, setSelectedStudent] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const modalRef = useRef(null);
+  
+  // Pagination states
+  const [currentPage, setCurrentPage] = useState(1);
+  const [studentsPerPage] = useState(12); // Change this to adjust how many students to show per page
 
   useEffect(() => {
     if (status === 'authenticated') {
@@ -123,6 +127,26 @@ const Students = () => {
 
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
+    setCurrentPage(1); // Reset to first page when searching
+  };
+
+  // Pagination calculations
+  const indexOfLastStudent = currentPage * studentsPerPage;
+  const indexOfFirstStudent = indexOfLastStudent - studentsPerPage;
+  const currentStudents = sortedStudents.slice(indexOfFirstStudent, indexOfLastStudent);
+
+  const totalPages = Math.ceil(sortedStudents.length / studentsPerPage);
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const handlePreviousPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
   };
 
   if (isLoading) {
@@ -144,56 +168,58 @@ const Students = () => {
         className="mb-4 p-2 border border-gray-300 rounded w-full"
       />
 
-      {sortedStudents.length === 0 ? (
+      {currentStudents.length === 0 ? (
         <div className="text-center mt-4">No students found.</div>
       ) : (
-        <div className="overflow-x-auto">
-          <table className="min-w-full text-left border-collapse">
-            <thead>
-              <tr>
-                {['studentNumber', 'firstName', 'lastName', 'class', 'gender', 'phone', 'email'].map((column) => (
-                  <th
-                    key={column}
-                    className="p-2 border-b cursor-pointer text-blue-400 uppercase text-xs"
-                    onClick={() => handleSort(column)}
-                  >
-                    <div>
-                      {column.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}
-                      {sortColumn === column && (sortOrder === 'asc' ? ' ▲' : ' ▼')}
-                    </div>
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {sortedStudents.map(student => (
-                <tr key={student.id} className="hover:bg-gray-100 cursor-pointer" onClick={() => openModal(student)}>
-                  <td className="p-2 border-b">{student.userID || 'N/A'}</td>
-                  <td className="p-2 border-b">{student.firstName || 'N/A'}</td>
-                  <td className="p-2 border-b">{student.lastName || 'N/A'}</td>
-                  <td className="p-2 border-b">{student.class || 'N/A'}</td>
-                  <td className="p-2 border-b capitalize">{student.gender || 'N/A'}</td>
-                  <td className="p-2 border-b">{student.phone || 'N/A'}</td>
-                  <td className="p-2 border-b">{student.email || 'N/A'}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          {currentStudents.map(student => (
+            <div 
+              key={student.id} 
+              className="border p-4 rounded shadow hover:bg-gray-100 cursor-pointer" 
+              onClick={() => openModal(student)}
+            >
+              <h3 className="text-lg font-semibold">{`${student.firstName} ${student.lastName}`}</h3>
+              <p><strong>Student ID:</strong> {student.userID}</p>
+              <p><strong>Class:</strong> {student.class}</p>
+              <p><strong>Gender:</strong> {student.gender}</p>
+              <p><strong>Phone:</strong> {student.phone}</p>
+              <p><strong>Email:</strong> {student.email}</p>
+            </div>
+          ))}
         </div>
       )}
 
+      {/* Pagination Controls */}
+      <div className="flex justify-between mt-4">
+        <button
+          onClick={handlePreviousPage}
+          disabled={currentPage === 1}
+          className="p-2 bg-blue-500 text-white rounded disabled:bg-gray-400"
+        >
+          Previous
+        </button>
+        <span>{`Page ${currentPage} of ${totalPages}`}</span>
+        <button
+          onClick={handleNextPage}
+          disabled={currentPage === totalPages}
+          className="p-2 bg-blue-500 text-white rounded disabled:bg-gray-400"
+        >
+          Next
+        </button>
+      </div>
+
       {isModalOpen && selectedStudent && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-          <div ref={modalRef} className="bg-white rounded-lg shadow-lg p-6">
-            <h2 className="text-lg font-bold mb-4">Student Details</h2>
+          <div ref={modalRef} className="bg-white rounded shadow-lg p-4 max-w-md w-full">
+            <h2 className="text-lg font-semibold mb-2">{`${selectedStudent.firstName} ${selectedStudent.lastName}`}</h2>
             <p><strong>Student ID:</strong> {selectedStudent.userID}</p>
-            <p><strong>First Name:</strong> {selectedStudent.firstName}</p> 
-            <p><strong>Last Name:</strong> {selectedStudent.lastName}</p>
+            <p><strong>Email:</strong> {selectedStudent.email}</p>
+            <p><strong>Phone:</strong> {selectedStudent.phone}</p>
             <p><strong>Class:</strong> {selectedStudent.class}</p>
             <p><strong>Gender:</strong> {selectedStudent.gender}</p>
-            <p><strong>Phone:</strong> {selectedStudent.phone}</p>
-            <p><strong>Email:</strong> {selectedStudent.email}</p>
-            <button onClick={closeModal} className="mt-4 px-4 py-2 bg-blue-500 text-white rounded">Close</button>
+            <button onClick={closeModal} className="mt-4 bg-blue-500 text-white p-2 rounded">
+              Close
+            </button>
           </div>
         </div>
       )}

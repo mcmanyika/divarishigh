@@ -82,7 +82,7 @@ const AddNoticeForm = () => {
         </div>
         <button
           type="submit"
-          className="mt-4 bg-blue-500 text-white py-2 px-4 rounded"
+          className="mt-4 bg-main3 text-white py-2 px-4 rounded-full"
         >
           Add Notice
         </button>

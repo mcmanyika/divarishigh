@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { ref, onValue } from 'firebase/database';
 import { database } from '../../../../utils/firebaseConfig';
 import { useSession } from 'next-auth/react';
-import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ResultsModal from './ResultsModal';
+import CreateExamForm from '../..//components/exams/CreateExamForm';
 import { FaCheckCircle, FaTimesCircle, FaHourglassHalf } from 'react-icons/fa';
 
 const AssignedExamsList = () => {
@@ -14,10 +14,11 @@ const AssignedExamsList = () => {
   const [selectedExam, setSelectedExam] = useState('');
   const [selectedStudent, setSelectedStudent] = useState(null);
   const [selectedExamId, setSelectedExamId] = useState('');
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isResultsModalOpen, setIsResultsModalOpen] = useState(false);
+  const [isCreateExamModalOpen, setIsCreateExamModalOpen] = useState(false);
   const [examResults, setExamResults] = useState({});
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10; // Set to 10 items per page
+  const itemsPerPage = 10;
 
   useEffect(() => {
     if (!session) return;
@@ -27,7 +28,6 @@ const AssignedExamsList = () => {
     const examsRef = ref(database, 'exams');
     const resultsRef = ref(database, 'examResults');
 
-    // Fetch exams for the logged-in teacher
     onValue(examsRef, (snapshot) => {
       const examsData = snapshot.val();
       if (examsData) {
@@ -42,7 +42,6 @@ const AssignedExamsList = () => {
       }
     });
 
-    // Fetch student admissions and their assigned exams
     onValue(admissionsRef, (snapshot) => {
       const admissionsData = snapshot.val();
       if (admissionsData) {
@@ -61,14 +60,12 @@ const AssignedExamsList = () => {
       }
     });
 
-    // Fetch exam results
     onValue(resultsRef, (snapshot) => {
       const resultsData = snapshot.val() || {};
       setExamResults(resultsData);
     });
   }, [session]);
 
-  // Filter students by selected exam
   const filteredStudents = selectedExam
     ? students.filter((student) => student.exams[selectedExam])
     : students;
@@ -84,7 +81,6 @@ const AssignedExamsList = () => {
     }
   };
 
-  // Get the status icon based on the exam status or score
   const getStatusIcon = (score, status) => {
     if (score > 0 && score < 50) {
       return <FaTimesCircle className="text-red-500" />;
@@ -98,11 +94,10 @@ const AssignedExamsList = () => {
     return <FaTimesCircle className="text-gray-500" />;
   };
 
-  // Handle student click to show exam results in the modal
   const handleStudentClick = (student, examId) => {
     setSelectedStudent(student);
     setSelectedExamId(examId);
-    setIsModalOpen(true);
+    setIsResultsModalOpen(true);
   };
 
   const startIndex = (currentPage - 1) * itemsPerPage;
@@ -113,28 +108,16 @@ const AssignedExamsList = () => {
 
   return (
     <div className="w-full bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-      <h2 className="text-2xl font-semibold mb-4">Students Assigned Exams</h2>
-
-      {/* Dropdown for selecting exams */}
-      <div className="mb-4">
-        <label className="block text-gray-700 text-sm font-bold mb-2">
-          Select Exam
-        </label>
-        <select
-          value={selectedExam}
-          onChange={(e) => setSelectedExam(e.target.value)}
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+      <div className="flex justify-between items-center mb-4">
+        <h2 className="text-2xl font-semibold">Students Assigned Exams</h2>
+        <button
+          onClick={() => setIsCreateExamModalOpen(true)}
+          className="bg-main3 text-white font-bold py-2 px-4 rounded-full"
         >
-          <option value="">All Exams</option>
-          {Object.entries(examsMap).map(([examId, examName]) => (
-            <option key={examId} value={examId}>
-              {examName}
-            </option>
-          ))}
-        </select>
+          Create New Exam
+        </button>
       </div>
 
-      {/* Table showing students and exam details */}
       {currentStudents.length === 0 ? (
         <p>No students with assigned exams found.</p>
       ) : (
@@ -154,7 +137,7 @@ const AssignedExamsList = () => {
                   {Object.entries(student.exams).map(([examId, examDetails]) => {
                     if (examId in examsMap && (selectedExam === '' || examId === selectedExam)) {
                       const score = examResults[`${student.id}_${examId}`]?.score || 0;
-                      const examStatus = score > 0 ? 'Completed' : examDetails.status; // Update status if score exists
+                      const examStatus = score > 0 ? 'Completed' : examDetails.status;
 
                       return (
                         <tr key={examId}>
@@ -162,18 +145,12 @@ const AssignedExamsList = () => {
                             {student.firstName} {student.lastName}
                           </td>
                           <td
-                            className="border border-gray-300 px-4 py-2 text-blue-500 hover:underline cursor-pointer"
+                            className="border border-gray-300 px-4 py-2 cursor-pointer hover:bg-gray-100"
                             onClick={() => handleStudentClick(student, examId)}
                           >
                             {examsMap[examId]}
                           </td>
-                          <td
-                            className={`border border-gray-300 px-4 py-2 ${
-                              score >= 50 ? 'text-green-500' : 'text-red-500'
-                            }`}
-                          >
-                            {score}
-                          </td>
+                          <td className="border border-gray-300 px-4 py-2">{score}</td>
                           <td className="border border-gray-300 px-4 py-2">
                             {getStatusIcon(score, examStatus)}
                           </td>
@@ -186,52 +163,46 @@ const AssignedExamsList = () => {
               ))}
             </tbody>
           </table>
-
-          {/* Pagination */}
-          <div className="flex justify-between mt-4">
-            <button
-              className={`bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ${
-                currentPage === 1 ? 'opacity-50 cursor-not-allowed' : ''
-              }`}
-              onClick={() => handlePageChange('prev')}
-              disabled={currentPage === 1}
-            >
-              Previous
-            </button>
-            <button
-              className={`bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ${
-                currentPage === totalPages ? 'opacity-50 cursor-not-allowed' : ''
-              }`}
-              onClick={() => handlePageChange('next')}
-              disabled={currentPage === totalPages}
-            >
-              Next
-            </button>
-          </div>
         </div>
       )}
 
-      {/* Toast notifications */}
-      <ToastContainer
-        position="bottom-center"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="dark"
-      />
+      <div className="flex justify-between mt-4">
+        <button
+          onClick={() => handlePageChange('prev')}
+          disabled={currentPage === 1}
+          className="bg-gray-300 text-gray-800 font-semibold py-2 px-4 rounded-l"
+        >
+          Prev
+        </button>
+        <button
+          onClick={() => handlePageChange('next')}
+          disabled={currentPage === totalPages}
+          className="bg-gray-300 text-gray-800 font-semibold py-2 px-4 rounded-r"
+        >
+          Next
+        </button>
+      </div>
 
-      {/* Modal for showing results */}
-      {isModalOpen && selectedStudent && (
+      {isResultsModalOpen && (
         <ResultsModal
           student={selectedStudent}
           examId={selectedExamId}
-          onClose={() => setIsModalOpen(false)}
+          onClose={() => setIsResultsModalOpen(false)}
         />
+      )}
+
+      {isCreateExamModalOpen && (
+        <div 
+          className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50"
+          onClick={() => setIsCreateExamModalOpen(false)} // Close on overlay click
+        >
+          <div 
+            className="bg-white rounded p-8 w-3/4 max-w-2xl" 
+            onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside the modal
+          >
+            <CreateExamForm onClose={() => setIsCreateExamModalOpen(false)} />
+          </div>
+        </div>
       )}
     </div>
   );
