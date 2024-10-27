@@ -145,7 +145,7 @@ const AdminLayout = ({ children }) => {
               </div>
             )}
           </div>
-          <div className=''>
+          <div className='bg-gray-100'>
             <Breadcrumb />
             {children}
           </div>
