@@ -49,7 +49,7 @@ const StudentGenderCount = () => {
   }, [status]);
 
   const filteredStudents = admissions.filter((student) => {
-    const isClassValid = classes.some((cls) => cls.className === student.studentClassLevel);
+    const isClassValid = classes.some((cls) => cls.className === student.class);
     if (!isClassValid) return false;
 
     const term = searchTerm.toLowerCase();
