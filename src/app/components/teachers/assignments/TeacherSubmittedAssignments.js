@@ -126,8 +126,8 @@ const TeacherSubmittedAssignments = () => {
 
       {/* Modal */}
       {showModal && selectedSubmission && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 p-4">
-          <div className="bg-white w-full max-w-lg h-full md:h-auto md:max-h-96 rounded-lg p-6 overflow-y-auto">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+          <div className="bg-white w-full  h-full rounded-lg p-6 overflow-y-auto">
             <p className="text-lg font-semibold">{selectedSubmission.studentName}</p>
             <p className="text-sm text-gray-600 mb-4">
               {new Date(selectedSubmission.submittedAt).toLocaleString()}
