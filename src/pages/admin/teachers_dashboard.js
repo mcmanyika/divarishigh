@@ -1,4 +1,3 @@
-
 import withAuth from '../../../utils/withAuth';
 import AdminLayout from './adminLayout';
 import Students from '../../app/components/teachers/utils/Students';
@@ -9,29 +8,38 @@ import TeacherSubmittedAssignments from '../../app/components/teachers/assignmen
 import TeacherClassesList from '../../app/components/teachers/utils/TeacherClassesList';
 
 const TeacherDashboard = () => {
-
   return (
     <AdminLayout>
-      <div className="flex flex-col h-screen overflow-y-auto">
+      <div className="flex flex-col h-screen overflow-y-auto px-4 md:px-6 lg:px-8">
         <div className="w-full">
           <StudentGenderCount />
-          <div className="w-full flex mt-4">
-            <div className="w-full flex relative">
-              <div className='flex-1 m-1'><ClassRoutineList /></div>
-              <div className='flex-1 bg-white m-1'><TeacherClassesList /></div>
+
+          {/* First Row */}
+          <div className="w-full flex flex-col md:flex-row md:space-x-4 mt-4 space-y-4 md:space-y-0">
+            <div className="w-full md:w-1/2 bg-white rounded-md shadow-sm p-2">
+              <ClassRoutineList />
+            </div>
+            <div className="w-full md:w-1/2 bg-white rounded-md shadow-sm p-2">
+              <TeacherClassesList />
             </div>
           </div>
-          <div className="w-full flex mt-4">
-            <div className="bg-white flex-1 border shadow-sm rounded relative">
+
+          {/* Second Row */}
+          <div className="w-full flex flex-col mt-4">
+            <div className="bg-white border shadow-sm rounded-md p-4 mb-4">
               <TeacherSubmittedAssignments />
             </div>
           </div>
-          <div className="w-full flex mt-4">
-            <div className="bg-white flex-1 border shadow-sm rounded relative">
+
+          {/* Third Row */}
+          <div className="w-full flex flex-col mt-4">
+            <div className="bg-white border shadow-sm rounded-md p-4 mb-4">
               <ExamResults />
             </div>
           </div>
-          <div className="bg-white border shadow-sm rounded mt-4">
+
+          {/* Fourth Row */}
+          <div className="bg-white border shadow-sm rounded-md p-4 mt-4 mb-4">
             <Students />
           </div>
         </div>

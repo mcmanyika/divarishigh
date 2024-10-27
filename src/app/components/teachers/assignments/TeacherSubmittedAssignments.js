@@ -18,7 +18,7 @@ const TeacherSubmittedAssignments = () => {
 
       const submissionsRef = ref(database, 'submissions');
       onValue(submissionsRef, (snapshot) => {
-        const submissionsData = snapshot.val(); 
+        const submissionsData = snapshot.val();
         const filteredSubmissions = [];
 
         if (submissionsData) {
@@ -84,25 +84,29 @@ const TeacherSubmittedAssignments = () => {
   }
 
   return (
-    <div className="w-full bg-white text-sm text-md mx-auto rounded px-8 pt-6 pb-8 mb-4">
-      <h2 className="text-xl font-bold mb-4">Submitted Assignments</h2>
+    <div className="w-full bg-white text-sm text-md mx-auto rounded p-4 md:px-8 md:pt-6 pb-8 mb-4">
+      <h2 className="text-lg md:text-xl font-bold mb-4">Submitted Assignments</h2>
       {currentSubmissions.map((submission) => (
         <div
           key={submission.assignmentId}
           onClick={() => handleSubmissionClick(submission)}
-          className="flex mb-4 p-2 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-100"
+          className="flex flex-col md:flex-row items-start md:items-center mb-4 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-100"
         >
-          <div className="w-60 p-1">{submission.studentName}</div>
-          <div className="w-60 p-1">{new Date(submission.submittedAt).toLocaleString()}</div>
+          <div className="w-full md:w-1/2 p-1 truncate">{submission.studentName}</div>
+          <div className="w-full md:w-1/2 p-1 text-gray-600 text-sm">
+            {new Date(submission.submittedAt).toLocaleString()}
+          </div>
         </div>
       ))}
 
       {/* Pagination Controls */}
-      <div className="flex justify-between items-center mt-4">
+      <div className="flex justify-between items-center mt-4 text-sm">
         <button
           onClick={handlePreviousPage}
           disabled={currentPage === 1}
-          className={`px-4 py-2 rounded ${currentPage === 1 ? 'bg-gray-300' : 'bg-blue-500 text-white'}`}
+          className={`px-4 py-2 rounded ${
+            currentPage === 1 ? 'bg-gray-300' : 'bg-blue-500 text-white'
+          }`}
         >
           Previous
         </button>
@@ -112,7 +116,9 @@ const TeacherSubmittedAssignments = () => {
         <button
           onClick={handleNextPage}
           disabled={currentPage === totalPages}
-          className={`px-4 py-2 rounded ${currentPage === totalPages ? 'bg-gray-300' : 'bg-blue-500 text-white'}`}
+          className={`px-4 py-2 rounded ${
+            currentPage === totalPages ? 'bg-gray-300' : 'bg-blue-500 text-white'
+          }`}
         >
           Next
         </button>
@@ -120,17 +126,19 @@ const TeacherSubmittedAssignments = () => {
 
       {/* Modal */}
       {showModal && selectedSubmission && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-          <div className="bg-white p-8 w-full h-full overflow-y-auto">
-            <p className="text-xl">{selectedSubmission.studentName}</p>
-            <p className="text-sm mb-4">{new Date(selectedSubmission.submittedAt).toLocaleString()}</p>
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 p-4">
+          <div className="bg-white w-full max-w-lg h-full md:h-auto md:max-h-96 rounded-lg p-6 overflow-y-auto">
+            <p className="text-lg font-semibold">{selectedSubmission.studentName}</p>
+            <p className="text-sm text-gray-600 mb-4">
+              {new Date(selectedSubmission.submittedAt).toLocaleString()}
+            </p>
             <div
-              className="blog-content mb-2"
+              className="blog-content mb-2 text-gray-700"
               dangerouslySetInnerHTML={{ __html: selectedSubmission.submissionText }} // Render rich text content
             />
             <button
               onClick={closeModal}
-              className="mt-4 px-6 py-3 bg-main3 text-white rounded-full fixed bottom-5 left-5"
+              className="mt-4 px-6 py-3 bg-blue-500 text-white rounded-full"
             >
               Close
             </button>
