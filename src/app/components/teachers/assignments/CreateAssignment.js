@@ -113,8 +113,8 @@ const CreateAssignment = () => {
   return (
     <div className="w-full text-sm mx-auto bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
       <h2 className="text-2xl font-semibold mb-4">Create New Assignment</h2>
-
-      <div className="mb-4">
+      <div className='flex'>
+      <div className="flex-1 mb-4 mr-4">
         <label className="block text-gray-700 text-sm font-bold mb-2">Assignment Due Date</label>
         <input
           type="date"
@@ -124,7 +124,7 @@ const CreateAssignment = () => {
           className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
         />
       </div>
-      <div className="mb-4">
+      <div className="flex-1 mb-4">
         <label className="block text-gray-700 text-sm font-bold mb-2">Class</label>
         <select
           name="assignmentClass"
@@ -144,6 +144,9 @@ const CreateAssignment = () => {
           )}
         </select>
       </div>
+      </div>
+      
+
       <div className="mb-4">
         <label className="block text-gray-700 text-sm font-bold mb-2">Assignment Title</label>
         <input

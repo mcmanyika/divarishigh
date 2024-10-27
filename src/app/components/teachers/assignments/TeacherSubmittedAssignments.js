@@ -18,7 +18,7 @@ const TeacherSubmittedAssignments = () => {
 
       const submissionsRef = ref(database, 'submissions');
       onValue(submissionsRef, (snapshot) => {
-        const submissionsData = snapshot.val();
+        const submissionsData = snapshot.val(); 
         const filteredSubmissions = [];
 
         if (submissionsData) {
