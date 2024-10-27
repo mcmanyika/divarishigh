@@ -86,7 +86,7 @@ const StudentDash = () => {
                     <div className="md:w-2/4 bg-white p-4 m-2">
                         <StudentAssignmentsList />
                   </div>
-                    <div className="md:w-2/4 bg-white p-4 m-2">
+                    <div className="md:w-2/4 bg-white m-2">
                       <CombinedExamsList />
                     </div>
                   </div>
