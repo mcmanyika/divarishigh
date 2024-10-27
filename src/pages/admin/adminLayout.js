@@ -134,7 +134,7 @@ const AdminLayout = ({ children }) => {
             </Link>
           </div>
         </header>
-        <main className="flex-1 p-4 md:p-6">
+        <main className="flex-1 bg-gray-100 p-4 md:p-6">
           <div className="w-full text-right p-2 border shadow-sm rounded-md flex items-center justify-end relative">
             {session && (
               <div className="flex items-center">
