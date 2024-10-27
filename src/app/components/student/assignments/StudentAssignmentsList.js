@@ -169,7 +169,7 @@ const StudentAssignmentsList = () => {
       {/* Assignment submission modal */}
       {showModal && selectedAssignment && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-          <div className="bg-white p-4 w-full max-w-md rounded-md shadow-lg">
+          <div className="bg-white p-4 w-full max-w-6xl rounded-md shadow-lg">
             <h3 className="text-xl font-semibold mb-2">{selectedAssignment.assignmentName}</h3>
             <p className="mb-4">{selectedAssignment.description || 'No description available'}</p>
             {hasSubmitted ? (
