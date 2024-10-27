@@ -43,11 +43,16 @@ const Students = () => {
           onValue(classesRef, (snapshot) => {
             const classesData = snapshot.val();
             if (classesData) {
+              // Filtering classes by teacherEmail to match logged-in user
               const classesArray = Object.keys(classesData).map(key => ({
                 id: key,
                 ...classesData[key]
               }));
-              setClasses(classesArray);
+
+              const filteredClasses = classesArray.filter(
+                (classItem) => classItem.teacherEmail === session.user.email
+              );
+              setClasses(filteredClasses); // Set only the filtered classes
             } else {
               console.log('No classes data found.');
             }
@@ -83,7 +88,7 @@ const Students = () => {
       student.phone?.toLowerCase().includes(term) ||
       student.email?.toLowerCase().includes(term)
     );
-  });
+  }); 
 
   const sortedStudents = filteredStudents.sort((a, b) => {
     if (!sortColumn) return 0;
