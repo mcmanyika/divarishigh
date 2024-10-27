@@ -123,11 +123,11 @@ const AdminLayout = ({ children }) => {
 
       <div className="flex-1 flex flex-col transition-all duration-300 ease-in-out">
         <header className="flex items-center justify-between bg-dash text-white p-4 md:hidden">
-          <div className="flex items-center">
+          <div className="flex  items-center">
             <FaBars className="cursor-pointer text-2xl mr-4" onClick={toggleMobileSidebar} />
             <Link href='/'>
             {logoUrl ? (
-              <Image src={logoUrl} alt="Logo" width={100} height={30} />
+              <Image src={logoUrl} alt="Logo" width={50} height={30} className='rounded-full' />
             ) : (
               <div className="w-24 h-8 bg-gray-300 animate-pulse" /> // Placeholder while loading
             )}
