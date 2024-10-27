@@ -98,7 +98,7 @@ const StudentAssignmentsList = () => {
       firstName,
       lastName,
       userID,
-      assignmentName: selectedAssignment.assignmentName, // Include assignment name
+      assignmentName: selectedAssignment.assignmentName,
     };
 
     try {
@@ -116,7 +116,6 @@ const StudentAssignmentsList = () => {
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentAssignments = assignments.slice(indexOfFirstItem, indexOfLastItem);
-
   const totalPages = Math.ceil(assignments.length / itemsPerPage);
 
   const handleNextPage = () => {
@@ -127,28 +126,28 @@ const StudentAssignmentsList = () => {
     if (currentPage > 1) setCurrentPage(currentPage - 1);
   };
 
-  if (loading) return <div>Loading assignments...</div>;
-  if (!assignments.length) return <div>No assignments found for your class or user.</div>;
+  if (loading) return <div className="text-center mt-4">Loading assignments...</div>;
+  if (!assignments.length) return <div className="text-center mt-4">No assignments found for your class or user.</div>;
 
   return (
-    <div className="w-full text-sm text-md mx-auto rounded px-8 pt-6 pb-8 mb-4">
-      <h2 className="text-xl font-bold mb-4">Your Assignments</h2>
+    <div className="w-full px-4 mx-auto text-sm">
+      <h2 className="text-lg font-semibold text-center mb-4">Your Assignments</h2>
       {currentAssignments.map((assignment) => (
         <div
           key={assignment.id}
-          className="mb-6 p-4 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-100"
+          className="mb-4 p-4 border rounded-lg hover:bg-gray-100 cursor-pointer"
           onClick={() => handleShowModal(assignment)}
         >
-          <h3 className="text-lg font-semibold mb-2">{assignment.assignmentName}</h3>
-          <p><strong>Due Date:</strong> {new Date(assignment.assignmentDueDate).toLocaleDateString()}</p>
-          <p><strong>Created Date:</strong> {new Date(assignment.createdDate).toLocaleDateString()}</p>
+          <h3 className="text-md font-semibold">{assignment.assignmentName}</h3>
+          <p><strong>Due:</strong> {new Date(assignment.assignmentDueDate).toLocaleDateString()}</p>
+          <p><strong>Created:</strong> {new Date(assignment.createdDate).toLocaleDateString()}</p>
           <p><strong>Teacher:</strong> {assignment.email}</p>
         </div>
       ))}
 
       {/* Pagination controls */}
       {totalPages > 1 && (
-        <div className="flex justify-between items-center mt-4">
+        <div className="flex justify-center items-center gap-4 mt-4">
           <button
             onClick={handlePreviousPage}
             disabled={currentPage === 1}
@@ -156,7 +155,7 @@ const StudentAssignmentsList = () => {
           >
             Previous
           </button>
-          <span>Page {currentPage} of {totalPages}</span>
+          <span className="text-sm">Page {currentPage} of {totalPages}</span>
           <button
             onClick={handleNextPage}
             disabled={currentPage === totalPages}
@@ -170,47 +169,40 @@ const StudentAssignmentsList = () => {
       {/* Assignment submission modal */}
       {showModal && selectedAssignment && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-          <div className="bg-white p-8 w-full h-full overflow-y-auto">
-            <div className="flex">
-              <div className="flex-1">
-                <h3 className="text-2xl font-bold mb-4">{selectedAssignment.assignmentName}</h3>
-                <p className="pt-2 pb-2 capitalize">{selectedAssignment.description || 'No description available'}</p>
-              </div>
-              <div className="flex-1">
-                {hasSubmitted ? (
-                  <div className="text-red-600 font-bold mt-4">You have already submitted this assignment.</div>
-                ) : (
-                  <>
-                    <SunEditor
-                      setContents={submission}
-                      onChange={setSubmission}
-                      setOptions={{
-                        height: 550,
-                        buttonList: [
-                          ['undo', 'redo', 'bold', 'italic', 'underline'],
-                          ['list', 'align', 'fontSize', 'formatBlock'],
-                          ['link', 'image', 'video'],
-                          ['fullScreen', 'showBlocks', 'codeView'],
-                          ['preview', 'print'],
-                        ],
-                      }}
-                    />
-                    <button
-                      className="mt-4 bg-main3 text-white font-bold py-2 px-4 rounded"
-                      onClick={handleSubmitAssignment}
-                    >
-                      Submit Assignment
-                    </button>
-                  </>
-                )}
+          <div className="bg-white p-4 w-full max-w-md rounded-md shadow-lg">
+            <h3 className="text-xl font-semibold mb-2">{selectedAssignment.assignmentName}</h3>
+            <p className="mb-4">{selectedAssignment.description || 'No description available'}</p>
+            {hasSubmitted ? (
+              <div className="text-center text-red-600 font-bold">You have already submitted this assignment.</div>
+            ) : (
+              <>
+                <SunEditor
+                  setContents={submission}
+                  onChange={setSubmission}
+                  setOptions={{
+                    height: 250,
+                    buttonList: [
+                      ['undo', 'redo', 'bold', 'italic', 'underline'],
+                      ['list', 'align', 'fontSize'],
+                      ['link', 'image', 'video'],
+                      ['preview', 'print'],
+                    ],
+                  }}
+                />
                 <button
-                  className="mt-4 bg-gray-500 text-white font-bold py-2 px-4 rounded ml-2"
-                  onClick={handleCloseModal}
+                  className="mt-4 w-full bg-main3 text-white font-bold py-2 rounded"
+                  onClick={handleSubmitAssignment}
                 >
-                  Close
+                  Submit
                 </button>
-              </div>
-            </div>
+              </>
+            )}
+            <button
+              className="mt-4 w-full bg-gray-500 text-white font-bold py-2 rounded"
+              onClick={handleCloseModal}
+            >
+              Close
+            </button>
           </div>
         </div>
       )}
