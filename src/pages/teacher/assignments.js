@@ -75,9 +75,9 @@ const Assignments = () => {
   return (
     <AdminLayout>
       <div className='w-full flex flex-col h-screen overflow-y-auto'>
-        <div className='w-full m-1'>
+        {/* <div className='w-full m-1'>
           <CreateAssignment />
-        </div>
+        </div> */}
         <div className='w-full m-1'>
           <TeacherAssignmentsList />
         </div>

@@ -111,7 +111,7 @@ const CreateAssignment = () => {
   };
 
   return (
-    <div className="w-full text-sm mx-auto bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+    <div className="w-full text-sm mx-auto bg-white h-screen rounded px-8 pt-6 pb-8 mb-4">
       <h2 className="text-2xl font-semibold mb-4">Create New Assignment</h2>
       <div className='flex'>
       <div className="flex-1 mb-4 mr-4">
