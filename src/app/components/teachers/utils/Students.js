@@ -176,7 +176,7 @@ const Students = () => {
       {currentStudents.length === 0 ? (
         <div className="text-center mt-4">No students found.</div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4  gap-4">
           {currentStudents.map(student => (
             <div 
               key={student.id} 
