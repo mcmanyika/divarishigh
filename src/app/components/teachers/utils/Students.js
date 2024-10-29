@@ -186,9 +186,6 @@ const Students = () => {
               <h3 className="text-lg font-semibold">{`${student.firstName} ${student.lastName}`}</h3>
               <p><strong>Student ID:</strong> {student.userID}</p>
               <p><strong>Class:</strong> {student.class}</p>
-              <p><strong>Gender:</strong> {student.gender}</p>
-              <p><strong>Phone:</strong> {student.phone}</p>
-              <p><strong>Email:</strong> {student.email}</p>
             </div>
           ))}
         </div>
@@ -221,7 +218,7 @@ const Students = () => {
             <p><strong>Email:</strong> {selectedStudent.email}</p>
             <p><strong>Phone:</strong> {selectedStudent.phone}</p>
             <p><strong>Class:</strong> {selectedStudent.class}</p>
-            <p><strong>Gender:</strong> {selectedStudent.gender}</p>
+            <p className='capitalize'><strong>Gender:</strong> {selectedStudent.gender}</p>
             <button onClick={closeModal} className="mt-4 bg-blue-500 text-white p-2 rounded">
               Close
             </button>
