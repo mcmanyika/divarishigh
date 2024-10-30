@@ -21,12 +21,18 @@ const ClassRoutine = () => {
 
       if (data) {
         const currentDate = new Date();
+        const threeDaysAgo = new Date();
+        threeDaysAgo.setDate(currentDate.getDate() - 3); // Get the date 3 days ago
+
         const filteredRoutine = Object.keys(data)
           .map(key => ({
             id: key,
             ...data[key]
           }))
-          .filter(entry => entry.studentclass === studentClass)
+          .filter(entry => {
+            const entryDate = new Date(entry.date);
+            return entry.studentclass === studentClass && entryDate >= threeDaysAgo; // Only show routines from today or within the last 3 days
+          })
           .sort((a, b) => new Date(b.date) - new Date(a.date)); // Sort by date descending
 
         setRoutine(filteredRoutine);
@@ -34,7 +40,7 @@ const ClassRoutine = () => {
       } else {
         console.error('No data available');
       }
-      
+
       setLoading(false);
     };
 
