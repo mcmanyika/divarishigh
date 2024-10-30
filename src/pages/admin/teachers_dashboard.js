@@ -24,11 +24,11 @@ const TeacherDashboard = () => {
           </div>
 
           {/* Third Row */}
-          <div className="w-full flex flex-col mt-4">
+          {/* <div className="w-full flex flex-col mt-4">
             <div className="bg-white border shadow-sm rounded-md p-4 mb-4">
               <ExamResults />
             </div>
-          </div>
+          </div> */}
 
           {/* Fourth Row */}
           <div className="bg-white border shadow-sm rounded-md p-4 mt-4 mb-4">
