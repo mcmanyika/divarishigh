@@ -107,7 +107,7 @@ const TeacherSubmittedAssignments = () => {
       <h2 className="text-lg md:text-xl font-bold mb-4">Submitted Assignments</h2>
       
       {/* Search Input */}
-      <div className="mb-4">
+      <div className="mb-10">
         <input
           type="text"
           placeholder="Search by Assignment Name"

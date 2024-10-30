@@ -4,7 +4,6 @@ import Students from '../../app/components/teachers/utils/Students';
 import StudentGenderCount from '../../app/components/teachers/utils/StudentGenderCount';
 import ExamResults from '../../app/components/exams/ExamResults';
 import ClassRoutineList from '../../app/components/teachers/ClassRoutineList';
-import TeacherSubmittedAssignments from '../../app/components/teachers/assignments/TeacherSubmittedAssignments';
 import TeacherClassesList from '../../app/components/teachers/utils/TeacherClassesList';
 
 const TeacherDashboard = () => {
@@ -21,13 +20,6 @@ const TeacherDashboard = () => {
             </div>
             <div className="w-full md:w-1/2 bg-white rounded-md shadow-sm p-2">
               <TeacherClassesList />
-            </div>
-          </div>
-
-          {/* Second Row */}
-          <div className="w-full flex flex-col mt-4">
-            <div className="bg-white border shadow-sm rounded-md p-4 mb-4">
-              <TeacherSubmittedAssignments />
             </div>
           </div>
 
