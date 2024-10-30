@@ -25,7 +25,7 @@ const StudentsByClassName = ({ className }) => {
       const fetchAdmissionsAndClasses = async () => {
         try {
           const admissionsRef = ref(database, 'userTypes');
-          const classesRef = ref(database, 'classes');
+          const classesRef = ref(database, `classes`);
 
           onValue(admissionsRef, (snapshot) => {
             const admissionsData = snapshot.val();
@@ -35,8 +35,6 @@ const StudentsByClassName = ({ className }) => {
                 ...admissionsData[key]
               }));
               setAdmissions(admissionsArray);
-            } else {
-              console.log('No admissions data found.');
             }
           });
 
@@ -47,23 +45,18 @@ const StudentsByClassName = ({ className }) => {
                 id: key,
                 ...classesData[key]
               }));
-
               const filteredClasses = classesArray.filter(
                 (classItem) => classItem.teacherEmail === session.user.email
               );
               setClasses(filteredClasses);
-            } else {
-              console.log('No classes data found.');
             }
           });
-
         } catch (error) {
           console.error('Error fetching data:', error);
         } finally {
           setIsLoading(false);
         }
       };
-
       fetchAdmissionsAndClasses();
     } else {
       setIsLoading(false);
@@ -72,7 +65,6 @@ const StudentsByClassName = ({ className }) => {
 
   const filteredStudents = admissions.filter((student) => {
     if (student.userType !== 'student') return false;
-
     const isClassValid = classes.some(cls => cls.className === student.class);
     if (!isClassValid) return false;
 
@@ -147,7 +139,7 @@ const StudentsByClassName = ({ className }) => {
   }
 
   return (
-    <div className="w-full text-sm p-4 bg-white">
+    <div className="w-full h-screen overflow-y-auto text-sm p-4 bg-white">
       <h2 className="text-xl font-semibold mb-4">Students in {className}</h2>
       <input
         type="text"
@@ -178,7 +170,7 @@ const StudentsByClassName = ({ className }) => {
                 <td className="border border-gray-200 px-4 py-2">{student.firstName}</td>
                 <td className="border border-gray-200 px-4 py-2">{student.lastName}</td>
                 <td className="border border-gray-200 px-4 py-2">{student.class}</td>
-                <td className="border border-gray-200 px-4 py-2">{student.gender}</td>
+                <td className="border border-gray-200 px-4 py-2 capitalize">{student.gender}</td>
                 <td className="border border-gray-200 px-4 py-2">{student.email}</td>
                 <td className="border border-gray-200 px-4 py-2">{student.phone}</td>
               </tr>
@@ -190,7 +182,7 @@ const StudentsByClassName = ({ className }) => {
         <button 
           disabled={currentPage === 1} 
           onClick={() => setCurrentPage(prev => prev - 1)} 
-          className="bg-blue-500 text-white px-4 py-2 rounded disabled:bg-gray-400"
+          className="px-4 py-2 border rounded disabled:opacity-50"
         >
           Previous
         </button>
@@ -198,15 +190,14 @@ const StudentsByClassName = ({ className }) => {
         <button 
           disabled={currentPage === totalPages} 
           onClick={() => setCurrentPage(prev => prev + 1)} 
-          className="bg-blue-500 text-white px-4 py-2 rounded disabled:bg-gray-400"
+          className="px-4 py-2 border rounded disabled:opacity-50"
         >
           Next
         </button>
       </div>
-
       {isModalOpen && selectedStudent && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-          <div ref={modalRef} className="bg-white rounded p-6">
+        <div className="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center">
+          <div ref={modalRef} className="bg-white p-6 rounded shadow-lg">
             <h3 className="text-lg font-semibold mb-4">Student Details</h3>
             <p><strong>ID:</strong> {selectedStudent.userID}</p>
             <p><strong>First Name:</strong> {selectedStudent.firstName}</p>
@@ -215,7 +206,9 @@ const StudentsByClassName = ({ className }) => {
             <p><strong>Gender:</strong> {selectedStudent.gender}</p>
             <p><strong>Email:</strong> {selectedStudent.email}</p>
             <p><strong>Phone:</strong> {selectedStudent.phone}</p>
-            <button onClick={closeModal} className="mt-4 bg-red-500 text-white px-4 py-2 rounded">Close</button>
+            <button onClick={closeModal} className="mt-4 px-4 py-2 bg-blue-500 text-white rounded">
+              Close
+            </button>
           </div>
         </div>
       )}
