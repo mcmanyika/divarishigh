@@ -8,8 +8,6 @@ import CreateAssignment from '../../../components/teachers/assignments/CreateAss
 const ScoreUploadModal = ({ isOpen, onClose, onUpload, studentID }) => {
   const [score, setScore] = useState('');
   const [comment, setComment] = useState('');
-  const [modalOpen, setModalOpen] = useState(false);
-
 
   const handleUpload = () => {
     onUpload(studentID, score, comment);
@@ -66,7 +64,8 @@ const TeacherAssignmentsList = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [selectedAssignment, setSelectedAssignment] = useState(null);
   const [selectedStudentID, setSelectedStudentID] = useState('');
-  const [modalOpen, setModalOpen] = useState(false);
+  const [assignmentModalOpen, setAssignmentModalOpen] = useState(false);
+  const [scoreModalOpen, setScoreModalOpen] = useState(false);
   const [uploadedScores, setUploadedScores] = useState({});
 
   useEffect(() => {
@@ -170,9 +169,10 @@ const TeacherAssignmentsList = () => {
         toast.error('Error uploading score. Please try again.');
       });
   };
+
   const handleCreateAssignment = () => {
-    setModalOpen(false);
-    // You can add code here to refresh the assignments list if needed
+    setAssignmentModalOpen(false);
+    // Refresh assignments list if needed
   };
 
   if (loading) {
@@ -190,8 +190,8 @@ const TeacherAssignmentsList = () => {
       <div className="w-full mb-8 flex justify-between items-center">
         <h2 className="text-xl font-bold mb-2">Assignment: {currentAssignment.assignmentName}</h2>
         <button
-          className="bg-main3 text-white p-2 rounded-full"
-          onClick={() => setModalOpen(true)}
+          className="bg-main3 text-white px-4 p-2 rounded-full"
+          onClick={() => setAssignmentModalOpen(true)}
         >
           Add Assignment
         </button>
@@ -227,9 +227,9 @@ const TeacherAssignmentsList = () => {
                       onClick={() => {
                         setSelectedAssignment(currentAssignment);
                         setSelectedStudentID(student.userID);
-                        setModalOpen(true);
+                        setScoreModalOpen(true);
                       }}
-                      className="bg-main3 text-white font-bold py-2 px-4 rounded-full"
+                      className="bg-main3 text-white px-4 py-2 rounded-full"
                     >
                       Upload Score
                     </button>
@@ -243,46 +243,44 @@ const TeacherAssignmentsList = () => {
         <p>No students assigned for this assignment.</p>
       )}
 
-      <ScoreUploadModal
-        isOpen={modalOpen}
-        onClose={() => setModalOpen(false)}
-        onUpload={handleScoreUpload}
-        studentID={selectedStudentID}
-      />
-
-      <div className="flex justify-between mt-6">
+      <div className="mt-4 flex justify-between items-center">
         <button
           onClick={handlePrevPage}
           disabled={currentPage === 0}
-          className="bg-gray-500 text-white py-2 px-4 rounded"
+          className={`px-4 py-2 rounded ${currentPage === 0 ? 'bg-gray-200 text-gray-500' : 'bg-gray-800 text-white'}`}
         >
           Previous
         </button>
         <button
           onClick={handleNextPage}
           disabled={currentPage === totalPages - 1}
-          className="bg-gray-500 text-white py-2 px-4 rounded"
+          className={`px-4 py-2 rounded ${currentPage === totalPages - 1 ? 'bg-gray-200 text-gray-500' : 'bg-gray-800 text-white'}`}
         >
           Next
         </button>
       </div>
-       {/* Modal for CreateAssignment */}
-       {modalOpen && (
+
+      {assignmentModalOpen && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
           <div className="bg-white rounded-lg  p-6 w-full max-w-5xl"> {/* Increased size */}
           <div className="flex justify-end mt-16">
               <button
-                onClick={() => setModalOpen(false)} // This button will close the modal
+                onClick={() => setAssignmentModalOpen(false)} // This button will close the modal
                 className="bg-main3 text-white font-bold py-2 px-4 rounded-full"
               >
                 Cancel
               </button>
             </div>
             <CreateAssignment onClose={() => setModalOpen(false)} onCreate={handleCreateAssignment} />
-            
           </div>
         </div>
       )}
+      <ScoreUploadModal
+        isOpen={scoreModalOpen}
+        onClose={() => setScoreModalOpen(false)}
+        onUpload={handleScoreUpload}
+        studentID={selectedStudentID}
+      />
     </div>
   );
 };

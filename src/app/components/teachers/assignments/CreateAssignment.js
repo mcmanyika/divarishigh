@@ -1,19 +1,23 @@
 import React, { useState, useEffect } from 'react';
-import { ref, push, onValue, update } from 'firebase/database'; // Added 'update'
-import { database } from '../../../../../utils/firebaseConfig'; // Adjust path as necessary
+import { ref, push, onValue, update } from 'firebase/database';
+import { database } from '../../../../../utils/firebaseConfig';
 import { useSession } from 'next-auth/react';
 import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css'; // Import toast styles
+import 'react-toastify/dist/ReactToastify.css';
+
+import dynamic from 'next/dynamic';
+const SunEditor = dynamic(() => import('suneditor-react'), { ssr: false });
+import 'suneditor/dist/css/suneditor.min.css';
 
 const CreateAssignment = () => {
   const { data: session } = useSession();
   const [email, setEmail] = useState('');
-  const [classes, setClasses] = useState([]); // Store the fetched classes here
+  const [classes, setClasses] = useState([]);
   const [formValues, setFormValues] = useState({
     assignmentName: '',
-    assignmentDueDate: '', // The due date for the assignment
+    assignmentDueDate: '',
     assignmentClass: '',
-    description: '', // Added description field
+    description: '',
   });
   const [isLoading, setIsLoading] = useState(false);
 
@@ -22,18 +26,17 @@ const CreateAssignment = () => {
       const userEmail = session.user.email;
       setEmail(userEmail);
 
-      // Fetch classes where teacherEmail matches the logged-in user
       const classesRef = ref(database, 'classes');
       onValue(classesRef, (snapshot) => {
         const classesData = snapshot.val();
         if (classesData) {
           const userClasses = Object.keys(classesData)
-            .filter((key) => classesData[key].teacherEmail === userEmail) // Filter by teacherEmail
+            .filter((key) => classesData[key].teacherEmail === userEmail)
             .map((key) => ({
               id: key,
               ...classesData[key],
             }));
-          setClasses(userClasses); // Store the filtered classes
+          setClasses(userClasses);
         }
       });
     }
@@ -47,34 +50,36 @@ const CreateAssignment = () => {
     }));
   };
 
+  const handleDescriptionChange = (content) => {
+    setFormValues((prevValues) => ({
+      ...prevValues,
+      description: content,
+    }));
+  };
+
   const handleCreateAssignment = async () => {
     const { assignmentName, assignmentClass, assignmentDueDate, description } = formValues;
 
-    // Basic form validation
     if (!assignmentName || !assignmentClass || !assignmentDueDate || !description) {
       toast.error('Please fill out all fields before creating the assignment.');
       return;
     }
 
-    setIsLoading(true); // Set loading state
+    setIsLoading(true);
     try {
       const assignmentsRef = ref(database, 'assignment');
       const newAssignment = {
         email,
         assignmentName,
         assignmentClass,
-        createdDate: Date.now(), // Current timestamp for created date
-        assignmentDueDate, // User-provided due date
-        description, // Include the description in the assignment data
+        createdDate: Date.now(),
+        assignmentDueDate,
+        description,
       };
 
-      // Push the assignment data
       const assignmentSnapshot = await push(assignmentsRef, newAssignment);
-
-      // Get the assignment ID
       const assignmentId = assignmentSnapshot.key;
 
-      // Fetch students of the assigned class
       const studentsRef = ref(database, 'userTypes');
       onValue(studentsRef, (snapshot) => {
         const studentsData = snapshot.val();
@@ -83,7 +88,6 @@ const CreateAssignment = () => {
             .filter((key) => studentsData[key].studentClassLevel === assignmentClass)
             .map((key) => ({ id: key, ...studentsData[key] }));
 
-          // Assign the assignment to each student
           studentsInClass.forEach((student) => {
             const studentRef = ref(database, `userTypes/${student.id}/assignments/${assignmentId}`);
             update(studentRef, {
@@ -94,58 +98,56 @@ const CreateAssignment = () => {
         }
       });
 
-      // Reset form values and show success message
       setFormValues({
         assignmentName: '',
         assignmentDueDate: '',
         assignmentClass: '',
-        description: '', // Reset description field
+        description: '',
       });
       toast.success('Assignment created and successfully assigned to students!');
     } catch (error) {
       console.error('Error creating assignment:', error);
       toast.error('Error creating assignment. Please try again.');
     } finally {
-      setIsLoading(false); // End loading state
+      setIsLoading(false);
     }
   };
 
   return (
-    <div className="w-full text-sm mx-auto bg-white h-screen rounded px-8 pt-6 pb-8 mb-4">
+    <div className="w-full text-sm mx-auto bg-white  rounded px-8 pt-6 pb-8 mb-4">
       <h2 className="text-2xl font-semibold mb-4">Create New Assignment</h2>
-      <div className='flex'>
-      <div className="flex-1 mb-4 mr-4">
-        <label className="block text-gray-700 text-sm font-bold mb-2">Assignment Due Date</label>
-        <input
-          type="date"
-          name="assignmentDueDate"
-          value={formValues.assignmentDueDate}
-          onChange={handleInputChange}
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-        />
+      <div className="flex">
+        <div className="flex-1 mb-4 mr-4">
+          <label className="block text-gray-700 text-sm font-bold mb-2">Assignment Due Date</label>
+          <input
+            type="date"
+            name="assignmentDueDate"
+            value={formValues.assignmentDueDate}
+            onChange={handleInputChange}
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          />
+        </div>
+        <div className="flex-1 mb-4">
+          <label className="block text-gray-700 text-sm font-bold mb-2">Class</label>
+          <select
+            name="assignmentClass"
+            value={formValues.assignmentClass}
+            onChange={handleInputChange}
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          >
+            <option value="">Select Class</option>
+            {classes.length > 0 ? (
+              classes.map((cls) => (
+                <option key={cls.id} value={cls.className}>
+                  {cls.className}
+                </option>
+              ))
+            ) : (
+              <option disabled>No classes available</option>
+            )}
+          </select>
+        </div>
       </div>
-      <div className="flex-1 mb-4">
-        <label className="block text-gray-700 text-sm font-bold mb-2">Class</label>
-        <select
-          name="assignmentClass"
-          value={formValues.assignmentClass}
-          onChange={handleInputChange}
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-        >
-          <option value="">Select Class</option>
-          {classes.length > 0 ? (
-            classes.map((cls) => (
-              <option key={cls.id} value={cls.className}>
-                {cls.className}
-              </option>
-            ))
-          ) : (
-            <option disabled>No classes available</option>
-          )}
-        </select>
-      </div>
-      </div>
-      
 
       <div className="mb-4">
         <label className="block text-gray-700 text-sm font-bold mb-2">Assignment Title</label>
@@ -159,13 +161,19 @@ const CreateAssignment = () => {
       </div>
       <div className="mb-4">
         <label className="block text-gray-700 text-sm font-bold mb-2">Description</label>
-        <textarea
-          name="description"
-          value={formValues.description}
-          onChange={handleInputChange}
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          rows="4" // Adjust the height of the textarea
-        ></textarea>
+        <SunEditor
+          setContents={formValues.description}
+          onChange={handleDescriptionChange}
+          setOptions={{
+            height: 350,
+            buttonList: [
+              ['undo', 'redo', 'bold', 'italic', 'underline'],
+              ['list', 'align', 'fontSize'],
+              ['link', 'image', 'video'],
+              ['preview', 'print'],
+            ],
+          }}
+        />
       </div>
       <input type="hidden" value={email} readOnly />
       <button
