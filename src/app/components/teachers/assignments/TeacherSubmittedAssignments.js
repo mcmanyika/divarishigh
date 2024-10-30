@@ -140,7 +140,7 @@ const TeacherSubmittedAssignments = () => {
           onClick={handlePreviousGroupPage}
           disabled={currentGroupPage === 1}
           className={`px-4 py-2 rounded ${
-            currentGroupPage === 1 ? 'bg-gray-300' : 'bg-blue-500 text-white'
+            currentGroupPage === 1 ? 'bg-gray-300' : 'bg-gray-800 text-white'
           }`}
         >
           Previous Assignment
@@ -152,7 +152,7 @@ const TeacherSubmittedAssignments = () => {
           onClick={handleNextGroupPage}
           disabled={currentGroupPage === totalGroupPages}
           className={`px-4 py-2 rounded ${
-            currentGroupPage === totalGroupPages ? 'bg-gray-300' : 'bg-blue-500 text-white'
+            currentGroupPage === totalGroupPages ? 'bg-gray-300' : 'bg-gray-800 text-white'
           }`}
         >
           Next Assignment
@@ -174,7 +174,7 @@ const TeacherSubmittedAssignments = () => {
             />
             <button
               onClick={closeModal}
-              className="mt-4 px-6 py-3 bg-blue-500 text-white rounded-full"
+              className="mt-4 px-6 py-3 bg-main3 text-white rounded-full"
             >
               Close
             </button>

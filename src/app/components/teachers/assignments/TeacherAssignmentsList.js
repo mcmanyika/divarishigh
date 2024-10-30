@@ -4,6 +4,8 @@ import { database } from '../../../../../utils/firebaseConfig'; // Adjust path a
 import { useSession } from 'next-auth/react';
 import { toast } from 'react-toastify';
 import CreateAssignment from '../../../components/teachers/assignments/CreateAssignment';
+import { useRouter } from 'next/router';
+
 
 const ScoreUploadModal = ({ isOpen, onClose, onUpload, studentID }) => {
   const [score, setScore] = useState('');
@@ -57,6 +59,7 @@ const ScoreUploadModal = ({ isOpen, onClose, onUpload, studentID }) => {
 
 const TeacherAssignmentsList = () => {
   const { data: session } = useSession();
+  const router = useRouter();
   const [email, setEmail] = useState('');
   const [assignments, setAssignments] = useState([]);
   const [students, setStudents] = useState({});
@@ -187,14 +190,23 @@ const TeacherAssignmentsList = () => {
 
   return (
     <div className="w-full text-sm mx-auto bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-      <div className="w-full mb-8 flex justify-between items-center">
-        <h2 className="text-xl font-bold mb-2">Assignment: {currentAssignment.assignmentName}</h2>
+      <div className='mb-6'>
         <button
-          className="bg-main3 text-white px-4 p-2 rounded-full"
+          className="bg-main3 text-white uppercase px-4 p-2 m-1 rounded-full"
+          onClick={() => router.push('/teacher/students_assignments')}
+        >
+          Students Assignments
+        </button>
+      <button
+          className="bg-main3 text-white uppercase px-4 p-2 m-1 rounded-full"
           onClick={() => setAssignmentModalOpen(true)}
         >
           Add Assignment
         </button>
+      </div>
+      <div className="w-full mb-8 flex  items-center">
+        <h2 className="text-xl font-bold mb-2">{currentAssignment.assignmentName}</h2>
+        
       </div>
       <p>Class: {currentAssignment.assignmentClass}</p>
       <p>Due Date: {new Date(currentAssignment.assignmentDueDate).toLocaleDateString()}</p>

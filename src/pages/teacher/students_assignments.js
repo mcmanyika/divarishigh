@@ -58,7 +58,7 @@ function StudentsAssignments() {
       <div className="flex justify-center items-center h-screen">
         <FontAwesomeIcon
           icon={faSpinner}
-          className="text-4xl text-blue-500 animate-spin"
+          className="text-4xl text-main3 animate-spin"
         />
       </div>
     );
