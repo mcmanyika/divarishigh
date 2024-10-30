@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { ref, onValue } from 'firebase/database';
 import { database } from '../../../../utils/firebaseConfig';
 import { useGlobalState } from '../../store';
-
 import withAuth from '../../../../utils/withAuth';
 
 const ClassRoutine = () => {
@@ -10,15 +9,15 @@ const ClassRoutine = () => {
   const [studentClass] = useGlobalState('studentClass');
   const [, setRoutineCount] = useGlobalState('routineCount');
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10;
+  const [loading, setLoading] = useState(true);
+  const itemsPerPage = 5;
 
   useEffect(() => {
-    console.log('Fetching routines for studentClass:', studentClass); // Debug log
-
     const routineRef = ref(database, 'classRoutine');
+    setLoading(true);
+
     const handleData = (snapshot) => {
       const data = snapshot.val();
-      console.log('Fetched data:', data); // Debug log
 
       if (data) {
         const currentDate = new Date();
@@ -27,20 +26,19 @@ const ClassRoutine = () => {
             id: key,
             ...data[key]
           }))
-          .filter(entry => {
-            console.log('Evaluating entry:', entry); // Debug log
-            return entry.studentclass === studentClass && new Date(entry.date) > currentDate;
-          });
+          .filter(entry => entry.studentclass === studentClass)
+          .sort((a, b) => new Date(b.date) - new Date(a.date)); // Sort by date descending
 
-        console.log('Filtered routine:', filteredRoutine); // Debug log
         setRoutine(filteredRoutine);
         setRoutineCount(filteredRoutine.length);
+      } else {
+        console.error('No data available');
       }
+      
+      setLoading(false);
     };
 
-    onValue(routineRef, handleData, {
-      onlyOnce: true
-    });
+    onValue(routineRef, handleData, { onlyOnce: true });
 
   }, [studentClass, setRoutineCount]);
 
@@ -63,7 +61,9 @@ const ClassRoutine = () => {
   return (
     <div className="w-full text-sm p-6">
       <h2 className="text-xl font-semibold mb-4">Class Routine</h2>
-      {routine.length === 0 ? (
+      {loading ? (
+        <p className="text-center">Loading...</p>
+      ) : routine.length === 0 ? (
         <p className="text-center">There are no upcoming classes assigned yet.</p>
       ) : (
         <>
@@ -115,4 +115,4 @@ const ClassRoutine = () => {
   );
 };
 
-export default withAuth(ClassRoutine)
+export default withAuth(ClassRoutine);
