@@ -14,13 +14,14 @@ const ClassAllocation = () => {
   const [selectedTeacher, setSelectedTeacher] = useState('');
   const [className, setClassName] = useState('');
   const [teacherDetails, setTeacherDetails] = useState({ firstName: '', lastName: '', email: '', userID: '' });
+  const [classOptions, setClassOptions] = useState([]);
 
   useEffect(() => {
     if (status === 'authenticated') {
+      // Fetch teachers from 'userTypes' where userType is 'teacher'
       const fetchTeachers = async () => {
         try {
           const teachersRef = ref(database, 'userTypes');
-
           onValue(teachersRef, (snapshot) => {
             const teachersData = snapshot.val();
             if (teachersData) {
@@ -28,11 +29,8 @@ const ClassAllocation = () => {
                 id: key,
                 ...teachersData[key],
               }));
-              // Filter to get only teachers
               const filteredTeachers = teachersArray.filter((teacher) => teacher.userType === 'teacher');
               setTeachers(filteredTeachers);
-            } else {
-              console.log('No teachers data found.');
             }
           });
         } catch (error) {
@@ -42,7 +40,27 @@ const ClassAllocation = () => {
         }
       };
 
+      // Fetch class options from 't_dict' where category is 'level'
+      const fetchClassOptions = async () => {
+        try {
+          const classOptionsRef = ref(database, 't_dict');
+          onValue(classOptionsRef, (snapshot) => {
+            const data = snapshot.val();
+            if (data) {
+              const optionsArray = Object.keys(data)
+                .map((key) => data[key])
+                .filter((item) => item.category === 'level')
+                .map((item) => item.title);
+              setClassOptions(optionsArray);
+            }
+          });
+        } catch (error) {
+          console.error('Error fetching class options:', error);
+        }
+      };
+
       fetchTeachers();
+      fetchClassOptions();
     } else {
       setIsLoading(false);
     }
@@ -56,7 +74,7 @@ const ClassAllocation = () => {
       return;
     }
 
-    const uploadedBy = session?.user?.email || ''; // Get the logged-in user's email
+    const uploadedBy = session?.user?.email || '';
     const classData = {
       className,
       uploadedBy,
@@ -69,7 +87,6 @@ const ClassAllocation = () => {
     try {
       await push(ref(database, 'classes'), classData);
       toast.success("Class name uploaded successfully!");
-      // Refresh the page after a short delay to ensure the toast message is shown
       setTimeout(() => {
         window.location.reload();
       }, 4000);
@@ -85,7 +102,7 @@ const ClassAllocation = () => {
       firstName: teacher.firstName,
       lastName: teacher.lastName,
       email: teacher.email,
-      userID: teacher.id, // Assuming `id` is the teacher's user ID
+      userID: teacher.id,
     });
   };
 
@@ -122,22 +139,22 @@ const ClassAllocation = () => {
       <div className="bg-white border shadow-sm rounded p-4 ml-0 m-2">
         <form onSubmit={handleClassSubmit} className="space-y-4">
           <div className="mt-2 grid grid-cols-3 gap-4">
-            {["1A", "2A", "3A", "4A", "5A", "6A"].map((option) => (
-              <label key={option} className="flex items-center">
+            {classOptions.map((option) => (
+              <label key={option} className="flex items-center space-x-2">
                 <input
                   type="radio"
                   value={option}
                   checked={className === option}
                   onChange={(e) => setClassName(e.target.value)}
-                  className="mr-2"
+                  className="w-4 h-4 rounded-none mr-2"
                 />
-                <span>{option}</span>
+                <span className="text-base">{option}</span>
               </label>
             ))}
           </div>
           <button
             type="submit"
-            className="mt-4 bg-blue-500 text-white py-2 px-4 rounded"
+            className="mt-4 bg-blue-500 text-white py-2 px-4 rounded-full  hover:bg-blue-600 transition-colors"
           >
             Allocate Teacher
           </button>

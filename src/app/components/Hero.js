@@ -9,68 +9,79 @@ import Image from 'next/image';
 const Hero = () => {
   const [isOverlayVisible] = useGlobalState('isOverlayVisible');
   const [titles, setTitles] = useState([]);
+  const [carouselData, setCarouselData] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const carouselData = [
-    {
-      title: "",
-      description: "",
-      imageUrl: "https://firebasestorage.googleapis.com/v0/b/divaris-3e59f.appspot.com/o/images%2FDSC_6074.jpg?alt=media&token=274e6ddf-f997-4fe6-812f-3e9e13472b33",
-    },
-    {
-      title: "",
-      description: "",
-      imageUrl: "https://firebasestorage.googleapis.com/v0/b/divaris-3e59f.appspot.com/o/images%2FDSC_5865.jpg?alt=media&token=70f5041a-7e6d-4572-a845-4fc8b6bb2c4a",
-    },
-    {
-      title: "",
-      description: "",
-      imageUrl: "https://firebasestorage.googleapis.com/v0/b/divaris-3e59f.appspot.com/o/images%2FDSC_6007.jpg?alt=media&token=5ae04479-67ff-4d52-849a-1a27491fe2c7",
-    }
-  ];
 
   // Function to handle menu click and toggle overlay visibility
   const handleMenuClick = () => {
     setIsOverlayVisible(!isOverlayVisible);
   };
 
-  // Fetch data from Firebase on component mount
+  // Fetch banners from Firebase 'images' table where title is 'banner'
+  useEffect(() => {
+    const fetchBanners = () => {
+      const imagesRef = ref(database, 'images');
+      const bannerQuery = query(imagesRef, orderByChild('title'), equalTo('banner'));
+
+      onValue(bannerQuery, (snapshot) => {
+        const bannerImages = [];
+        snapshot.forEach((childSnapshot) => {
+          const data = childSnapshot.val();
+          bannerImages.push({
+            title: data.title || "",
+            description: data.description || "",
+            imageUrl: data.url || "",
+          });
+        });
+        setCarouselData(bannerImages.length > 0 ? bannerImages : [
+          // Fallback data if no banner images are found
+          {
+            title: "Welcome",
+            description: "Discover our offerings",
+            imageUrl: "https://example.com/fallback1.jpg",
+          },
+          {
+            title: "Explore",
+            description: "Your journey starts here",
+            imageUrl: "https://example.com/fallback2.jpg",
+          },
+        ]);
+      });
+    };
+
+    fetchBanners();
+  }, []);
+
+  // Fetch titles data from Firebase
   useEffect(() => {
     const fetchData = () => {
-      try {
-        const titleRef = ref(database, 'title');
-        const statusQuery = query(titleRef, orderByChild('status'), equalTo('Active'));
+      const titleRef = ref(database, 'title');
+      const statusQuery = query(titleRef, orderByChild('status'), equalTo('Active'));
 
-        onValue(statusQuery, (snapshot) => {
-          const data = snapshot.val();
-          if (data) {
-            const titlesArray = Object.keys(data)
-              .map((key) => ({
-                id: key,
-                title: data[key].title,
-                link: data[key].link,
-                status: data[key].status,
-                category: data[key].category,
-              }))
-              .filter(a => a.category === 'title')
-              .sort((a, b) => {
-                if (a.title === 'Admissions') return 1;
-                if (b.title === 'Admissions') return -1;
-                if (a.title === 'Alumni') return 1;
-                if (b.title === 'Alumni') return -1;
-                return a.title.localeCompare(b.title);
-              });
-            setTitles(titlesArray);
-          } else {
-            setTitles([]);
-          }
-        });
-      } catch (error) {
-        console.error('Firebase Error:', error);
-      }
+      onValue(statusQuery, (snapshot) => {
+        const data = snapshot.val();
+        const titlesArray = data ? Object.keys(data)
+          .map((key) => ({
+            id: key,
+            title: data[key].title,
+            link: data[key].link,
+            status: data[key].status,
+            category: data[key].category,
+          }))
+          .filter((a) => a.category === 'title')
+          .sort((a, b) => {
+            if (a.title === 'Admissions') return 1;
+            if (b.title === 'Admissions') return -1;
+            if (a.title === 'Alumni') return 1;
+            if (b.title === 'Alumni') return -1;
+            return a.title.localeCompare(b.title);
+          }) : [];
+        setTitles(titlesArray);
+      });
     };
 
     fetchData();
-  }, []); // Run once on component mount
+  }, []);
 
   // Carousel logic to change slide every 5 seconds
   useEffect(() => {
@@ -80,7 +91,7 @@ const Hero = () => {
     return () => clearInterval(interval);
   }, [carouselData.length]);
 
-  const currentSlide = carouselData[currentIndex];
+  const currentSlide = carouselData[currentIndex] || {};
 
   return (
     <div className="relative h-screen flex items-center justify-center overflow-hidden">
@@ -120,12 +131,6 @@ const Hero = () => {
           </div>
         </div>
       )}
-      <section className="relative  text-white p-6 md:p-10 text-center">
-        <div className='max-w-2xl mx-auto'>
-          <h1 className="sm-title   md:lg-title">{currentSlide.title}</h1>
-          <p className="mt-2 text-sm md:text-lg font-sans">{currentSlide.description}</p>
-        </div>
-      </section>
     </div>
   );
 };
