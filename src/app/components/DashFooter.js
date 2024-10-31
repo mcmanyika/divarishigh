@@ -15,7 +15,8 @@ const Footer = () => {
     <>
       <footer className="text-gray-400 text-sm p-4">
         <div className="font-thin">
-          &copy; Copyrights reserved {new Date().getFullYear()}. Developed by <b>SMART LEARNER</b>
+          &copy; Copyrights reserved {new Date().getFullYear()}. Developed by <Link href='https://smartlearner.vercel.app/' target="_blank"><b>SMART LEARNER</b> 
+          </Link>
         </div>
       </footer>
 
