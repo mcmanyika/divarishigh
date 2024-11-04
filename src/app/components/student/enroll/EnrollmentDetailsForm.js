@@ -55,73 +55,71 @@ const EnrollmentDetailsForm = () => {
   }, [additionalDocuments]);
 
   // Helper function to sanitize email
-const sanitizeEmail = (email) => email.replace(/\./g, ',');
+  const sanitizeEmail = (email) => email.replace(/\./g, ',');
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
-
-  try {
-    // Upload each document and collect their URLs
-    const documentUrls = await Promise.all(
-      Object.entries(additionalDocuments).map(async ([key, file]) => {
-        if (file) {
-          const filePath = `enrollment_documents/${formData.contactEmail}/${key}`;
-          try {
-            return { [key]: await uploadFileAndGetUrl(file, filePath) };
-          } catch (uploadError) {
-            console.error(`Error uploading ${key}:`, uploadError);
-            throw new Error(`Failed to upload ${key}`);
-          }
-        }
-        return null;
-      })
-    ).then((results) => results.reduce((acc, curr) => ({ ...acc, ...curr }), {}));
-
-    const enrollmentData = {
-      ...formData,
-      additionalDocuments: documentUrls,
-    };
-
-    // Sanitize the email before using it in the path
-    const sanitizedEmail = sanitizeEmail(formData.contactEmail);
-    const dbRef = ref(database, `enrollments/${sanitizedEmail}`);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
     try {
-      await set(dbRef, enrollmentData);
-    } catch (databaseError) {
-      console.error('Error saving data to database:', databaseError);
-      throw new Error('Failed to save enrollment data');
+      // Upload each document and collect their URLs
+      const documentUrls = await Promise.all(
+        Object.entries(additionalDocuments).map(async ([key, file]) => {
+          if (file) {
+            const filePath = `enrollment_documents/${formData.contactEmail}/${key}`;
+            try {
+              return { [key]: await uploadFileAndGetUrl(file, filePath) };
+            } catch (uploadError) {
+              console.error(`Error uploading ${key}:`, uploadError);
+              throw new Error(`Failed to upload ${key}`);
+            }
+          }
+          return null;
+        })
+      ).then((results) => results.reduce((acc, curr) => ({ ...acc, ...curr }), {}));
+
+      const enrollmentData = {
+        ...formData,
+        additionalDocuments: documentUrls,
+      };
+
+      // Sanitize the email before using it in the path
+      const sanitizedEmail = sanitizeEmail(formData.contactEmail);
+      const dbRef = ref(database, `enrollments/${sanitizedEmail}`);
+
+      try {
+        await set(dbRef, enrollmentData);
+      } catch (databaseError) {
+        console.error('Error saving data to database:', databaseError);
+        throw new Error('Failed to save enrollment data');
+      }
+
+      toast.success('Enrollment details submitted successfully!');
+      setFormData({
+        enrollmentDate: '',
+        studentClassLevel: '',
+        contactEmail: '',
+        contactPhone: '',
+        parentName: '',
+        parentPhone: '',
+        academicPreviousSchool: '',
+        academicGrade: '',
+      });
+      setAdditionalDocuments({
+        birthCertificate: null,
+        proofOfResidence: null,
+        transcript: null,
+      });
+      setIsSubmitDisabled(true);
+    } catch (error) {
+      console.error('Error during form submission:', error);
+      toast.error(`Failed to submit enrollment details: ${error.message}`);
     }
-
-    toast.success('Enrollment details submitted successfully!');
-    setFormData({
-      enrollmentDate: '',
-      studentClassLevel: '',
-      contactEmail: '',
-      contactPhone: '',
-      parentName: '',
-      parentPhone: '',
-      academicPreviousSchool: '',
-      academicGrade: '',
-    });
-    setAdditionalDocuments({
-      birthCertificate: null,
-      proofOfResidence: null,
-      transcript: null,
-    });
-    setIsSubmitDisabled(true);
-  } catch (error) {
-    console.error('Error during form submission:', error);
-    toast.error(`Failed to submit enrollment details: ${error.message}`);
-  }
-};
-
-  
+  };
 
   return (
     <div className="flex items-center justify-center min-h-screen">
-      <div className="p-6 bg-white shadow-lg rounded-lg max-w-2xl w-full">
-        <h2 className="text-2xl font-semibold mb-4">Enrollment Details</h2>
+      <div className="p-6 bg-white shadow-lg rounded-lg max-w-5xl w-full">
+        <h2 className="text-2xl font-semibold text-center mb-4">Enrollment Details</h2>
         <form onSubmit={handleSubmit}>
           {/* Enrollment Details */}
           <div className="grid grid-cols-1 gap-4">
@@ -155,7 +153,7 @@ const handleSubmit = async (e) => {
 
           {/* Contact Information */}
           <h3 className="text-xl font-semibold mt-6 mb-2">Contact Information</h3>
-          <div className="grid grid-cols-1 gap-4">
+          <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="block text-gray-700 mb-1">Email</label>
               <input
@@ -182,7 +180,7 @@ const handleSubmit = async (e) => {
 
           {/* Parent/Guardian Information */}
           <h3 className="text-xl font-semibold mt-6 mb-2">Parent/Guardian Information</h3>
-          <div className="grid grid-cols-1 gap-4">
+          <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="block text-gray-700 mb-1">Parent/Guardian Name</label>
               <input
@@ -209,7 +207,7 @@ const handleSubmit = async (e) => {
 
           {/* Academic Information */}
           <h3 className="text-xl font-semibold mt-6 mb-2">Academic Information</h3>
-          <div className="grid grid-cols-1 gap-4">
+          <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="block text-gray-700 mb-1">Previous School</label>
               <input
@@ -259,7 +257,7 @@ const handleSubmit = async (e) => {
               }`}
               disabled={isSubmitDisabled}
             >
-              Submit Enrollment
+              Submit Enrollment Details
             </button>
           </div>
         </form>
