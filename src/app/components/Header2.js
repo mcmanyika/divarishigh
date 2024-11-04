@@ -145,14 +145,15 @@ const Header2 = () => {
               </div>
             </li>
           ))}
-          <li className="min-w-48">
-            <button
-              onClick={overlayToggle}
-              className="bg-yellow-500 text-white font-bold py-2 px-6 rounded-tr-full rounded-br-full rounded-tl-full rounded-bl-md hover:bg-yellow-600 transition duration-300"
-            >
-              ENROLL NOW
-            </button>
-          </li>
+          <li>
+            <Link href="/web/enroll">
+              <button
+                className="bg-yellow-500 text-white font-bold py-2 px-6 rounded-tr-full rounded-br-full rounded-tl-full rounded-bl-md hover:bg-yellow-600 transition duration-300"
+              >
+                ENROLL NOW
+              </button>
+            </Link>
+            </li>
         </ul>
       </nav>
 

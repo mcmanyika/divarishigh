@@ -41,7 +41,8 @@
     "slick-carousel": "^1.8.1",
     "stripe": "^17.2.0",
     "suneditor": "^2.47.0",
-    "suneditor-react": "^3.6.1"
+    "suneditor-react": "^3.6.1",
+    "uuid": "^11.0.2"
   },
   "devDependencies": {
     "@types/react": "18.3.3",
