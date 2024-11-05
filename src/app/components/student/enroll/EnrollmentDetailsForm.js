@@ -118,7 +118,7 @@ const EnrollmentDetailsForm = () => {
 
   return (
     <div className="flex items-center justify-center min-h-screen">
-      <div className="p-6 bg-white shadow-lg rounded-lg max-w-5xl w-full">
+      <div className="p-6 bg-white shadow-lg rounded-lg max-w-4xl w-full">
         <h2 className="text-2xl font-semibold text-center mb-4">Enrollment Details</h2>
         <form onSubmit={handleSubmit}>
           {/* Enrollment Details */}
@@ -252,7 +252,7 @@ const EnrollmentDetailsForm = () => {
           <div className="mt-6">
             <button
               type="submit"
-              className={`w-full p-2 bg-blue-500 text-white rounded ${
+              className={`px-4 p-2 bg-main3 text-white rounded-full ${
                 isSubmitDisabled ? 'opacity-50 cursor-not-allowed' : 'hover:bg-blue-600'
               }`}
               disabled={isSubmitDisabled}
