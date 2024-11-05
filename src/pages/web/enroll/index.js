@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import EnrollmentDetailsForm from '../../../app/components/student/enroll/EnrollmentDetailsForm';
-import AdminLayout from '../../admin/adminLayout';
 import withAuth from '../../../../utils/withAuth';
 import Layout from '../../../app/components/Layout2';
 
