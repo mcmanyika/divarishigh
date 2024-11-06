@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { storage, database } from '../../../../../utils/firebaseConfig'; // Adjust the path as necessary
-import { ref, set } from 'firebase/database';
+import { ref, set, get } from 'firebase/database';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useSession } from 'next-auth/react';
@@ -8,7 +8,6 @@ import { useSession } from 'next-auth/react';
 const EnrollmentDetailsForm = () => {
   const { data: session } = useSession();
   const [formData, setFormData] = useState({
-    enrollmentDate: '',
     class: '',
     contactEmail: '',
     contactPhone: '',
@@ -16,6 +15,7 @@ const EnrollmentDetailsForm = () => {
     parentPhone: '',
     academicPreviousSchool: '',
   });
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   // Set email to the logged-in user's email when session is loaded
   useEffect(() => {
@@ -24,6 +24,15 @@ const EnrollmentDetailsForm = () => {
         ...prevData,
         contactEmail: session.user.email,
       }));
+
+      // Check if enrollment details already exist in the database
+      const sanitizedEmail = sanitizeEmail(session.user.email);
+      const dbRef = ref(database, `enrollments/${sanitizedEmail}`);
+      get(dbRef).then((snapshot) => {
+        if (snapshot.exists()) {
+          setIsSubmitted(true);  // User has already submitted
+        }
+      });
     }
   }, [session]);
 
@@ -40,6 +49,11 @@ const EnrollmentDetailsForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (isSubmitted) {
+      toast.error('You have already submitted your enrollment details.');
+      return; // Prevent further submission
+    }
+
     try {
       const sanitizedEmail = sanitizeEmail(formData.contactEmail);
       const dbRef = ref(database, `enrollments/${sanitizedEmail}`);
@@ -47,8 +61,9 @@ const EnrollmentDetailsForm = () => {
       await set(dbRef, formData);
 
       toast.success('Enrollment details submitted successfully!');
+      setIsSubmitted(true);  // Set as submitted after successful form submission
+
       setFormData({
-        enrollmentDate: '',
         class: '',
         contactEmail: session?.user?.email || '', // Reset to logged-in user’s email
         contactPhone: '',
@@ -63,117 +78,112 @@ const EnrollmentDetailsForm = () => {
   };
 
   return (
-    <div className="flex  justify-center">
+    <div className="flex justify-center">
       <div className="p-6 bg-white shadow-lg rounded-lg max-w-2xl w-full">
         <h2 className="text-2xl text-center font-semibold mb-4">Enrollment Details</h2>
-        <form onSubmit={handleSubmit}>
-          {/* Enrollment Details */}
-          <div className="grid grid-cols-1 gap-4">
-            <div>
-              <label className="block text-gray-700 mb-1">Enrollment Date</label>
-              <input
-                type="date"
-                name="enrollmentDate"
-                value={formData.enrollmentDate}
-                onChange={handleChange}
-                className="w-full p-2 border border-gray-300 rounded"
-                required
-              />
+        {isSubmitted ? (
+          <div className="text-center text-xl text-green-500">
+            You have already submitted your enrollment details.
+          </div>
+        ) : (
+          <form onSubmit={handleSubmit}>
+            {/* Class Selection */}
+            <div className="grid grid-cols-1 gap-4">
+              <div>
+                <select
+                  name="class"
+                  value={formData.class}
+                  onChange={handleChange}
+                  className="w-full p-2 border border-gray-300 rounded"
+                >
+                  <option value="" disabled>Select Grade...</option>
+                  <option value="Form 1">Form 1</option>
+                  <option value="Form 2">Form 2</option>
+                  <option value="O' Level">O Level</option>
+                  <option value="A' Level">A Level</option>
+                </select>
+              </div>
             </div>
-            <div>
-              <label className="block text-gray-700 mb-1">Class</label>
-              <select
-                name="class"
-                value={formData.class}
-                onChange={handleChange}
-                className="w-full p-2 border border-gray-300 rounded"
+
+            {/* Contact Information */}
+            <h3 className="text-xl font-semibold mt-6 mb-2">Contact Information</h3>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-gray-700 mb-1">Email</label>
+                <input
+                  type="email"
+                  name="contactEmail"
+                  value={formData.contactEmail}
+                  readOnly
+                  className="w-full p-2 border border-gray-300 rounded bg-gray-100"
+                />
+              </div>
+              <div>
+                <label className="block text-gray-700 mb-1">Phone</label>
+                <input
+                  type="tel"
+                  name="contactPhone"
+                  value={formData.contactPhone}
+                  onChange={handleChange}
+                  className="w-full p-2 border border-gray-300 rounded"
+                  required
+                />
+              </div>
+            </div>
+
+            {/* Parent/Guardian Information */}
+            <h3 className="text-xl font-semibold mt-6 mb-2">Parent/Guardian Information</h3>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-gray-700 mb-1">Parent/Guardian Name</label>
+                <input
+                  type="text"
+                  name="parentName"
+                  value={formData.parentName}
+                  onChange={handleChange}
+                  className="w-full p-2 border border-gray-300 rounded"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-gray-700 mb-1">Parent/Guardian Phone</label>
+                <input
+                  type="tel"
+                  name="parentPhone"
+                  value={formData.parentPhone}
+                  onChange={handleChange}
+                  className="w-full p-2 border border-gray-300 rounded"
+                  required
+                />
+              </div>
+            </div>
+
+            {/* Academic Information */}
+            <h3 className="text-xl font-semibold mt-6 mb-2">Academic Information</h3>
+            <div className="grid grid-cols-1 gap-4">
+              <div>
+                <label className="block text-gray-700 mb-1">Previous School</label>
+                <input
+                  type="text"
+                  name="academicPreviousSchool"
+                  value={formData.academicPreviousSchool}
+                  onChange={handleChange}
+                  className="w-full p-2 border border-gray-300 rounded"
+                />
+              </div>
+            </div>
+
+            <div className="mt-6">
+              <button
+                type="submit"
+                className="w-full p-2 bg-main3 text-white rounded hover:bg-blue-600"
+                disabled={isSubmitted} // Disable the button if already submitted
               >
-                <option value="" disabled>Select Class...</option>
-                <option value="Form 1">Form 1</option>
-                <option value="Form 2">Form 2</option>
-                <option value="O' Level">O Level</option>
-                <option value="A' Level">A Level</option>
-              </select>
+                Submit Enrollment Details
+              </button>
             </div>
-          </div>
-
-          {/* Contact Information */}
-          <h3 className="text-xl font-semibold mt-6 mb-2">Contact Information</h3>
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className="block text-gray-700 mb-1">Email</label>
-              <input
-                type="email"
-                name="contactEmail"
-                value={formData.contactEmail}
-                readOnly
-                className="w-full p-2 border border-gray-300 rounded bg-gray-100"
-              />
-            </div>
-            <div>
-              <label className="block text-gray-700 mb-1">Phone</label>
-              <input
-                type="tel"
-                name="contactPhone"
-                value={formData.contactPhone}
-                onChange={handleChange}
-                className="w-full p-2 border border-gray-300 rounded"
-                required
-              />
-            </div>
-          </div>
-
-          {/* Parent/Guardian Information */}
-          <h3 className="text-xl font-semibold mt-6 mb-2">Parent/Guardian Information</h3>
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className="block text-gray-700 mb-1">Parent/Guardian Name</label>
-              <input
-                type="text"
-                name="parentName"
-                value={formData.parentName}
-                onChange={handleChange}
-                className="w-full p-2 border border-gray-300 rounded"
-                required
-              />
-            </div>
-            <div>
-              <label className="block text-gray-700 mb-1">Parent/Guardian Phone</label>
-              <input
-                type="tel"
-                name="parentPhone"
-                value={formData.parentPhone}
-                onChange={handleChange}
-                className="w-full p-2 border border-gray-300 rounded"
-                required
-              />
-            </div>
-          </div>
-
-          {/* Academic Information */}
-          <h3 className="text-xl font-semibold mt-6 mb-2">Academic Information</h3>
-          <div className="grid grid-cols-1 gap-4">
-            <div>
-              <label className="block text-gray-700 mb-1">Previous School</label>
-              <input
-                type="text"
-                name="academicPreviousSchool"
-                value={formData.academicPreviousSchool}
-                onChange={handleChange}
-                className="w-full p-2 border border-gray-300 rounded"
-              />
-            </div>
-          </div>
-
-          <div className="mt-6">
-            <button
-              type="submit"
-              className="w-full p-2 bg-main3 text-white rounded hover:bg-blue-600"
-            >
-              Submit Enrollment Details
-            </button>
-          </div>
-        </form>
+          </form>
+        )}
       </div>
     </div>
   );
