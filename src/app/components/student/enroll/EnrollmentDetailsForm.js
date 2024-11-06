@@ -78,7 +78,7 @@ const EnrollmentDetailsForm = () => {
   };
 
   return (
-    <div className="flex justify-center">
+    <div className="flex items-center justify-center min-h-screen">
       <div className="p-6 bg-white shadow-lg rounded-lg max-w-2xl w-full">
         <h2 className="text-2xl text-center font-semibold mb-4">Enrollment Details</h2>
         {isSubmitted ? (
