@@ -16,6 +16,7 @@ const EnrollmentDetailsForm = () => {
     academicPreviousSchool: '',
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [loading, setLoading] = useState(true); // Track loading state
 
   // Set email to the logged-in user's email when session is loaded
   useEffect(() => {
@@ -32,6 +33,7 @@ const EnrollmentDetailsForm = () => {
         if (snapshot.exists()) {
           setIsSubmitted(true);  // User has already submitted
         }
+        setLoading(false); // Set loading to false after check is done
       });
     }
   }, [session]);
@@ -77,9 +79,17 @@ const EnrollmentDetailsForm = () => {
     }
   };
 
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="animate-spin rounded-full border-4 border-blue-500 border-t-transparent w-16 h-16"></div> {/* Spinner */}
+      </div>
+    );
+  }
+
   return (
-    <div className="flex items-center justify-center min-h-screen">
-      <div className="p-6 bg-white shadow-lg rounded-lg max-w-2xl w-full">
+    <div className="flex justify-center h-screen">
+      <div className="p-6 bg-white  rounded-lg max-w-2xl w-full">
         <h2 className="text-2xl text-center font-semibold mb-4">Enrollment Details</h2>
         {isSubmitted ? (
           <div className="text-center text-xl text-green-500">
