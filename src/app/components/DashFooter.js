@@ -13,7 +13,7 @@ const Footer = () => {
 
   return (
     <>
-      <footer className="text-gray-400 text-sm p-4">
+      <footer className="text-gray-400 bg-gray-100 text-sm p-4">
         <div className="font-thin">
           &copy; Copyrights reserved {new Date().getFullYear()}. Developed by <Link href='https://smartlearner.vercel.app/' target="_blank"><b>SMART LEARNER</b> 
           </Link>

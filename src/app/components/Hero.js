@@ -128,6 +128,13 @@ const Hero = () => {
                 </Link>
               </div>
             ))}
+            <Link href="/web/enroll">
+              <button
+                className="bg-yellow-500 text-white font-bold py-2 px-6 rounded-tr-full rounded-br-full rounded-tl-full rounded-bl-md hover:bg-yellow-600 transition duration-300"
+              >
+                ENROLL NOW
+              </button>
+            </Link>
           </div>
         </div>
       )}

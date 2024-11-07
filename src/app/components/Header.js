@@ -90,7 +90,7 @@ const Header = () => {
 
   const renderUserDashboard = () => {
     if (status === "loading") {
-      return <span className="text-white pr-3">Loading...</span>; // Optional loading state
+      return <span className="text-white pr-3"></span>; // Optional loading state
     }
 
     if (session) {
@@ -158,7 +158,7 @@ const Header = () => {
             <li key={rw.id} className="pt-4">
               <Link href={`${rw.link}`} passHref>
                 <div className="hover:text-gray-300 text-sm font-sans font-thin uppercase pb-2 border-b-2 border-transparent hover:border-white">
-                  {rw.title} 
+                  {rw.title}
                 </div>
               </Link>
             </li>
