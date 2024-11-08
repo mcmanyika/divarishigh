@@ -1,11 +1,11 @@
 import React from 'react'
 import ApplicantsList from '../../../app/components/student/enroll/ApplicantsList'
-import Layout from '../../../app/components/Layout2'
+import AdminLayout from '../../admin/adminLayout'
 
 export default function index() {
   return (
-    <Layout>
+    <AdminLayout>
         <ApplicantsList />
-    </Layout>
+    </AdminLayout>
   )
 }

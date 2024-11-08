@@ -8,34 +8,31 @@ import { useSession } from 'next-auth/react';
 const EnrollmentDetailsForm = () => {
   const { data: session } = useSession();
   const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
     class: '',
     contactEmail: '',
     contactPhone: '',
     parentName: '',
     parentPhone: '',
     academicPreviousSchool: '',
+    timestamp: new Date().toISOString(),
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (session?.user?.email) {
-      setFormData((prevData) => ({
-        ...prevData,
-        contactEmail: session.user.email,
-      }));
-
-      // Check if enrollment details already exist in the database
       const sanitizedEmail = sanitizeEmail(session.user.email);
       const dbRef = ref(database, `enrollments/${sanitizedEmail}`);
       get(dbRef).then((snapshot) => {
         if (snapshot.exists()) {
-          setIsSubmitted(true);  // Prevent further submission if already submitted
+          setIsSubmitted(true);
         }
-        setLoading(false); // Set loading to false after check is done
+        setLoading(false);
       });
     } else {
-      setLoading(false); // Stop loading if user is not logged in
+      setLoading(false);
     }
   }, [session]);
 
@@ -67,12 +64,15 @@ const EnrollmentDetailsForm = () => {
       setIsSubmitted(true);
 
       setFormData({
+        firstName: '',
+        lastName: '',
         class: '',
-        contactEmail: session?.user?.email || '',
+        contactEmail: '',
         contactPhone: '',
         parentName: '',
         parentPhone: '',
         academicPreviousSchool: '',
+        timestamp: new Date().toISOString(),
       });
     } catch (error) {
       console.error('Error during form submission:', error);
@@ -83,7 +83,7 @@ const EnrollmentDetailsForm = () => {
   if (loading) {
     return (
       <div className="flex justify-center items-center h-screen">
-        <div className="animate-spin rounded-full border-4 border-blue-500 border-t-transparent w-16 h-16"></div> {/* Spinner */}
+        <div className="animate-spin rounded-full border-4 border-blue-500 border-t-transparent w-16 h-16"></div>
       </div>
     );
   }
@@ -98,7 +98,35 @@ const EnrollmentDetailsForm = () => {
           </div>
         ) : (
           <form onSubmit={handleSubmit}>
+            {/* Personal Information */}
+            <h3 className="text-xl font-semibold mt-6 mb-2">Personal Information</h3>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-gray-700 mb-1">First Name</label>
+                <input
+                  type="text"
+                  name="firstName"
+                  value={formData.firstName}
+                  onChange={handleChange}
+                  className="w-full p-2 border border-gray-300 rounded"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-gray-700 mb-1">Last Name</label>
+                <input
+                  type="text"
+                  name="lastName"
+                  value={formData.lastName}
+                  onChange={handleChange}
+                  className="w-full p-2 border border-gray-300 rounded"
+                  required
+                />
+              </div>
+            </div>
+
             {/* Class Selection */}
+            <h3 className="text-xl font-semibold mt-6 mb-2">Class</h3>
             <div className="grid grid-cols-1 gap-4">
               <div>
                 <select
@@ -126,6 +154,7 @@ const EnrollmentDetailsForm = () => {
                   type="email"
                   name="contactEmail"
                   value={formData.contactEmail}
+                  onChange={handleChange}
                   className="w-full p-2 border border-gray-300 rounded"
                 />
               </div>
@@ -188,7 +217,7 @@ const EnrollmentDetailsForm = () => {
               <button
                 type="submit"
                 className="w-full p-2 bg-main3 text-white rounded hover:bg-blue-600"
-                disabled={isSubmitted} // Disable the button if already submitted
+                disabled={isSubmitted}
               >
                 Submit Enrollment Details
               </button>

@@ -1,159 +1,134 @@
-import React, { useEffect, useState } from 'react';
-import { database } from '../../../../../utils/firebaseConfig'; // Adjust the path as necessary
-import { ref, onValue } from 'firebase/database';
+import React, { useState, useEffect } from 'react';
+import { database } from '../../../../../utils/firebaseConfig'; // Ensure this path is correct
+import { ref, get } from 'firebase/database';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import Modal from 'react-modal';
-import { getStorage, ref as storageRef, getDownloadURL } from 'firebase/storage';
+import withAuth from '../../../../../utils/withAuth';
 
-const ApplicantsList = () => {
-  const [applicants, setApplicants] = useState([]);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [selectedApplicant, setSelectedApplicant] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [fileUrls, setFileUrls] = useState({}); // To store file URLs
+const EnrollmentList = () => {
+  const [enrollments, setEnrollments] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 12; // Change this to adjust the number of items per page
 
   useEffect(() => {
-    const fetchApplicants = () => {
-      const dbRef = ref(database, 'enrollments/');
-      onValue(dbRef, (snapshot) => {
-        const data = snapshot.val();
-        if (data) {
-          const applicantsArray = Object.entries(data).map(([key, value]) => ({
+    const fetchEnrollments = async () => {
+      try {
+        const dbRef = ref(database, 'enrollments');
+        const snapshot = await get(dbRef);
+
+        if (snapshot.exists()) {
+          const data = snapshot.val();
+          const enrollmentsArray = Object.keys(data).map((key) => ({
             id: key,
-            ...value,
+            ...data[key],
           }));
-          setApplicants(applicantsArray);
+
+          // Sort enrollments by timestamp in descending order
+          enrollmentsArray.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+
+          setEnrollments(enrollmentsArray);
         } else {
-          setApplicants([]);
+          toast.info('No enrollments found.');
         }
-      }, (error) => {
-        console.error('Error fetching applicants:', error);
-        toast.error('Failed to fetch applicants');
-      });
+      } catch (error) {
+        console.error('Error fetching enrollments:', error);
+        toast.error('Failed to fetch enrollments.');
+      } finally {
+        setLoading(false);
+      }
     };
 
-    fetchApplicants();
+    fetchEnrollments();
   }, []);
 
   const handleSearchChange = (e) => {
-    setSearchQuery(e.target.value);
+    setSearchTerm(e.target.value);
+    setCurrentPage(1); // Reset to page 1 when searching
   };
 
-  const handleApplicantClick = (applicant) => {
-    fetchFiles(applicant.contactEmail, applicant.id); // Fetch files for the clicked applicant
-    setSelectedApplicant(applicant);
-    setIsModalOpen(true);
-  };
-
-  const fetchFiles = async (contactEmail, applicantId) => {
-    const storage = getStorage();
-    const files = []; // Array to hold the file objects
-
-    try {
-      // Construct the file path
-      const filePath = `enrollment_documents/${contactEmail}`;
-      // Simulate fetching file names (this could come from your database)
-      const fileNames = ["Application_Form.pdf", "Report_Card.pdf"]; // Example file names
-
-      // Fetch each file URL
-      for (const fileName of fileNames) {
-        const fileRef = storageRef(storage, `${filePath}/${fileName}`);
-        const url = await getDownloadURL(fileRef);
-        files.push({ name: fileName, url });
-      }
-      
-      // Update state with fetched file URLs
-      setFileUrls((prev) => ({
-        ...prev,
-        [applicantId]: files,
-      }));
-    } catch (error) {
-      console.error('Error fetching file URLs:', error);
-      toast.error('Failed to fetch file URLs');
-    }
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-    setSelectedApplicant(null);
-  };
-
-  const filteredApplicants = applicants.filter((applicant) =>
-    applicant.contactEmail.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    applicant.parentName.toLowerCase().includes(searchQuery.toLowerCase())
+  // Filter enrollments based on the search term
+  const filteredEnrollments = enrollments.filter((enrollment) =>
+    enrollment.firstName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    enrollment.lastName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    enrollment.class?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    enrollment.contactEmail?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  // Pagination calculations
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = filteredEnrollments.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(filteredEnrollments.length / itemsPerPage);
+
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="animate-spin rounded-full border-4 border-blue-500 border-t-transparent w-16 h-16"></div>
+      </div>
+    );
+  }
+
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen">
-      <h2 className="text-2xl font-semibold mb-4">Applicants List</h2>
-      <input
-        type="text"
-        placeholder="Search by email or parent name..."
-        value={searchQuery}
-        onChange={handleSearchChange}
-        className="w-1/2 p-2 border border-gray-300 rounded mb-4"
-      />
-      <div className="overflow-x-auto w-full">
-        <table className="min-w-full border border-gray-300">
-          <thead className="bg-gray-200">
-            <tr>
-              <th className="border border-gray-300 p-2">ID</th>
-              <th className="border border-gray-300 p-2">Enrollment Date</th>
-              <th className="border border-gray-300 p-2">Class Level</th>
-              <th className="border border-gray-300 p-2">Email</th>
-              <th className="border border-gray-300 p-2">Parent Name</th>
-              <th className="border border-gray-300 p-2">Phone</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredApplicants.length > 0 ? (
-              filteredApplicants.map((applicant) => (
-                <tr key={applicant.id} className="hover:bg-gray-100 cursor-pointer" onClick={() => handleApplicantClick(applicant)}>
-                  <td className="border border-gray-300 p-2">{applicant.id}</td>
-                  <td className="border border-gray-300 p-2">{applicant.enrollmentDate}</td>
-                  <td className="border border-gray-300 p-2">{applicant.studentClassLevel}</td>
-                  <td className="border border-gray-300 p-2">{applicant.contactEmail}</td>
-                  <td className="border border-gray-300 p-2">{applicant.parentName}</td>
-                  <td className="border border-gray-300 p-2">{applicant.parentPhone}</td>
-                </tr>
-              ))
-            ) : (
-              <tr>
-                <td colSpan="6" className="text-center border border-gray-300 p-2">No applicants found</td>
-              </tr>
-            )}
-          </tbody>
-        </table>
+    <div className="p-6 min-h-screen">
+      <h2 className="text-2xl font-semibold mb-4">All Enrollment Applications</h2>
+
+      {/* Search input */}
+      <div className="mb-4">
+        <input
+          type="text"
+          value={searchTerm}
+          onChange={handleSearchChange}
+          placeholder="Search by name, class, or email"
+          className="p-2 border border-gray-300 rounded w-full"
+        />
       </div>
 
-      {/* Modal for viewing attached files */}
-      <Modal
-        isOpen={isModalOpen}
-        onRequestClose={closeModal}
-        contentLabel="Attached Files"
-        ariaHideApp={false}
-        className="w-full max-w-lg mx-auto p-4 bg-white rounded shadow-lg"
-        overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center"
-      >
-        <h2 className="text-lg font-semibold mb-2">Attached Files for {selectedApplicant?.parentName}</h2>
-        <button onClick={closeModal} className="text-red-500 mb-4">Close</button>
-        {selectedApplicant && fileUrls[selectedApplicant.id] && fileUrls[selectedApplicant.id].length > 0 ? (
-          <ul>
-            {fileUrls[selectedApplicant.id].map((file, index) => (
-              <li key={index} className="border-b border-gray-300 p-2">
-                <a href={file.url} target="_blank" rel="noopener noreferrer" className="text-blue-500">
-                  {file.name}
-                </a>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p>No files attached for this applicant.</p>
-        )}
-      </Modal>
+      {currentItems.length === 0 ? (
+        <div className="text-center text-xl text-gray-500">No enrollments available.</div>
+      ) : (
+        <div className="grid grid-cols-4 gap-4">
+          {currentItems.map((enrollment) => (
+            <div
+              key={enrollment.id}
+              className="border p-4 bg-white rounded-lg shadow-md"
+            >
+              <div className="font-semibold text-lg">Class: {enrollment.class}</div>
+              <div className="text-gray-700">First Name: {enrollment.firstName}</div>
+              <div className="text-gray-700">Last Name: {enrollment.lastName}</div>
+              <div className="text-gray-700">Contact Email: {enrollment.contactEmail}</div>
+              <div className="text-gray-700">Contact Phone: {enrollment.contactPhone}</div>
+              <div className="text-gray-700">Parent Name: {enrollment.parentName}</div>
+              <div className="text-gray-700">Parent Phone: {enrollment.parentPhone}</div>
+              <div className="text-gray-700">Previous School: {enrollment.academicPreviousSchool}</div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* Pagination controls */}
+      <div className="flex justify-center mt-4">
+        {Array.from({ length: totalPages }, (_, index) => (
+          <button
+            key={index + 1}
+            onClick={() => handlePageChange(index + 1)}
+            className={`mx-1 px-3 py-1 rounded ${
+              currentPage === index + 1
+                ? 'bg-blue-500 text-white'
+                : 'bg-gray-200 text-gray-700'
+            }`}
+          >
+            {index + 1}
+          </button>
+        ))}
+      </div>
     </div>
   );
 };
 
-export default ApplicantsList;
+export default withAuth(EnrollmentList);

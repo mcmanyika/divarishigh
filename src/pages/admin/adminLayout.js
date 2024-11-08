@@ -7,6 +7,11 @@ import Breadcrumb from '../utils/Breadcrumb';
 import { useGlobalState } from '../../app/store';
 import withAuth from '../../../utils/withAuth';
 import '../../app/globals.css';
+
+import { useRouter } from 'next/router';
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; // FontAwesome icons
+import { faSpinner } from '@fortawesome/free-solid-svg-icons'; // Spinner icon
 import AIAssistantForm from '../../app/components/ai/AIAssistantForm';
 import Footer from '../../app/components/DashFooter';
 import { database } from '../../../utils/firebaseConfig';
@@ -22,10 +27,50 @@ const AdminLayout = ({ children }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [titles, setTitles] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [userID] = useGlobalState('userID');
+  const [userID, setUserID] = useGlobalState('userID');
   const [logoUrl, setLogoUrl] = useState('');
   const [isPopupVisible, setIsPopupVisible] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const [userType, setUserType] = useState(null); // State for user type
+  const [loading, setLoading] = useState(true); // Loading state
+  const [error, setError] = useState(null); // Error state
+  const router = useRouter(); // Router for navigation
+
+  useEffect(() => {
+    if (status === 'authenticated') {
+      const fetchUserType = async () => {
+        try {
+          const userEmail = session.user.email; // Get the user's email from session
+          const userRef = ref(database, 'userTypes'); // Reference to the userTypes node in Firebase
+          const snapshot = await get(userRef); // Get the data from Firebase
+
+          if (snapshot.exists()) {
+            const users = snapshot.val(); // Get the user data
+            const foundUserID = Object.keys(users).find(id => users[id].email === userEmail); // Find user by email
+
+            if (foundUserID) {
+              const userData = users[foundUserID];
+              setUserType(userData.userType); // Set user type
+              setUserID(foundUserID); // Store user ID in the state
+            } else {
+              console.log('No user found with this email.');
+              router.push('/admin/user'); // Redirect if no user is found
+            }
+          } else {
+            console.log('No user types found.');
+          }
+        } catch (error) {
+          console.error('Error fetching user type:', error); // Log any error
+          setError('Error fetching user type. Please try again later.'); // Set error message
+        } finally {
+          setLoading(false); // Stop loading
+        }
+      };
+
+      fetchUserType();
+    }
+  }, [status, session, router]);
 
   useEffect(() => {
     const fetchTitles = async () => {
@@ -48,7 +93,7 @@ const AdminLayout = ({ children }) => {
 
             if (userID.startsWith('STFF')) {
               filteredTitles = filteredTitles.filter(title =>
-                ['Dashboard', 'Class Routine', 'Notice', 'Admission', 'Create Blog', 'Contact Us', 'Payment', 'Class Allocation'].includes(title.title)
+                ['Dashboard', 'Class Routine', 'Notice', 'Admission', 'Applicants', 'Create Blog', 'Contact Us', 'Payment', 'Class Allocation'].includes(title.title)
               );
             }
 
@@ -93,7 +138,7 @@ const AdminLayout = ({ children }) => {
 
     fetchTitles();
     fetchLogo();
-  }, [session, status]);
+  }, [session, status, userID]);
 
   const toggleMobileSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -102,7 +147,6 @@ const AdminLayout = ({ children }) => {
 
   const handleSignOut = () => {
     signOut();
-    toast.success('You have signed out successfully.');
   };
 
   const togglePopup = () => {
@@ -218,4 +262,4 @@ const AdminLayout = ({ children }) => {
   );
 };
 
-export default withAuth(AdminLayout);
+export default AdminLayout;
