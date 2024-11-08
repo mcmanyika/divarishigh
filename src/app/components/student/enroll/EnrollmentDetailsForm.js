@@ -16,9 +16,8 @@ const EnrollmentDetailsForm = () => {
     academicPreviousSchool: '',
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [loading, setLoading] = useState(true); // Track loading state
+  const [loading, setLoading] = useState(true);
 
-  // Set email to the logged-in user's email when session is loaded
   useEffect(() => {
     if (session?.user?.email) {
       setFormData((prevData) => ({
@@ -31,10 +30,12 @@ const EnrollmentDetailsForm = () => {
       const dbRef = ref(database, `enrollments/${sanitizedEmail}`);
       get(dbRef).then((snapshot) => {
         if (snapshot.exists()) {
-          setIsSubmitted(true);  // User has already submitted
+          setIsSubmitted(true);  // Prevent further submission if already submitted
         }
         setLoading(false); // Set loading to false after check is done
       });
+    } else {
+      setLoading(false); // Stop loading if user is not logged in
     }
   }, [session]);
 
@@ -53,7 +54,7 @@ const EnrollmentDetailsForm = () => {
 
     if (isSubmitted) {
       toast.error('You have already submitted your enrollment details.');
-      return; // Prevent further submission
+      return;
     }
 
     try {
@@ -63,11 +64,11 @@ const EnrollmentDetailsForm = () => {
       await set(dbRef, formData);
 
       toast.success('Enrollment details submitted successfully!');
-      setIsSubmitted(true);  // Set as submitted after successful form submission
+      setIsSubmitted(true);
 
       setFormData({
         class: '',
-        contactEmail: session?.user?.email || '', // Reset to logged-in user’s email
+        contactEmail: session?.user?.email || '',
         contactPhone: '',
         parentName: '',
         parentPhone: '',
@@ -89,7 +90,7 @@ const EnrollmentDetailsForm = () => {
 
   return (
     <div className="flex justify-center h-screen">
-      <div className="p-6 bg-white  rounded-lg max-w-2xl w-full">
+      <div className="p-6 bg-white rounded-lg max-w-2xl w-full">
         <h2 className="text-2xl text-center font-semibold mb-4">Enrollment Details</h2>
         {isSubmitted ? (
           <div className="text-center text-xl text-green-500">
@@ -105,6 +106,7 @@ const EnrollmentDetailsForm = () => {
                   value={formData.class}
                   onChange={handleChange}
                   className="w-full p-2 border border-gray-300 rounded"
+                  required
                 >
                   <option value="" disabled>Select Grade...</option>
                   <option value="Form 1">Form 1</option>
@@ -124,8 +126,7 @@ const EnrollmentDetailsForm = () => {
                   type="email"
                   name="contactEmail"
                   value={formData.contactEmail}
-                  readOnly
-                  className="w-full p-2 border border-gray-300 rounded bg-gray-100"
+                  className="w-full p-2 border border-gray-300 rounded"
                 />
               </div>
               <div>
