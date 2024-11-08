@@ -17,6 +17,7 @@ const EnrollmentDetailsForm = () => {
     parentPhone: '',
     academicPreviousSchool: '',
     timestamp: new Date().toISOString(),
+    status: 'Pending', // Default status
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -73,6 +74,7 @@ const EnrollmentDetailsForm = () => {
         parentPhone: '',
         academicPreviousSchool: '',
         timestamp: new Date().toISOString(),
+        status: 'Pending',
       });
     } catch (error) {
       console.error('Error during form submission:', error);
@@ -212,6 +214,9 @@ const EnrollmentDetailsForm = () => {
                 />
               </div>
             </div>
+
+            {/* Hidden Status Field */}
+            <input type="hidden" name="status" value={formData.status} />
 
             <div className="mt-6">
               <button

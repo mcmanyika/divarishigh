@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { database } from '../../../../../utils/firebaseConfig';
-import { ref, get } from 'firebase/database';
+import { ref, get, update } from 'firebase/database';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import withAuth from '../../../../../utils/withAuth';
@@ -10,8 +10,8 @@ const EnrollmentList = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
-  const [selectedEnrollment, setSelectedEnrollment] = useState(null); // State for selected enrollment
-  const [isModalOpen, setIsModalOpen] = useState(false); // State for modal visibility
+  const [selectedEnrollment, setSelectedEnrollment] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const itemsPerPage = 12;
 
   useEffect(() => {
@@ -74,6 +74,46 @@ const EnrollmentList = () => {
     setIsModalOpen(false);
   };
 
+  const handleStatusChange = (e) => {
+    setSelectedEnrollment((prev) => ({
+      ...prev,
+      status: e.target.value,
+    }));
+  };
+
+  const saveStatusChange = async () => {
+    if (selectedEnrollment) {
+      try {
+        const enrollmentRef = ref(database, `enrollments/${selectedEnrollment.id}`);
+        await update(enrollmentRef, { status: selectedEnrollment.status });
+        toast.success('Status updated successfully');
+        closeModal();
+        setEnrollments((prevEnrollments) =>
+          prevEnrollments.map((enrollment) =>
+            enrollment.id === selectedEnrollment.id
+              ? { ...enrollment, status: selectedEnrollment.status }
+              : enrollment
+          )
+        );
+      } catch (error) {
+        console.error('Error updating status:', error);
+        toast.error('Failed to update status');
+      }
+    }
+  };
+
+  const getStatusColor = (status) => {
+    switch (status) {
+      case 'Accepted':
+        return 'text-green-500';
+      case 'Rejected':
+        return 'text-red-500';
+      case 'Pending':
+      default:
+        return 'text-yellow-500';
+    }
+  };
+
   if (loading) {
     return (
       <div className="flex justify-center items-center h-screen">
@@ -109,6 +149,9 @@ const EnrollmentList = () => {
               <div className="font-semibold text-lg">Class: {enrollment.class}</div>
               <div className="text-gray-700 capitalize"><strong>Full Name:</strong> {enrollment.firstName} {enrollment.lastName}</div>
               <div className="text-gray-700">Contact Email: {enrollment.contactEmail}</div>
+              <div className={`text-gray-700 font-semibold ${getStatusColor(enrollment.status)}`}>
+                Status: {enrollment.status}
+              </div>
             </div>
           ))}
         </div>
@@ -140,12 +183,32 @@ const EnrollmentList = () => {
             <p className='capitalize'><strong>Parent Name:</strong> {selectedEnrollment.parentName}</p>
             <p><strong>Parent Phone:</strong> {selectedEnrollment.parentPhone}</p>
             <p className='capitalize'><strong>Previous School:</strong> {selectedEnrollment.academicPreviousSchool}</p>
-            <button
-              onClick={closeModal}
-              className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-            >
-              Close
-            </button>
+            <label className="block mt-4">
+              <span className="font-semibold">Status:</span>
+              <select
+                value={selectedEnrollment.status || 'Pending'}
+                onChange={handleStatusChange}
+                className="mt-1 block w-full p-2 border border-gray-300 rounded"
+              >
+                <option value="Pending">Pending</option>
+                <option value="Accepted">Accepted</option>
+                <option value="Rejected">Rejected</option>
+              </select>
+            </label>
+            <div className="flex justify-end mt-4">
+              <button
+                onClick={saveStatusChange}
+                className="mr-2 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+              >
+                Save
+              </button>
+              <button
+                onClick={closeModal}
+                className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+              >
+                Close
+              </button>
+            </div>
           </div>
         </div>
       )}
