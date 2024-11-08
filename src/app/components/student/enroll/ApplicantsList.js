@@ -8,6 +8,7 @@ import withAuth from '../../../../../utils/withAuth';
 const EnrollmentList = () => {
   const [enrollments, setEnrollments] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [statusFilter, setStatusFilter] = useState('All');
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedEnrollment, setSelectedEnrollment] = useState(null);
@@ -48,11 +49,17 @@ const EnrollmentList = () => {
     setCurrentPage(1);
   };
 
+  const handleStatusFilterChange = (e) => {
+    setStatusFilter(e.target.value);
+    setCurrentPage(1);
+  };
+
   const filteredEnrollments = enrollments.filter((enrollment) =>
-    enrollment.firstName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    (statusFilter === 'All' || enrollment.status === statusFilter) &&
+    (enrollment.firstName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
     enrollment.lastName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
     enrollment.class?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    enrollment.contactEmail?.toLowerCase().includes(searchTerm.toLowerCase())
+    enrollment.contactEmail?.toLowerCase().includes(searchTerm.toLowerCase()))
   );
 
   const indexOfLastItem = currentPage * itemsPerPage;
@@ -126,7 +133,7 @@ const EnrollmentList = () => {
     <div className="p-6 bg-white h-screen">
       <h2 className="text-2xl font-semibold mb-4">All Enrollment Applications</h2>
 
-      <div className="mb-4">
+      <div className="flex space-x-4 mb-4">
         <input
           type="text"
           value={searchTerm}
@@ -134,6 +141,16 @@ const EnrollmentList = () => {
           placeholder="Search by name, class, or email"
           className="p-2 border border-gray-300 rounded w-full"
         />
+        <select
+          value={statusFilter}
+          onChange={handleStatusFilterChange}
+          className="p-2 border border-gray-300 rounded"
+        >
+          <option value="All">All Statuses</option>
+          <option value="Pending">Pending</option>
+          <option value="Accepted">Accepted</option>
+          <option value="Rejected">Rejected</option>
+        </select>
       </div>
 
       {currentItems.length === 0 ? (
@@ -149,7 +166,7 @@ const EnrollmentList = () => {
               <div className="font-semibold text-lg">Class: {enrollment.class}</div>
               <div className="text-gray-700 capitalize"><strong>Full Name:</strong> {enrollment.firstName} {enrollment.lastName}</div>
               <div className="text-gray-700">Contact Email: {enrollment.contactEmail}</div>
-              <div className={`text-gray-700 font-semibold ${getStatusColor(enrollment.status)}`}>
+              <div className={`text-gray-700 font-thin ${getStatusColor(enrollment.status)}`}>
                 Status: {enrollment.status}
               </div>
             </div>
@@ -216,4 +233,4 @@ const EnrollmentList = () => {
   );
 };
 
-export default EnrollmentList;
+export default withAuth(EnrollmentList);
