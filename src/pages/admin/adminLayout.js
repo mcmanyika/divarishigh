@@ -236,7 +236,9 @@ const AdminLayout = ({ children }) => {
           </div>
           <div className="w-full bg-gray-100">
             <Breadcrumb />
-            {children}
+            <div className='h-screen overflow-y-auto'>
+              {children}
+            </div>
           </div>
         </main>
 
