@@ -154,9 +154,9 @@ const AdminLayout = ({ children }) => {
   };
 
   return (
-    <div className="flex min-h-screen text-base bg-main ">
+    <div className="flex min-h-screen overflow-y-auto text-base bg-main ">
 
-      <aside className={`fixed z-40 transform ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-300 md:relative md:translate-x-0 w-42 bg-dash text-white p-4 min-h-screen rounded-tr-xl flex flex-col`}>
+      <aside className={`fixed z-40 transform ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-300 md:relative md:translate-x-0 w-42 bg-dash text-white p-4 min-h-screen overflow-y-auto rounded-tr-xl flex flex-col`}>
         <div className="flex justify-center items-center pt-10 mb-10">
           <Link href='/'>
             {logoUrl ? (
@@ -166,7 +166,7 @@ const AdminLayout = ({ children }) => {
             )}
           </Link>
         </div>
-        <nav className="flex-1"> 
+        <nav className="flex-1 h-screen overflow-y-auto"> 
           <TitleList titles={titles} onSignOut={handleSignOut} />
         </nav>
       </aside>

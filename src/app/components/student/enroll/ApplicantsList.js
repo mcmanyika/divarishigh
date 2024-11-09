@@ -156,7 +156,7 @@ const EnrollmentList = () => {
       {currentItems.length === 0 ? (
         <div className="text-center text-xl text-gray-500">No enrollments available.</div>
       ) : (
-        <div className="grid grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           {currentItems.map((enrollment) => (
             <div
               key={enrollment.id}
