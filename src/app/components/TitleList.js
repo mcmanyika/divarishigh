@@ -36,29 +36,37 @@ const TitleList = ({ titles, onSignOut }) => {
   const sortedTitles = dashboardItem ? [dashboardItem, ...otherItems] : otherItems;
 
   return (
-    <ul className="flex flex-col items-center">
+    <div className="flex flex-col items-center">
       {sortedTitles.map((rw) => {
         const IconComponent = iconMapping[rw.icon] || defaultIcon; // Fallback to default icon if not found
         return (
-          <li key={rw.id} className="mb-4 flex flex-col items-center">
-            <Link href={rw.link} className="flex flex-col items-center" aria-label={rw.title}>
-              <IconComponent className="text-2xl" />
-              <div className="text-center font-thin p-2 cursor-pointer w-full">{rw.title}</div>
+          <div key={rw.id} className="mb-4 flex items-center w-full hover:bg-slate-50 hover:text-black p-1">
+            <Link href={rw.link} className="flex items-center w-full" aria-label={rw.title}>
+              <div className="flex items-center space-x-2 w-full"> {/* Reduced space to space-x-2 */}
+                <div className="w-5">
+                  <IconComponent className="text-2xl" />
+                </div>
+                <div className="text-left font-thin p-2 cursor-pointer w-full">{rw.title}</div>
+              </div>
             </Link>
-          </li>
+          </div>
         );
       })}
-      <li className="mb-4 flex flex-col items-center">
-        <button
-          onClick={onSignOut}
-          className="flex flex-col items-center text-center font-thin p-2 rounded cursor-pointer w-full"
-          aria-label="Sign Out"
-        >
+      <div className="flex items-center w-full hover:bg-slate-50 hover:text-black p-1"> {/* Reduced space here as well */}
+        <div className="w-6">
           <FaSignOutAlt className="text-2xl" />
-          Sign Out
-        </button>
-      </li>
-    </ul>
+        </div>
+        <div className="text-left font-thin  cursor-pointer w-full">
+          <button
+            onClick={onSignOut}
+            className="flex items-center font-thin p-2 rounded cursor-pointer w-full"
+            aria-label="Sign Out"
+          >
+            Sign Out
+          </button>
+        </div>
+      </div>
+    </div>
   );
 };
 
