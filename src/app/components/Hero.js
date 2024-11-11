@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
-import { useGlobalState, setIsOverlayVisible } from '../store'; // Adjust the path to your global state management file
+import { useGlobalState, setIsOverlayVisible } from '../store';
 import { XIcon } from '@heroicons/react/outline';
 import { ref, onValue, query, orderByChild, equalTo } from 'firebase/database';
 import { database } from '../../../utils/firebaseConfig';
@@ -12,7 +12,7 @@ const Hero = () => {
   const [carouselData, setCarouselData] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  // Function to handle menu click and toggle overlay visibility
+  // Toggle overlay visibility
   const handleMenuClick = () => {
     setIsOverlayVisible(!isOverlayVisible);
   };
@@ -34,7 +34,6 @@ const Hero = () => {
           });
         });
         setCarouselData(bannerImages.length > 0 ? bannerImages : [
-          // Fallback data if no banner images are found
           {
             title: "Welcome",
             description: "Discover our offerings",
@@ -94,17 +93,24 @@ const Hero = () => {
   const currentSlide = carouselData[currentIndex] || {};
 
   return (
-    <div className="relative h-screen flex items-center justify-center overflow-hidden">
-      <div className="absolute inset-0 flex transition-transform duration-1000 ease-in-out" style={{ transform: `translateX(${currentIndex * -100}%)` }}>
+    <div className="relative h-screen w-full overflow-hidden">
+      <div
+        className="absolute inset-0 flex transition-transform duration-1000 ease-in-out"
+        style={{ transform: `translateX(${currentIndex * -100}%)` }}
+      >
         {carouselData.map((slide, index) => (
-          <div key={index} className="min-w-full h-full bg-cover bg-center md:bg-bottom" style={{ backgroundImage: `url(${slide.imageUrl})` }}></div>
+          <div
+            key={index}
+            className="min-w-full h-full bg-cover bg-center md:bg-bottom aspect-video"
+            style={{ backgroundImage: `url(${slide.imageUrl})` }}
+          ></div>
         ))}
       </div>
       <div className="absolute inset-0 bg-main opacity-20"></div>
       <div className="absolute top-4 left-1/2 transform -translate-x-1/2 z-20">
         <Link href="/">
           <Image
-            src="/images/logo.png" // Replace with your logo path
+            src="/images/logo.png"
             alt="Logo"
             width={100}
             height={100}
@@ -124,18 +130,20 @@ const Hero = () => {
             {titles.map((rw) => (
               <div key={rw.id}>
                 <Link href={`${rw.link}`}>
-                  <div className="text-gray-300 hover:text-white text-2xl md:text-3xl lg:text-4xl uppercase p-3">{rw.title}</div>
+                  <div className="text-gray-300 hover:text-white text-2xl md:text-3xl lg:text-4xl uppercase p-3">
+                    {rw.title}
+                  </div>
                 </Link>
               </div>
             ))}
             <div className='pt-3'>
-            <Link href="/web/enroll">
-              <button
-                className="bg-yellow-500 text-white font-bold py-2 px-6 rounded-tr-full rounded-br-full rounded-tl-full rounded-bl-md hover:bg-yellow-600 transition duration-300"
-              >
-                ENROLL NOW
-              </button>
-            </Link>
+              <Link href="/web/enroll">
+                <button
+                  className="bg-yellow-500 text-white font-bold py-2 px-6 rounded-tr-full rounded-br-full rounded-tl-full rounded-bl-md hover:bg-yellow-600 transition duration-300"
+                >
+                  ENROLL NOW
+                </button>
+              </Link>
             </div>
           </div>
         </div>
