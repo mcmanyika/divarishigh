@@ -7,6 +7,7 @@ import { MdOutlineLibraryBooks } from 'react-icons/md';
 import { LiaChalkboardTeacherSolid } from 'react-icons/lia';
 import { IoPeopleOutline } from 'react-icons/io5';
 import { RiAdminFill } from 'react-icons/ri';
+import { FaCheckCircle } from 'react-icons/fa';
 
 // Mapping icon names to their respective components
 const iconMapping = {
@@ -20,6 +21,7 @@ const iconMapping = {
   IoPeopleOutline: IoPeopleOutline,
   RiAdminFill: RiAdminFill,
   FaHome: FaHome,
+  FaCheckCircle: FaCheckCircle,
   FaCashRegister: FaCashRegister,
   FaShoppingBag: FaShoppingBag,
 };

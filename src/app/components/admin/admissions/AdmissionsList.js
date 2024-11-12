@@ -121,7 +121,7 @@ const AdmissionsList = () => {
                 >
                   Edit
                 </button>
-                {/* {admission.status === 'Accepted' && (
+                {admission.status === 'Accepted' && (
                   <button
                     onClick={() => {
                       setSelectedAdmission(admission); // Set the selected admission for payment
@@ -132,7 +132,7 @@ const AdmissionsList = () => {
                     <HiCreditCard className="inline-block mr-1" />
                     Pay
                   </button>
-                )} */}
+                )}
               </td>
             </tr>
           ))}

@@ -12,10 +12,10 @@ const TeacherDashboard = () => {
         <div className="w-full">
           <StudentGenderCount />
           <div className="w-full flex flex-col md:flex-row md:space-x-4 mt-4 space-y-4 md:space-y-0">
-            <div className="w-full md:w-1/2 bg-white rounded-md shadow-sm p-2">
+            <div className="w-full md:w-2/3 bg-white rounded-md shadow-sm p-2">
               <ClassRoutineList />
             </div>
-            <div className="w-full md:w-1/2 bg-white rounded-md shadow-sm p-2">
+            <div className="w-full md:w-1/3 bg-white rounded-md shadow-sm p-2">
               <TeacherClassesList />
             </div>
           </div>
