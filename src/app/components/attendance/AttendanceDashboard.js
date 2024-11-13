@@ -78,10 +78,7 @@ function AttendanceDashboard() {
     setSelectedDate(event.target.value);
   };
 
-  // Navigate to attendance form
-  const handleUpdateAttendance = () => {
-    router.push('/attendance/attendanceForm');
-  };
+  
 
   // Filtered attendance data based on search query
   const filteredAttendance = ['Present', 'Absent', 'Late']
@@ -136,12 +133,6 @@ function AttendanceDashboard() {
     <div className="p-4">
       <div className='flex justify-between'>
         <div className="text-lg font-semibold mb-4">Attendance Dashboard</div>
-        <button 
-          className='text-white bg-main3 rounded-full px-6 py-1 hover:bg-main' 
-          onClick={handleUpdateAttendance}
-        >
-          Update Attendance
-        </button>
       </div>
       
       <label className="block mb-4">

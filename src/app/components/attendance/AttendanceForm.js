@@ -9,16 +9,15 @@ import 'react-toastify/dist/ReactToastify.css';
 function AttendanceForm() {
   const { data: session } = useSession();
   const router = useRouter();
-  const { className, date } = router.query;
+  const { className, date, subject } = router.query; // Get className, date, and subject from query
   const [students, setStudents] = useState([]);
   const [filteredStudents, setFilteredStudents] = useState([]);
   const [attendance, setAttendance] = useState({});
   const [searchQuery, setSearchQuery] = useState('');
   
-  const currentDate = new Date().toISOString().split('T')[0]; // Get current date in YYYY-MM-DD format
-  const isSubmittable = new Date(currentDate) >= new Date(date); // Allow submission on or after the lesson date
+  const currentDate = new Date().toISOString().split('T')[0];
+  const isSubmittable = new Date(currentDate) >= new Date(date);
 
-  // Pagination states
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
 
@@ -75,7 +74,10 @@ function AttendanceForm() {
     try {
       const updates = {};
       for (const userID in attendance) {
-        updates[`attendance/${date}/${userID}`] = { status: attendance[userID] };
+        updates[`attendance/${date}/${userID}`] = { 
+          status: attendance[userID], 
+          subject 
+        };
       }
       await update(ref(database), updates);
       toast.success('Attendance submitted successfully!');
@@ -98,7 +100,7 @@ function AttendanceForm() {
 
   return (
     <div className="p-4">
-      <h2 className="text-lg font-semibold mb-4">Mark Attendance for {className} - {date}</h2>
+      <h2 className="text-lg font-semibold mb-4">Mark Attendance for {className} - {date} - {subject}</h2>
       
       <input
         type="text"

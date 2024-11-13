@@ -58,7 +58,7 @@ const ClassRoutineList = () => {
   const totalPages = Math.ceil(sortedRoutines.length / itemsPerPage);
 
   const handleRoutineClick = (routine) => {
-    // Navigate to AttendanceForm with class and date as query parameters
+    // Navigate to AttendanceForm with class and date as query parameters 
     router.push({
       pathname: '/attendance/attendanceForm',
       query: {

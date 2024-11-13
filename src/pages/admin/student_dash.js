@@ -10,6 +10,7 @@ import { useRouter } from 'next/router';
 import { useGlobalState, setStudentClass, setStatus } from '../../app/store';
 import CombinedExamsList from '../../app/components/exams/CombinedExamsList';
 import StudentAssignmentsList from '../../app/components/student/assignments/StudentAssignmentsList';
+import StudentAttendanceHistory from '../../app/components/attendance/StudentAttendanceHistory';
 
 const StudentDash = () => {
   const { data: session, status } = useSession();
@@ -73,6 +74,9 @@ const StudentDash = () => {
                 <div className='h-screen overflow-y-auto'>
                   <div className="w-full bg-white m-2">
                     <ClassRoutine />
+                    </div>
+                    <div className="w-full bg-white m-2">
+                    <StudentAttendanceHistory />
                     </div>
                   <div className="w-full flex flex-col md:flex-row mt-4">
                     <div className="w-full  bg-white p-4 m-2">
