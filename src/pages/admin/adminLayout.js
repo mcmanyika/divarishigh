@@ -10,7 +10,7 @@ import '../../app/globals.css';
 
 import { useRouter } from 'next/router';
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; // FontAwesome icons
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; // 
 import { faSpinner } from '@fortawesome/free-solid-svg-icons'; // Spinner icon
 import AIAssistantForm from '../../app/components/ai/AIAssistantForm';
 import Footer from '../../app/components/DashFooter';
