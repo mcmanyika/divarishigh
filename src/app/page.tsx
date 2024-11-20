@@ -108,6 +108,7 @@ export default function Home() {
               description="Bright minds shaping the future"
               delay={0.2}
               circleColor="stroke-blue-500"
+              className="border border-white dark:border-slate-700 rounded-lg"
             />
 
             <StatsCard
@@ -117,6 +118,7 @@ export default function Home() {
               description="Alumni success stories"
               delay={0.4}
               circleColor="stroke-blue-600"
+              className="border border-white dark:border-slate-700 rounded-lg"
             />
 
             <StatsCard
@@ -126,6 +128,7 @@ export default function Home() {
               description="Established in 1999"
               delay={0.6}
               circleColor="stroke-blue-700"
+              className="border border-white dark:border-slate-700 rounded-lg"
             />
           </div>
         </div>
@@ -191,7 +194,7 @@ export default function Home() {
                     <MapPin className="h-5 w-5 text-blue-600 dark:text-blue-400" />
                     <div>
                       <h3 className="font-medium dark:text-white">Address</h3>
-                      <p className="text-sm text-muted-foreground dark:text-gray-300">123 Innovation Drive</p>
+                      <p className="text-sm text-muted-foreground dark:text-gray-300">Corner Lavenham Drive & Northolt Road, Bluffhill, Harare, Zimbabwe</p>
                     </div>
                   </div>
                   <Separator />
@@ -199,7 +202,7 @@ export default function Home() {
                     <Phone className="h-5 w-5 text-blue-600 dark:text-blue-400" />
                     <div>
                       <h3 className="font-medium dark:text-white">Phone</h3>
-                      <p className="text-sm text-muted-foreground dark:text-gray-300">(555) 123-4567</p>
+                      <p className="text-sm text-muted-foreground dark:text-gray-300">+263 78 9916 294</p>
                     </div>
                   </div>
                   <Separator />
@@ -207,7 +210,7 @@ export default function Home() {
                     <Mail className="h-5 w-5 text-blue-600 dark:text-blue-400" />
                     <div>
                       <h3 className="font-medium dark:text-white">Email</h3>
-                      <p className="text-sm text-muted-foreground dark:text-gray-300">admissions@divarismakaharis.edu</p>
+                      <p className="text-sm text-muted-foreground dark:text-gray-300">divarismakaharis@gmail.com</p>
                     </div>
                   </div>
                 </div>
