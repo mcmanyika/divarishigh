@@ -3,66 +3,41 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
-interface CircleProgressProps {
-  value: number;
-  size?: number;
-  strokeWidth?: number;
-  color?: string;
-  duration?: number;
-}
-
-export function CircleProgress({
-  value,
-  size = 120,
-  strokeWidth = 8,
-  color = "stroke-primary",
-  duration = 1.5
-}: CircleProgressProps) {
-  const [progress, setProgress] = useState(0);
-  const center = size / 2;
-  const radius = (size - strokeWidth) / 2;
-  const circumference = 2 * Math.PI * radius;
-  const offset = circumference - (progress / 100) * circumference;
+export function CircleProgress({ targetValue = 0, color = "stroke-blue-500" }) {
+  const [value, setValue] = useState(0);
 
   useEffect(() => {
-    const timer = setTimeout(() => setProgress(value), 100);
-    return () => clearTimeout(timer);
-  }, [value]);
+    setValue(targetValue);
+  }, [targetValue]);
 
   return (
-    <div className="relative" style={{ width: size, height: size }}>
-      <svg width={size} height={size} className="-rotate-90">
+    <div className="relative h-64 w-64">
+      <motion.svg
+        className="absolute inset-0"
+        viewBox="0 0 100 100"
+        initial={{ rotate: -90 }}
+        animate={{ rotate: -90 }}
+      >
+        {/* Background circle */}
         <circle
-          cx={center}
-          cy={center}
-          r={radius}
-          fill="none"
-          strokeWidth={strokeWidth}
-          className="stroke-muted"
+          className="stroke-transparent fill-none"
+          cx="50"
+          cy="50"
+          r="44"
+          strokeWidth="5"
         />
+        {/* Progress circle */}
         <motion.circle
-          cx={center}
-          cy={center}
-          r={radius}
-          fill="none"
-          strokeWidth={strokeWidth}
-          className={color}
-          strokeDasharray={circumference}
-          initial={{ strokeDashoffset: circumference }}
-          animate={{ strokeDashoffset: offset }}
-          transition={{ duration, ease: "easeOut" }}
+          className={`fill-none ${color}`}
+          cx="50"
+          cy="50"
+          r="44"
+          strokeWidth="5"
+          initial={{ pathLength: 0 }}
+          animate={{ pathLength: value / 100 }}
+          transition={{ duration: 2, ease: "easeInOut" }}
         />
-      </svg>
-      <div className="absolute inset-0 flex items-center justify-center">
-        <motion.span 
-          className="text-2xl font-bold"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5 }}
-        >
-          {Math.round(progress)}%
-        </motion.span>
-      </div>
+      </motion.svg>
     </div>
   );
 }

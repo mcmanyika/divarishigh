@@ -58,9 +58,6 @@ export default function Home() {
               Divaris Makaharis
               <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-blue-600"> School</span>
             </h1>
-            <p className="text-xl text-blue-100">
-              Where cutting-edge technology meets academic excellence
-            </p>
           </motion.div>
         </div>
         <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-background to-transparent" />
@@ -77,9 +74,7 @@ export default function Home() {
             className="text-center mb-12"
           >
             <h2 className="text-3xl font-bold mb-4 dark:text-white">Featured Programs</h2>
-            <p className="text-muted-foreground dark:text-gray-300 max-w-2xl mx-auto">
-              Discover our cutting-edge programs designed to prepare students for the future
-            </p>
+            
           </motion.div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <ProgramCard
@@ -139,17 +134,6 @@ export default function Home() {
       {/* Gallery Section */}
       <AnimatedSection className="py-1 px-4 sm:px-6 lg:px-0">
         <div className="w-full">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="text-center mb-12"
-          >
-            <h2 className="text-3xl font-bold mb-4">School Gallery</h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
-              Connect with us through images
-            </p>
-          </motion.div>
           
           <motion.div
             initial={{ opacity: 0 }}
@@ -197,9 +181,6 @@ export default function Home() {
             className="text-center mb-12"
           >
             <h2 className="text-3xl font-bold mb-4">Contact Us</h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
-              Get in touch with us for any inquiries
-            </p>
           </motion.div>
           
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
@@ -332,9 +313,16 @@ export default function Home() {
   );
 }
 
-function StatsCard({ icon, title, value, description, delay, circleColor }: any) {
+function StatsCard({ icon, title, value, description, delay, circleColor, className = "" }: any) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
+
+  const getPercentage = () => {
+    if (title === "Current Students") return Math.min((value / 2000) * 100, 100);
+    if (title === "Total Graduates") return Math.min((value / 20000) * 100, 100);
+    if (title === "Years of Excellence") return Math.min((value / 25) * 100, 100);
+    return 0;
+  };
 
   return (
     <motion.div
@@ -342,19 +330,28 @@ function StatsCard({ icon, title, value, description, delay, circleColor }: any)
       initial={{ opacity: 0, scale: 0.9 }}
       animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.9 }}
       transition={{ duration: 0.5, delay }}
+      className={className}
     >
-      <Card className="p-6 hover:shadow-lg transition-shadow border-blue-100/20 dark:bg-slate-800 dark:border-slate-700">
+      <Card className="p-6 hover:shadow-lg transition-shadow bg-transparent border-none">
         <div className="flex items-center justify-between mb-4">
-          <div className="p-2 bg-blue-500/10 dark:bg-blue-500/20 rounded-lg text-blue-600 dark:text-blue-400">{icon}</div>
+          <div className="p-2 bg-blue-500/10 rounded-lg text-blue-600">{icon}</div>
           <ArrowUpRight className="h-4 w-4 text-muted-foreground" />
         </div>
         <div className="flex flex-col items-center">
-          <CircleProgress value={85} color={circleColor} />
-          <div className="mt-4 text-center">
-            <Counter className="dark:text-white" end={value} />
-            <h3 className="text-sm font-medium text-muted-foreground dark:text-gray-300 mt-2">{title}</h3>
-            <p className="text-sm text-muted-foreground/80 dark:text-gray-400 mt-1">{description}</p>
-          </div>
+          {isInView && (
+            <>
+              <div className="relative h-64 w-64 mb-6">
+                <CircleProgress value={0} targetValue={getPercentage()} color={circleColor} />
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <Counter from={0} to={value} duration={2} className="text-5xl font-bold" />
+                </div>
+              </div>
+              <div className="text-center">
+                <h3 className="text-sm font-medium text-muted-foreground mt-2">{title}</h3>
+                <p className="text-sm text-muted-foreground/80 mt-1">{description}</p>
+              </div>
+            </>
+          )}
         </div>
       </Card>
     </motion.div>

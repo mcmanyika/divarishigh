@@ -1,46 +1,57 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import { useInView } from "framer-motion";
+import { useRef } from "react";
 
 interface CounterProps {
-  end: number;
+  from?: number;
+  to: number;
   duration?: number;
+  className?: string;
   prefix?: string;
   suffix?: string;
 }
 
-export function Counter({ end, duration = 1.5, prefix = "", suffix = "" }: CounterProps) {
-  const [count, setCount] = useState(0);
+export function Counter({
+  from = 0,
+  to,
+  duration = 2,
+  className = "",
+  prefix = "",
+  suffix = "",
+}: CounterProps) {
+  const [count, setCount] = useState(from);
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true });
 
   useEffect(() => {
-    let startTime: number;
-    let animationFrame: number;
+    if (!isInView) return;
 
-    const animate = (timestamp: number) => {
-      if (!startTime) startTime = timestamp;
-      const progress = (timestamp - startTime) / (duration * 1000);
+    const steps = Math.max(Math.floor(duration * 60), 30);
+    const increment = (to - from) / steps;
+    let currentCount = from;
+    let step = 0;
 
-      if (progress < 1) {
-        setCount(Math.min(Math.floor(end * progress), end));
-        animationFrame = requestAnimationFrame(animate);
-      } else {
-        setCount(end);
+    const timer = setInterval(() => {
+      step++;
+      currentCount += increment;
+      setCount(step === steps ? to : Math.round(currentCount));
+
+      if (step === steps) {
+        clearInterval(timer);
       }
-    };
+    }, duration * 1000 / steps);
 
-    animationFrame = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(animationFrame);
-  }, [end, duration]);
+    return () => clearInterval(timer);
+  }, [from, to, duration, isInView]);
 
   return (
-    <motion.span
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.5 }}
-      className="text-3xl font-bold"
+    <span
+      ref={ref}
+      className={className}
     >
-      {prefix}{count.toLocaleString()}{suffix}
-    </motion.span>
+      {prefix}{typeof count === 'number' ? count.toLocaleString() : count}{suffix}
+    </span>
   );
 }
