@@ -422,7 +422,7 @@ const StudentReport = () => {
 
             {formData.subjects.length === 0 && (
               <p className="text-gray-500 dark:text-gray-400 text-center py-4">
-                Click "Add Subject" to begin adding subjects to the report.
+                Click Add Subject to begin adding subjects to the report.
               </p>
             )}
           </div>
@@ -459,7 +459,7 @@ const StudentReport = () => {
             <h3 className="text-xl font-medium mb-6 text-gray-800 dark:text-white">Comments</h3>
             <div className="space-y-6 bg-gray-50 dark:bg-slate-700 p-6 rounded-lg">
               <div>
-                <label className="block text-base text-gray-600 dark:text-gray-400 mb-2">Teacher's Comments</label>
+                <label className="block text-base text-gray-600 dark:text-gray-400 mb-2">Teacher s Comments</label>
                 <textarea
                   value={formData.teacherComments}
                   onChange={(e) => setFormData(prev => ({ ...prev, teacherComments: e.target.value }))}
@@ -469,7 +469,7 @@ const StudentReport = () => {
                 />
               </div>
               <div>
-                <label className="block text-base text-gray-600 dark:text-gray-400 mb-2">Principal's Comments</label>
+                <label className="block text-base text-gray-600 dark:text-gray-400 mb-2">Principal s Comments</label>
                 <textarea
                   value={formData.principalComments}
                   onChange={(e) => setFormData(prev => ({ ...prev, principalComments: e.target.value }))}
