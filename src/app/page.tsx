@@ -15,16 +15,16 @@ import { database } from '../../utils/firebaseConfig';
 import { ref, onValue } from 'firebase/database';
 
 export default function Home() {
-  const [images, setImages] = useState([]);
+  const [images, setImages] = useState<string[]>([]);
 
   useEffect(() => {
     const fetchImages = () => {
       const imagesRef = ref(database, 'images');
       onValue(imagesRef, (snapshot) => {
-        const imageList = [];
+        const imageList: string[] = [];
         snapshot.forEach((childSnapshot) => {
           const image = childSnapshot.val();
-          if (image.title === 'gallery') {
+          if (image && image.title === 'gallery' && image.url) {
             imageList.push(image.url);
           }
         });
@@ -341,7 +341,10 @@ function StatsCard({ icon, title, value, description, delay, circleColor, classN
           {isInView && (
             <>
               <div className="relative h-64 w-64 mb-6">
-                <CircleProgress value={0} targetValue={getPercentage()} color={circleColor} />
+                <CircleProgress 
+                  targetValue={getPercentage()} 
+                  color={circleColor} 
+                />
                 <div className="absolute inset-0 flex items-center justify-center">
                   <Counter from={0} to={value} duration={2} className="text-5xl font-bold" />
                 </div>
