@@ -2,19 +2,74 @@
 @tailwind components;
 @tailwind utilities;
 
-
-body {
-  font-family: "Montserrat", sans-serif;/* Assuming 'Inter' is imported */
-    color: #333; /* Example text color */
+@layer base {
+  :root {
+    --background: 210 40% 98%;
+    --foreground: 222 47% 11%;
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+    --primary: 221 83% 53%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222 47% 11%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222 47% 11%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 221 83% 53%;
+    --radius: 0.5rem;
   }
-  .sm-title {
-    font-family: "Montserrat", sans-serif;
-    font-size: 3.8rem;
-    font-weight: 100;
-    line-height: 1em;
-    margin-top: 0px;
-    margin-bottom: 0px;
+
+  .dark {
+    --background: 222 47% 11%;
+    --foreground: 210 40% 98%;
+    --card: 222 47% 11%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222 47% 11%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 217 91% 60%;
+    --primary-foreground: 222 47% 11%;
+    --secondary: 217 32% 17%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217 32% 17%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217 32% 17%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217 32% 17%;
+    --input: 217 32% 17%;
+    --ring: 224 76% 48%;
+  }
 }
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: "Montserrat", sans-serif;
+    color: #333;
+  }
+}
+
+/* Custom Classes */
+.sm-title {
+  font-family: "Montserrat", sans-serif;
+  font-size: 3.8rem;
+  font-weight: 100;
+  line-height: 1em;
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
 .lg-title {
   font-family: "Montserrat", sans-serif;
   font-size: 8.8rem;
@@ -24,75 +79,75 @@ body {
   margin-bottom: 0px;
 }
 
-  .bg-dash {
-    background-color: #6c3a44
-  }
-   .bg-main {
-    background-color: #121212;
-   }
-  .bg-main2{
-    background-color: #6c3a4424;
-  }
+/* Background Colors */
+.bg-dash {
+  background-color: #6c3a44;
+}
+.bg-main {
+  background-color: #121212;
+}
+.bg-main2 {
+  background-color: #6c3a4424;
+}
+.bg-main3 {
+  background-color: #cf9874;
+}
+.bg-footer {
+  background-color: #121212;
+}
 
-  .bg-main3 {
-    background-color: #cf9874;
-  }
+/* Utility Classes */
+.no-hover-overlay {
+  pointer-events: none;
+}
 
-  .bg-footer {
-    background-color: #121212;
-  }
+.map-container {
+  height: 50vh;
+  width: 100%;
+}
 
-  .no-hover-overlay {
-    pointer-events: none;
-  }
-  
-  .map-container {
-    height: 50vh;
-    width: 100%;
-  }
-  
-  .rounded-xxl {
-    border-top-left-radius: 2.5rem;  /* Top-left corner */
-    border-top-right-radius: 2.5rem; /* Top-right corner */
-    border-bottom-right-radius: 2.5rem; /* Bottom-right corner */
-    border-bottom-left-radius: 0; /* No rounding on bottom-left corner */
-  }
-  
+.rounded-xxl {
+  border-top-left-radius: 2.5rem;
+  border-top-right-radius: 2.5rem;
+  border-bottom-right-radius: 2.5rem;
+  border-bottom-left-radius: 0;
+}
+
+/* Image Effects */
 .image-container {
-  transition: transform 0.3s ease; /* Smooth transition for the zoom effect */
-  overflow: hidden; /* Prevent overflow if needed */
+  transition: transform 0.3s ease;
+  overflow: hidden;
 }
 
 .image-container:hover {
-  transform: scale(1.05); /* Scale up the image slightly on hover */
+  transform: scale(1.05);
 }
 
-
-  
-  /* styles.css */
-
+/* Parallax Effect */
 .parallax {
   background-attachment: fixed;
   background-size: cover;
   background-position: top;
 }
 
+/* Smooth Scrolling */
 html {
   scroll-behavior: smooth;
 }
 
+/* Three Dots Component */
 .three-dots {
   display: flex;
-  flex-direction: row; /* Change from column to row */
+  flex-direction: row;
   justify-content: space-between;
-  width: 14px; /* Adjust the width to accommodate the horizontal layout */
-  height: 4px; /* Adjust the height */
+  width: 14px;
+  height: 4px;
 }
 
 .three-dots::before,
 .three-dots::after,
 .three-dots div {
-  content: '';
+  content: "";
   display: block;
   width: 4px;
   height: 4px;
@@ -100,9 +155,86 @@ html {
   border-radius: 50%;
 }
 
-
+/* Login Background */
 .login-background {
-  background-image: url('https://firebasestorage.googleapis.com/v0/b/divaris-3e59f.appspot.com/o/images%2FDSC_5929.jpg?alt=media&token=b6c69906-8efa-4e81-a09b-386e4457a0c3');
+  background-image: url("https://firebasestorage.googleapis.com/v0/b/divaris-3e59f.appspot.com/o/images%2FDSC_5929.jpg?alt=media&token=b6c69906-8efa-4e81-a09b-386e4457a0c3");
   background-size: cover;
   background-position: center;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 210 40% 98%;
+    --foreground: 222 47% 11%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+
+    --primary: 221 83% 53%;
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222 47% 11%;
+
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222 47% 11%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 221 83% 53%;
+
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 222 47% 11%;
+    --foreground: 210 40% 98%;
+
+    --card: 222 47% 11%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 222 47% 11%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 217 91% 60%;
+    --primary-foreground: 222 47% 11%;
+
+    --secondary: 217 32% 17%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 217 32% 17%;
+    --muted-foreground: 215 20.2% 65.1%;
+
+    --accent: 217 32% 17%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 217 32% 17%;
+    --input: 217 32% 17%;
+    --ring: 224 76% 48%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
 }

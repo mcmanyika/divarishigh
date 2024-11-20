@@ -74,43 +74,81 @@ function StudentAttendanceHistory() {
   };
 
   return (
-    <div className="text-sm p-4">
-      <h2 className="text-lg font-semibold mb-4">My Attendance History</h2>
-
+    <div className="w-full p-6 bg-white dark:bg-gray-800 rounded-lg shadow-sm transition-colors duration-200">
       {attendanceRecords.length === 0 ? (
-        <p>No attendance records found.</p>
+        <div className="text-center text-gray-600 dark:text-gray-300">
+          No attendance records found.
+        </div>
       ) : (
         <>
-          <table className="min-w-full text-left bg-white border border-gray-200">
-            <thead>
-              <tr>
-                <th className="py-2 px-4 border-b">Date</th>
-                <th className="py-2 px-4 border-b">Subject</th>
-                <th className="py-2 px-4 border-b">Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              {currentRecords.map((record, index) => (
-                <tr key={index}>
-                  <td className="py-2 px-4 border-b">{record.date}</td>
-                  <td className="py-2 px-4 border-b">{record.subject}</td>
-                  <td className="py-2 px-4 border-b">{statusIcons[record.status] || record.status}</td>
+          <div className="overflow-x-auto">
+            <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+              <thead className="bg-gray-50 dark:bg-gray-700">
+                <tr>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                    Date
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                    Subject
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                    Status
+                  </th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                {currentRecords.map((record, index) => (
+                  <tr 
+                    key={index}
+                    className="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-150"
+                  >
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">
+                      {record.date}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">
+                      {record.subject}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
+                        ${record.status === 'Present' 
+                          ? 'bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200' 
+                          : 'bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200'}`}>
+                        {record.status}
+                      </span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
 
-          {/* Pagination Controls */}
-          <div className="flex justify-center items-center mt-4 space-x-2">
-            {Array.from({ length: totalPages }, (_, i) => (
-              <button
-                key={i + 1}
-                className={`px-3 py-1 rounded ${currentPage === i + 1 ? 'bg-blue-500 text-white' : 'bg-gray-300'}`}
-                onClick={() => handlePageChange(i + 1)}
-              >
-                {i + 1}
-              </button>
-            ))}
+          {/* Pagination */}
+          <div className="flex justify-between items-center mt-4 px-4">
+            <button
+              onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+              disabled={currentPage === 1}
+              className="px-4 py-2 text-sm font-medium text-white bg-blue-500 dark:bg-blue-600 
+                rounded-md hover:bg-blue-600 dark:hover:bg-blue-700 
+                disabled:opacity-50 disabled:cursor-not-allowed
+                transition-colors duration-200"
+            >
+              Previous
+            </button>
+            <span className="text-sm text-gray-700 dark:text-gray-300">
+              Page {currentPage} of {Math.ceil(attendanceRecords.length / itemsPerPage)}
+            </span>
+            <button
+              onClick={() => setCurrentPage(prev => 
+                Math.min(prev + 1, Math.ceil(attendanceRecords.length / itemsPerPage))
+              )}
+              disabled={currentPage >= Math.ceil(attendanceRecords.length / itemsPerPage)}
+              className="px-4 py-2 text-sm font-medium text-white bg-blue-500 dark:bg-blue-600 
+                rounded-md hover:bg-blue-600 dark:hover:bg-blue-700 
+                disabled:opacity-50 disabled:cursor-not-allowed
+                transition-colors duration-200"
+            >
+              Next
+            </button>
           </div>
         </>
       )}

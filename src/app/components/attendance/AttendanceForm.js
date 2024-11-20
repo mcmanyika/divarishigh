@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { database } from '../../../../utils/firebaseConfig';
-import { ref, onValue, update } from 'firebase/database';
+import { ref, onValue, update, get } from 'firebase/database';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { toast } from 'react-toastify';
@@ -64,6 +64,55 @@ function AttendanceForm() {
     setAttendance((prev) => ({ ...prev, [userID]: status }));
   };
 
+  const updateAttendanceStats = async (userID) => {
+    try {
+      // Get current stats
+      const statsRef = ref(database, `userTypes/${userID}/dashboardStats/attendance`);
+      const statsSnapshot = await get(statsRef);
+      const currentStats = statsSnapshot.val() || {};
+
+      // Calculate new attendance percentage
+      const attendanceRef = ref(database, `attendance`);
+      const attendanceSnapshot = await get(attendanceRef);
+      const attendanceData = attendanceSnapshot.val() || {};
+
+      // Calculate attendance percentage for this student
+      const studentAttendance = Object.values(attendanceData)
+        .filter(day => day[userID])
+        .map(day => day[userID].status);
+
+      const totalClasses = studentAttendance.length;
+      const presentClasses = studentAttendance.filter(status => 
+        status === 'Present' || status === 'Late'
+      ).length;
+
+      const attendancePercentage = totalClasses ? 
+        Math.round((presentClasses / totalClasses) * 100) : 0;
+
+      // Calculate trend (comparing with previous value)
+      const previousValue = parseInt(currentStats.value) || 0;
+      const trend = attendancePercentage - previousValue;
+
+      // Determine status
+      let status = 'neutral';
+      if (attendancePercentage >= 90) status = 'up';
+      else if (attendancePercentage >= 75) status = 'neutral';
+      else if (attendancePercentage >= 60) status = 'warning';
+      else status = 'down';
+
+      // Update stats
+      const updates = {
+        value: `${attendancePercentage}%`,
+        trend: `${trend >= 0 ? '+' : ''}${trend}%`,
+        status: status
+      };
+
+      await update(statsRef, updates);
+    } catch (error) {
+      console.error('Error updating attendance stats:', error);
+    }
+  };
+
   const submitAttendance = async (e) => {
     e.preventDefault();
     if (!isSubmittable) {
@@ -78,6 +127,8 @@ function AttendanceForm() {
           status: attendance[userID], 
           subject 
         };
+        // Update stats for each student
+        await updateAttendanceStats(userID);
       }
       await update(ref(database), updates);
       toast.success('Attendance submitted successfully!');
