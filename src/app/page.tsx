@@ -51,7 +51,7 @@ export default function Home() {
           transition={{ duration: 1 }}
           className="absolute inset-0 bg-[url('https://firebasestorage.googleapis.com/v0/b/divaris-3e59f.appspot.com/o/images%2FDSC_6074.jpg?alt=media&token=274e6ddf-f997-4fe6-812f-3e9e13472b33')] bg-cover bg-center"
         >
-          <div className="absolute inset-0 bg-black/2 backdrop-blur-[1px]" />
+          <div className="absolute inset-0 bg-black/10 backdrop-blur-[1px]" />
         </motion.div>
 
         <div className="relative h-full max-w-7xl mx-auto mt-16 px-4 sm:px-6 lg:px-8">
