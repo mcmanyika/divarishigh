@@ -44,54 +44,89 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-gradient-to-b from-background to-background/90 dark:from-slate-650 dark:to-slate-600">
       {/* Hero Banner */}
-      <section className="relative h-[60vh] overflow-hidden">
-        <div className="absolute inset-0 bg-[url('https://firebasestorage.googleapis.com/v0/b/divaris-3e59f.appspot.com/o/images%2FDSC_6074.jpg?alt=media&token=274e6ddf-f997-4fe6-812f-3e9e13472b33')] bg-cover bg-center">
-          <div className="absolute inset-0 bg-blue-900/9 backdrop-blur-[0.27px]" />
-        </div>
-        <div className="relative h-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col justify-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="max-w-3xl"
+      <section className="relative h-[80vh] overflow-hidden">
+        <motion.div 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1 }}
+          className="absolute inset-0 bg-[url('https://firebasestorage.googleapis.com/v0/b/divaris-3e59f.appspot.com/o/images%2FDSC_6074.jpg?alt=media&token=274e6ddf-f997-4fe6-812f-3e9e13472b33')] bg-cover bg-center"
+        >
+          <div className="absolute inset-0 bg-black/2 backdrop-blur-[1px]" />
+        </motion.div>
+
+        <div className="relative h-full max-w-7xl mx-auto mt-16 px-4 sm:px-6 lg:px-8">
+          {/* Logo */}
+          <motion.div 
+            initial={{ opacity: 0, x: -50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, delay: 0.3 }}
+            className="absolute top-8 left-8 z-10"
           >
-            <h1 className="text-5xl sm:text-7xl font-bold text-yellow-600 mb-6">
-              Divaris Makaharis
-              <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-blue-600"> School</span>
-            </h1>
+            <Image
+              src="/images/logo.png"
+              alt="Divaris Makaharis School Logo"
+              width={100}
+              height={100}
+              className="rounded-full"
+            />
           </motion.div>
+
+          <div className="absolute inset-0 flex flex-col items-center justify-center space-y-4">
+            <motion.h1 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.5 }}
+              className="text-7xl font-bold text-center tx-opacity"
+            >
+              Divaris Makaharis School
+            </motion.h1>
+            <motion.p 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.8 }}
+              className="text-2xl text-white/90 max-w-3xl text-center"
+            >
+              Nurturing Excellence, Inspiring Future Leaders
+            </motion.p>
+          </div>
         </div>
-        <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-background to-transparent" />
+
+        <motion.div 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1, delay: 1 }}
+          className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-background to-transparent" 
+        />
       </section>
 
 
       {/* Featured Programs */}
       <AnimatedSection className="py-20 px-4 sm:px-6 lg:px-8 bg-blue-50/30 dark:bg-slate-900/50">
         <div className="max-w-7xl mx-auto">
-          <motion.div
+        <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="text-center mb-12"
+            className="text-center mb-16"
           >
-            <h2 className="text-3xl font-bold mb-4 dark:text-white">Featured Programs</h2>
-            
-          </motion.div>
+            <h2 className="text-4xl font-bold text-gray-900 dark:text-white uppercase">Featured Programs</h2></motion.div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <ProgramCard
               title="Artificial Intelligence"
               description="Learn the fundamentals of AI and machine learning through hands-on projects."
               delay={0.2}
+              icon={<Users className="h-6 w-6" />}
             />
             <ProgramCard
               title="Robotics Engineering"
               description="Design, build, and program robots in our state-of-the-art lab."
               delay={0.4}
+              icon={<GraduationCap className="h-6 w-6" />}
             />
             <ProgramCard
               title="Digital Arts & Design"
               description="Combine creativity with technology in our digital media studio."
               delay={0.6}
+              icon={<Calendar className="h-6 w-6" />}
             />
           </div>
         </div>
@@ -101,14 +136,21 @@ export default function Home() {
       {/* Stats Section */}
       <AnimatedSection className="py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-4xl font-bold text-gray-900 dark:text-white uppercase">Our Impact</h2>
+            <p className="mt-4 text-xl text-gray-600 dark:text-gray-300">Making a difference in education</p>
+          </motion.div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <StatsCard
               icon={<Users className="h-6 w-6" />}
               title="Current Students"
               value={1250}
-              description="Bright minds shaping the future"
               delay={0.2}
-              circleColor="stroke-blue-500"
+              circleColor="stroke-yellow-400"
               className="border border-white dark:border-slate-700 rounded-lg"
             />
 
@@ -116,19 +158,17 @@ export default function Home() {
               icon={<GraduationCap className="h-6 w-6" />}
               title="Total Graduates"
               value={15420}
-              description="Alumni success stories"
               delay={0.4}
-              circleColor="stroke-blue-600"
-              className="border border-white dark:border-slate-700 rounded-lg"
+              circleColor="stroke-yellow-500"
+              className="border border-white dark:border-slate-700 rounded-lg font-thin text-lg"
             />
 
             <StatsCard
               icon={<Calendar className="h-6 w-6" />}
               title="Years of Excellence"
               value={25}
-              description="Established in 1999"
               delay={0.6}
-              circleColor="stroke-blue-700"
+              circleColor="stroke-yellow-600"
               className="border border-white dark:border-slate-700 rounded-lg"
             />
           </div>
@@ -136,57 +176,78 @@ export default function Home() {
       </AnimatedSection>
 
       {/* Gallery Section */}
-      <AnimatedSection className="py-1 px-4 sm:px-6 lg:px-0">
+      <AnimatedSection className="py-20 px-0 sm:px-6 lg:px-0 bg-gray-50 dark:bg-slate-900/50">
         <div className="w-full">
-          
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1"
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-center mb-16"
           >
+            <h2 className="text-4xl font-bold text-gray-900 dark:text-white uppercase">School Life</h2>
+            <p className="mt-4 text-xl text-gray-600 dark:text-gray-300">Experience our vibrant community</p>
+          </motion.div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1">
             {images.slice(0, 6).map((imageUrl, index) => (
               <motion.div
                 key={index}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
+                initial={{ opacity: 0, y: 100, scale: 0.8 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
                 transition={{
-                  duration: 0.5,
-                  delay: 0.2 + index * 0.1,
+                  duration: 0.8,
+                  delay: 0.2 + index * 0.2,
+                  type: "spring",
+                  bounce: 0.4
                 }}
-                whileHover={{ scale: 1.02 }}
-                className="relative aspect-[4/3] overflow-hidden" 
+                whileHover={{ 
+                  scale: 1.05,
+                  y: -10,
+                  transition: { duration: 0.3 } 
+                }}
+                className="relative aspect-[4/3] overflow-hidden"
               >
                 <Image
                   src={imageUrl}
                   alt={`School gallery image ${index + 1}`}
                   fill
-                  className="object-cover transition-transform duration-300 hover:scale-110"
+                  className="object-cover transition-transform duration-500 hover:scale-110"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300">
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300">
                   <div className="absolute bottom-0 left-0 right-0 p-4">
-                    <h3 className="text-white text-lg font-semibold">School Life</h3>
-                    <p className="text-white/90 text-sm">Discover our facilities</p>
+                    <motion.h3 
+                      initial={{ y: 20, opacity: 0 }}
+                      whileHover={{ y: 0, opacity: 1 }}
+                      transition={{ duration: 0.3 }}
+                      className="text-white text-lg font-semibold"
+                    >
+                      School Life
+                    </motion.h3>
+                    <motion.p 
+                      initial={{ y: 20, opacity: 0 }}
+                      whileHover={{ y: 0, opacity: 1 }}
+                      transition={{ duration: 0.3, delay: 0.1 }}
+                      className="text-white/90 text-sm"
+                    >
+                      Discover our facilities
+                    </motion.p>
                   </div>
                 </div>
               </motion.div>
             ))}
-          </motion.div>
+          </div>
         </div>
       </AnimatedSection>
 
       {/* Contact Section */}
-      <AnimatedSection className="py-20 px-4 sm:px-6 lg:px-8 bg-blue-50/30 dark:bg-slate-900/50">
+      <AnimatedSection className="pb-20 px-4 sm:px-6 lg:px-8 bg-blue-50/30 dark:bg-slate-900/50">
         <div className="max-w-7xl mx-auto">
-          <motion.div
+          <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="text-center mb-12"
+            className="text-center mb-16"
           >
-            <h2 className="text-3xl font-bold mb-4">Contact Us</h2>
+            <h2 className="text-4xl font-bold text-gray-900 dark:text-white uppercase">Get in Touch</h2>
+            <p className="mt-4 text-xl text-gray-600 dark:text-gray-300">We love to hear from you</p>
           </motion.div>
-          
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             <div className="space-y-8">
               <Card className="p-6 hover:shadow-lg transition-shadow border-blue-100/20 dark:bg-slate-800 dark:border-slate-700">
@@ -233,11 +294,15 @@ export default function Home() {
       <AnimatedSection className="bg-blue-900 dark:bg-slate-950 text-white py-16 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row justify-between items-start w-full gap-8 md:gap-0">
+            {/* School Logo */}
+            <div className="w-full md:w-auto">
+              <Image src="/images/logo.png" alt="Divaris Makaharis School" width={80} height={80} className="rounded-full" />
+            </div>
             {/* Quick Links */}
             <div className="w-full md:w-auto">
               <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
               <ul className="space-y-2">
-                {['Programs', 'Admissions', 'School Life', 'News & Events'].map((item) => (
+                {['Programs', 'School Life', 'News & Events'].map((item) => (
                   <li key={item}>
                     <a href="#" className="text-blue-100 hover:text-white transition-colors text-sm">
                       {item}
@@ -306,11 +371,32 @@ export default function Home() {
           </div>
         </div>
       </AnimatedSection>
+
+      <div className="absolute inset-0 -z-10 overflow-hidden">
+        <svg
+          className="absolute left-[max(50%,25rem)] top-0 h-[64rem] w-[128rem] -translate-x-1/2 stroke-gray-200 [mask-image:radial-gradient(64rem_64rem_at_top,white,transparent)]"
+          aria-hidden="true"
+        >
+          <defs>
+            <pattern
+              id="e813992c-7d03-4cc4-a2bd-151760b470a0"
+              width={200}
+              height={200}
+              x="50%"
+              y={-1}
+              patternUnits="userSpaceOnUse"
+            >
+              <path d="M100 200V.5M.5 .5H200" fill="none" />
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" strokeWidth={0} fill="url(#e813992c-7d03-4cc4-a2bd-151760b470a0)" />
+        </svg>
+      </div>
     </main>
   );
 }
 
-function StatsCard({ icon, title, value, description, delay, circleColor, className = "" }: any) {
+function StatsCard({ icon, title, value, delay, circleColor, className = "" }: any) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
 
@@ -347,8 +433,7 @@ function StatsCard({ icon, title, value, description, delay, circleColor, classN
                 </div>
               </div>
               <div className="text-center">
-                <h3 className="text-sm font-medium text-muted-foreground mt-2">{title}</h3>
-                <p className="text-sm text-muted-foreground/80 mt-1">{description}</p>
+                <h3 className="text-xl font-thin uppercase text-muted-foreground mt-2">{title}</h3>
               </div>
             </>
           )}
@@ -358,7 +443,7 @@ function StatsCard({ icon, title, value, description, delay, circleColor, classN
   );
 }
 
-function ProgramCard({ title, description, delay }: any) {
+function ProgramCard({ title, description, delay, icon }: any) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
 
@@ -369,14 +454,17 @@ function ProgramCard({ title, description, delay }: any) {
       animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
       transition={{ duration: 0.5, delay }}
     >
-      <Card className="p-6 hover:shadow-lg transition-shadow cursor-pointer group border-blue-100/20 dark:bg-slate-800 dark:border-slate-700">
-        <h3 className="text-xl font-semibold group-hover:text-blue-600 dark:text-white dark:group-hover:text-blue-400 transition-colors">
+      <Card className="p-8 hover:shadow-xl transition-all duration-300 cursor-pointer group border-blue-100/20 dark:bg-slate-800/50 dark:border-slate-700 backdrop-blur-sm">
+        <div className="h-12 w-12 bg-blue-500/10 rounded-lg flex items-center justify-center mb-6 group-hover:bg-blue-500 transition-colors duration-300">
+          {icon}
+        </div>
+        <h3 className="text-2xl font-semibold group-hover:text-blue-600 dark:text-white dark:group-hover:text-blue-400 transition-colors">
           {title}
         </h3>
-        <p className="mt-2 text-muted-foreground dark:text-gray-300">{description}</p>
-        <div className="mt-4 flex items-center text-sm text-blue-600 dark:text-blue-400">
+        <p className="mt-4 text-muted-foreground dark:text-gray-300">{description}</p>
+        <div className="mt-6 flex items-center text-sm text-blue-600 dark:text-blue-400 font-medium">
           Learn more
-          <ArrowUpRight className="h-4 w-4 ml-1" />
+          <ArrowUpRight className="h-4 w-4 ml-1 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
         </div>
       </Card>
     </motion.div>
@@ -397,5 +485,21 @@ function AnimatedSection({ children, className }: { children: React.ReactNode; c
     >
       {children}
     </motion.section>
+  );
+}
+
+function ScrollReveal({ children }: { children: React.ReactNode }) {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-100px" });
+
+  return (
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y: 50 }}
+      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
+      transition={{ duration: 0.8, ease: "easeOut" }}
+    >
+      {children}
+    </motion.div>
   );
 }

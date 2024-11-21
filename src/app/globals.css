@@ -113,6 +113,11 @@
   border-bottom-left-radius: 0;
 }
 
+.tx-opacity {
+  color: #facc15a3;
+  opacity: 0.4;
+}
+
 /* Image Effects */
 .image-container {
   transition: transform 0.3s ease;
