@@ -6,7 +6,7 @@ import { Counter } from "./components/stats/counter";
 import { Gallery } from "./components/gallery";
 import { ContactForm } from "./components/contact-form";
 import { motion } from "framer-motion";
-import { ArrowUpRight, Users, GraduationCap, Calendar, MapPin, Phone, Mail } from "lucide-react";
+import { ArrowUpRight, Users, GraduationCap, Calendar, MapPin, Phone, Mail, Calculator, Palette, Beaker, Cpu } from "lucide-react";
 import { Separator } from "./components/ui/separator";
 import { useInView } from "framer-motion";
 import { useRef, useEffect, useState } from "react";
@@ -14,6 +14,7 @@ import Image from "next/image";
 import { database } from '../../utils/firebaseConfig';
 import { ref, onValue } from 'firebase/database';
 import Map from '../app/components/Map';
+import { NavigationMenu } from "./components/navigation";
 
 export default function Home() {
   const [images, setImages] = useState<string[]>([]);
@@ -101,9 +102,15 @@ export default function Home() {
 
 
       {/* Featured Programs */}
-      <AnimatedSection className="py-20 px-4 sm:px-6 lg:px-8 bg-blue-50/30 dark:bg-slate-900/50">
+      <motion.section
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.8 }}
+        className="py-20 px-4 sm:px-6 lg:px-8 bg-blue-50/30 dark:bg-slate-900/50"
+      >
         <div className="max-w-7xl mx-auto">
-        <motion.div 
+          <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             className="text-center mb-16"
@@ -130,11 +137,17 @@ export default function Home() {
             />
           </div>
         </div>
-      </AnimatedSection>
+      </motion.section>
 
 
       {/* Stats Section */}
-      <AnimatedSection className="py-20 px-4 sm:px-6 lg:px-8">
+      <motion.section
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.8 }}
+        className="py-20 px-4 sm:px-6 lg:px-8"
+      >
         <div className="max-w-7xl mx-auto">
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
@@ -173,10 +186,95 @@ export default function Home() {
             />
           </div>
         </div>
-      </AnimatedSection>
+      </motion.section>
+      {/* Curriculum Section */}
+      <motion.section
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.8 }}
+        className="py-20 px-4 sm:px-6 lg:px-8 bg-white dark:bg-slate-900"
+      >
+        <div className="max-w-7xl mx-auto">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-4xl font-bold text-gray-900 dark:text-white uppercase">Our Curriculum</h2>
+            <p className="mt-4 text-xl text-gray-600 dark:text-gray-300">Comprehensive education for tomorrow s leaders</p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {[
+              {
+                icon: <Calculator className="h-6 w-6 text-blue-600 dark:text-blue-400" />,
+                title: "Commercial Studies",
+                description: "Business, Accounting, Economics and Entrepreneurship skills for future leaders",
+                color: "blue",
+                delay: 0.2
+              },
+              {
+                icon: <Palette className="h-6 w-6 text-purple-600 dark:text-purple-400" />,
+                title: "Arts & Humanities",
+                description: "Literature, History, Languages and Creative Arts for cultural enrichment",
+                color: "purple",
+                delay: 0.4
+              },
+              {
+                icon: <Beaker className="h-6 w-6 text-green-600 dark:text-green-400" />,
+                title: "Sciences",
+                description: "Physics, Chemistry, Biology and Environmental Sciences for analytical minds",
+                color: "green",
+                delay: 0.6
+              },
+              {
+                icon: <Cpu className="h-6 w-6 text-amber-600 dark:text-amber-400" />,
+                title: "Technical Subjects",
+                description: "Computer Science, Engineering principles and Digital Technology skills",
+                color: "amber",
+                delay: 0.8
+              }
+            ].map((item, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20, scale: 0.95 }}
+                whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ 
+                  duration: 0.5, 
+                  delay: item.delay,
+                  ease: "easeOut"
+                }}
+                whileHover={{ 
+                  scale: 1.05,
+                  transition: { duration: 0.2 }
+                }}
+                className="bg-white dark:bg-slate-800 rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300"
+              >
+                <div className="p-6">
+                  <div className={`w-12 h-12 bg-${item.color}-100 dark:bg-${item.color}-900 rounded-lg flex items-center justify-center mb-4 transform transition-transform duration-300 group-hover:scale-110`}>
+                    {item.icon}
+                  </div>
+                  <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">{item.title}</h3>
+                  <p className="text-gray-600 dark:text-gray-300">{item.description}</p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </motion.section>
 
       {/* Gallery Section */}
-      <AnimatedSection className="py-20 px-0 sm:px-6 lg:px-0 bg-gray-50 dark:bg-slate-900/50">
+      <motion.section
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.8 }}
+        className="py-20 px-0 sm:px-6 lg:px-0 bg-gray-50 dark:bg-slate-900/50"
+      >
         <div className="w-full">
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
@@ -235,10 +333,90 @@ export default function Home() {
             ))}
           </div>
         </div>
-      </AnimatedSection>
+      </motion.section>
+
+
+      {/* Headmaster's Remarks */}
+      <motion.section
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.8 }}
+        className="py-20 px-4 sm:px-6 lg:px-8 bg-white dark:bg-slate-900"
+      >
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            {/* Video Column */}
+            <motion.div
+              initial={{ opacity: 0, x: -50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="relative aspect-video w-full rounded-2xl overflow-hidden"
+            >
+              <iframe
+                src="https://www.youtube.com/embed/YOUR_VIDEO_ID" // Replace YOUR_VIDEO_ID with actual YouTube video ID
+                title="Headmaster's Welcome Message"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                className="absolute top-0 left-0 w-full h-full rounded-2xl"
+              />
+            </motion.div>
+
+            {/* Content Column */}
+            <motion.div
+              initial={{ opacity: 0, x: 50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+              className="space-y-6"
+            >
+              <div className="space-y-2">
+                <h2 className="text-4xl font-bold text-gray-900 dark:text-white">Headmaster s Welcome</h2>
+              </div>
+              
+              <div className="space-y-4 text-gray-600 dark:text-gray-300">
+                <p className="text-lg leading-relaxed">
+                  Welcome to Divaris Makaharis School, where we believe in nurturing not just academic excellence, 
+                  but the complete development of every student. Our commitment to providing a comprehensive education 
+                  is reflected in our innovative curriculum and dedicated teaching staff.
+                </p>
+                
+                <p className="text-lg leading-relaxed">
+                  We strive to create an environment where students can discover their passions, develop critical 
+                  thinking skills, and grow into responsible global citizens. Our focus on both traditional academic 
+                  subjects and modern technological skills ensures that our students are well-prepared for the 
+                  challenges of tomorrow.
+                </p>
+
+                <p className="text-lg leading-relaxed">
+                  At Divaris Makaharis, we understand that each student is unique, with their own talents and 
+                  aspirations. Our role is to guide them on their educational journey, providing the support and 
+                  resources they need to reach their full potential.
+                </p>
+              </div>
+
+              <div className="pt-6">
+                <div className="flex items-center gap-4">
+                  <div>
+                    <p className="font-semibold text-gray-900 dark:text-white">Mr. Matemayi</p>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">Headmaster</p>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </motion.section>
 
       {/* Contact Section */}
-      <AnimatedSection className="pb-20 px-4 sm:px-6 lg:px-8 bg-blue-50/30 dark:bg-slate-900/50">
+      <motion.section
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.8 }}
+        className="pb-20 pt-20 px-4 sm:px-6 lg:px-8 bg-blue-50/30 dark:bg-slate-900/50"
+      >
         <div className="max-w-7xl mx-auto">
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
@@ -288,10 +466,16 @@ export default function Home() {
             </Card>
           </div>
         </div>
-      </AnimatedSection>
+      </motion.section>
 
       {/* Footer Section */}
-      <AnimatedSection className="bg-blue-900 dark:bg-slate-950 text-white py-16 px-4 sm:px-6 lg:px-8">
+      <motion.section
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.8 }}
+        className="bg-blue-900 dark:bg-slate-950 text-white py-16 px-4 sm:px-6 lg:px-8"
+      >
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row justify-between items-start w-full gap-8 md:gap-0">
             {/* School Logo */}
@@ -317,6 +501,7 @@ export default function Home() {
               <h3 className="text-lg font-semibold mb-4">Resources</h3>
               <ul className="space-y-2">
                 {[
+                  { name: 'Staff ', href: '/admin/login' },
                   { name: 'Student Portal', href: '/admin/login' },
                   { name: 'Parent Portal', href: '/admin/login' },
                 ].map((item) => (
@@ -370,7 +555,7 @@ export default function Home() {
             </div>
           </div>
         </div>
-      </AnimatedSection>
+      </motion.section>
 
       <div className="absolute inset-0 -z-10 overflow-hidden">
         <svg
@@ -468,23 +653,6 @@ function ProgramCard({ title, description, delay, icon }: any) {
         </div>
       </Card>
     </motion.div>
-  );
-}
-
-function AnimatedSection({ children, className }: { children: React.ReactNode; className?: string }) {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
-
-  return (
-    <motion.section
-      ref={ref}
-      initial={{ opacity: 0, y: 50 }}
-      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
-      transition={{ duration: 0.8, ease: "easeOut" }}
-      className={className}
-    >
-      {children}
-    </motion.section>
   );
 }
 
