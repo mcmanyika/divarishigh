@@ -15,6 +15,7 @@ import {
 import { GraduationCap } from "lucide-react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebookF } from '@fortawesome/free-brands-svg-icons';
+import { IconProp } from '@fortawesome/fontawesome-svg-core';
 
 export function NavigationMenu() {
   return (
@@ -63,9 +64,9 @@ export function NavigationMenu() {
               href="https://www.facebook.com/YourPageHere" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="flex items-center justify-center w-10 h-10 rounded-full bg-white hover:bg-blue-700 text-black transition-colors duration-200"
+              className="flex items-center justify-center w-10 h-10 rounded-full bg-blue-600 hover:bg-blue-700 text-white transition-colors duration-200"
             >
-              <FontAwesomeIcon icon={faFacebookF} className="h-5 w-5" />
+              <FontAwesomeIcon icon={faFacebookF as IconProp} className="h-5 w-5" />
             </a>
           </div>
         </div>
