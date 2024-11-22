@@ -68,7 +68,7 @@ export default function Home() {
               alt="Divaris Makaharis School Logo"
               width={100}
               height={100}
-              className="rounded-full"
+              className="rounded-full sm:w-[100px] sm:h-[100px] w-[80px] h-[80px]"
             />
           </motion.div>
 
@@ -77,7 +77,7 @@ export default function Home() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.5 }}
-              className="text-7xl font-bold text-center tx-opacity"
+              className="text-5xl md:text-7xl font-bold text-center tx-opacity"
             >
               Divaris Makaharis School
             </motion.h1>
