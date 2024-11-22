@@ -66,9 +66,9 @@ export default function Home() {
             <Image
               src="/images/logo.png"
               alt="Divaris Makaharis School Logo"
-              width={100}
+              width={80}
               height={100}
-              className="rounded-full sm:w-[100px] sm:h-[100px] w-[80px] h-[80px]"
+              className="rounded-full sm:w-[80px] sm:h-[100px] w-[80px] h-[100px]"
             />
           </motion.div>
 
