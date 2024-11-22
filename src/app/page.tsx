@@ -187,6 +187,74 @@ export default function Home() {
           </div>
         </div>
       </motion.section>
+
+      {/* Gallery Section */}
+      <motion.section
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.8 }}
+        className="py-20 px-0 sm:px-6 lg:px-0 bg-gray-50 dark:bg-slate-900/50"
+      >
+        <div className="w-full">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-4xl font-bold text-gray-900 dark:text-white uppercase">School Life</h2>
+            <p className="mt-4 text-xl text-gray-600 dark:text-gray-300">Experience our vibrant community</p>
+          </motion.div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1">
+            {images.slice(0, 6).map((imageUrl, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 100, scale: 0.8 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                transition={{
+                  duration: 0.8,
+                  delay: 0.2 + index * 0.2,
+                  type: "spring",
+                  bounce: 0.4
+                }}
+                whileHover={{ 
+                  scale: 1.05,
+                  y: -10,
+                  transition: { duration: 0.3 } 
+                }}
+                className="relative aspect-[4/3] overflow-hidden"
+              >
+                <Image
+                  src={imageUrl}
+                  alt={`School gallery image ${index + 1}`}
+                  fill
+                  className="object-cover transition-transform duration-500 hover:scale-110"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300">
+                  <div className="absolute bottom-0 left-0 right-0 p-4">
+                    <motion.h3 
+                      initial={{ y: 20, opacity: 0 }}
+                      whileHover={{ y: 0, opacity: 1 }}
+                      transition={{ duration: 0.3 }}
+                      className="text-white text-lg font-semibold"
+                    >
+                      School Life
+                    </motion.h3>
+                    <motion.p 
+                      initial={{ y: 20, opacity: 0 }}
+                      whileHover={{ y: 0, opacity: 1 }}
+                      transition={{ duration: 0.3, delay: 0.1 }}
+                      className="text-white/90 text-sm"
+                    >
+                      Discover our facilities
+                    </motion.p>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </motion.section>
       {/* Curriculum Section */}
       <motion.section
         initial={{ opacity: 0, y: 20 }}
@@ -267,73 +335,6 @@ export default function Home() {
         </div>
       </motion.section>
 
-      {/* Gallery Section */}
-      <motion.section
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.8 }}
-        className="py-20 px-0 sm:px-6 lg:px-0 bg-gray-50 dark:bg-slate-900/50"
-      >
-        <div className="w-full">
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-4xl font-bold text-gray-900 dark:text-white uppercase">School Life</h2>
-            <p className="mt-4 text-xl text-gray-600 dark:text-gray-300">Experience our vibrant community</p>
-          </motion.div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1">
-            {images.slice(0, 6).map((imageUrl, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 100, scale: 0.8 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                transition={{
-                  duration: 0.8,
-                  delay: 0.2 + index * 0.2,
-                  type: "spring",
-                  bounce: 0.4
-                }}
-                whileHover={{ 
-                  scale: 1.05,
-                  y: -10,
-                  transition: { duration: 0.3 } 
-                }}
-                className="relative aspect-[4/3] overflow-hidden"
-              >
-                <Image
-                  src={imageUrl}
-                  alt={`School gallery image ${index + 1}`}
-                  fill
-                  className="object-cover transition-transform duration-500 hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300">
-                  <div className="absolute bottom-0 left-0 right-0 p-4">
-                    <motion.h3 
-                      initial={{ y: 20, opacity: 0 }}
-                      whileHover={{ y: 0, opacity: 1 }}
-                      transition={{ duration: 0.3 }}
-                      className="text-white text-lg font-semibold"
-                    >
-                      School Life
-                    </motion.h3>
-                    <motion.p 
-                      initial={{ y: 20, opacity: 0 }}
-                      whileHover={{ y: 0, opacity: 1 }}
-                      transition={{ duration: 0.3, delay: 0.1 }}
-                      className="text-white/90 text-sm"
-                    >
-                      Discover our facilities
-                    </motion.p>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </motion.section>
 
 
       {/* Headmaster's Remarks */}
