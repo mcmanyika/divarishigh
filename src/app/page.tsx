@@ -15,7 +15,6 @@ import { database } from '../../utils/firebaseConfig';
 import { ref, onValue } from 'firebase/database';
 import Map from '../app/components/Map';
 import { NavigationMenu } from "./components/navigation";
-import AboutUsBanner from "./components/banner/AboutUsBanner";
 
 export default function Home() {
   const [images, setImages] = useState<string[]>([]);
@@ -129,11 +128,6 @@ export default function Home() {
     className="absolute bottom-0 left-0 right-0 h-16 sm:h-32 bg-gradient-to-t from-background to-transparent" 
   />
 </section>
-
-
-
-
-      {/* <AboutUsBanner /> */}
 
       {/* Featured Programs */}
       <motion.section
