@@ -60,6 +60,7 @@ export default function Home() {
 
   {/* Creative Bars */}
   {/* Top Left Bar (Diagonal) */}
+  
   <div className="absolute top-0 left-0 w-[100px] h-[300px] sm:w-[150px] sm:h-[500px] bg-yellow-500 transform -rotate-45 -translate-x-5 -translate-y-5 sm:-translate-x-10 sm:-translate-y-10 opacity-90 z-10" />
 
   {/* Top Right Bar (Full-Screen Height on Mobile) */}
