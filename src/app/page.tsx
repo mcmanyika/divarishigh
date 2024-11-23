@@ -15,6 +15,7 @@ import { database } from '../../utils/firebaseConfig';
 import { ref, onValue } from 'firebase/database';
 import Map from '../app/components/Map';
 import { NavigationMenu } from "./components/navigation";
+import AboutUsBanner from "./components/banner/AboutUsBanner";
 
 export default function Home() {
   const [images, setImages] = useState<string[]>([]);
@@ -44,62 +45,84 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-background to-background/90 dark:from-slate-650 dark:to-slate-600">
-      {/* Hero Banner */}
-      <section className="relative h-[80vh] overflow-hidden">
-        <motion.div 
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1 }}
-          className="absolute inset-0 bg-[url('https://firebasestorage.googleapis.com/v0/b/divaris-3e59f.appspot.com/o/images%2FDSC_6074.jpg?alt=media&token=274e6ddf-f997-4fe6-812f-3e9e13472b33')] bg-cover bg-center"
-        >
-          <div className="absolute inset-0 bg-black/10 backdrop-blur-[1px]" />
-        </motion.div>
+      
+  {/* Hero Banner */}
+<section className="relative h-[80vh] overflow-hidden">
+  {/* Background Image */}
+  <motion.div 
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    transition={{ duration: 1 }}
+    className="absolute inset-0 bg-[url('https://firebasestorage.googleapis.com/v0/b/divaris-3e59f.appspot.com/o/images%2FDSC_6074.jpg?alt=media&token=274e6ddf-f997-4fe6-812f-3e9e13472b33')] bg-cover bg-center"
+  >
+    <div className="absolute inset-0 bg-black/10 backdrop-blur-[1px]" />
+  </motion.div>
 
-        <div className="relative h-full max-w-7xl mx-auto mt-16 px-4 sm:px-6 lg:px-8">
-          {/* Logo */}
-          <motion.div 
-            initial={{ opacity: 0, x: -50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.3 }}
-            className="absolute top-8 left-8 z-10"
-          >
-            <Image
-              src="/images/logo.png"
-              alt="Divaris Makaharis School Logo"
-              width={80}
-              height={100}
-              className="rounded-full sm:w-[80px] sm:h-[100px] w-[80px] h-[100px]"
-            />
-          </motion.div>
+  {/* Creative Bars */}
+  {/* Top Left Bar (Diagonal) */}
+  <div className="absolute top-0 left-0 w-[100px] h-[300px] sm:w-[150px] sm:h-[500px] bg-yellow-500 transform -rotate-45 -translate-x-5 -translate-y-5 sm:-translate-x-10 sm:-translate-y-10 opacity-90 z-10" />
 
-          <div className="absolute inset-0 flex flex-col items-center justify-center space-y-4">
-            <motion.h1 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.5 }}
-              className="text-5xl md:text-7xl font-bold text-center tx-opacity"
-            >
-              Divaris Makaharis School
-            </motion.h1>
-            <motion.p 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.8 }}
-              className="text-2xl text-white/90 max-w-3xl text-center"
-            >
-              Nurturing Excellence, Inspiring Future Leaders
-            </motion.p>
-          </div>
-        </div>
+  {/* Top Right Bar (Full-Screen Height on Mobile) */}
+  <div className="absolute top-0 right-0 w-[80px] h-[100vh] bg-red-600 transform skew-y-12 opacity-70 z-10" />
 
-        <motion.div 
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1, delay: 1 }}
-          className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-background to-transparent" 
-        />
-      </section>
+  {/* Bottom Left Bar (Diagonal Cross) */}
+  <div className="absolute bottom-0 left-0 w-[80px] h-[300px] sm:w-[100px] sm:h-[500px] bg-slate-900/50 transform rotate-45 translate-x-5 translate-y-5 sm:translate-x-10 sm:translate-y-10 opacity-80 z-10" />
 
+  {/* Bottom Right Bar (Horizontal) */}
+  <div className="absolute bottom-0 right-0 w-[100px] h-[10px] sm:w-[150px] sm:h-[20px] bg-green-600 translate-y-2 translate-x-2 sm:translate-y-5 sm:translate-x-5 opacity-75 z-10" />
+
+  {/* Content */}
+  <div className="relative h-full max-w-7xl mx-auto mt-16 px-4 sm:px-6 lg:px-8">
+    {/* Logo */}
+    <motion.div 
+      initial={{ opacity: 0, x: -50 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ duration: 0.8, delay: 0.3 }}
+      className="absolute top-8 left-8 z-20"
+    >
+      <Image
+        src="/images/logo.png"
+        alt="Divaris Makaharis School Logo"
+        width={60}
+        height={80}
+        className="rounded-full sm:w-[80px] sm:h-[100px] w-[60px] h-[80px]"
+      />
+    </motion.div>
+
+    {/* Hero Text */}
+    <div className="absolute inset-0 flex flex-col items-center justify-center space-y-4 z-20 px-4">
+      <motion.h1 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, delay: 0.5 }}
+        className="text-3xl sm:text-5xl md:text-7xl font-bold text-center text-white"
+      >
+        Divaris Makaharis School
+      </motion.h1>
+      <motion.p 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, delay: 0.8 }}
+        className="text-lg sm:text-2xl text-white/90 max-w-xl sm:max-w-3xl text-center"
+      >
+        Nurturing Excellence, Inspiring Future Leaders
+      </motion.p>
+    </div>
+  </div>
+
+  {/* Bottom Gradient */}
+  <motion.div 
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    transition={{ duration: 1, delay: 1 }}
+    className="absolute bottom-0 left-0 right-0 h-16 sm:h-32 bg-gradient-to-t from-background to-transparent" 
+  />
+</section>
+
+
+
+
+      {/* <AboutUsBanner /> */}
 
       {/* Featured Programs */}
       <motion.section
