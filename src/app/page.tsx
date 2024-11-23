@@ -418,7 +418,7 @@ export default function Home() {
         className="space-y-6"
       >
         <div className="space-y-2">
-          <h2 className="text-4xl font-bold text-gray-900 dark:text-white">Headmaster's Welcome</h2>
+          <h2 className="text-4xl font-bold text-gray-900 dark:text-white">Headmaster Welcome</h2>
         </div>
         
         <div className="space-y-4 text-gray-600 dark:text-gray-300">
