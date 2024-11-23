@@ -68,11 +68,11 @@ export default function Home() {
     initial={{ y: -200, opacity: 0 }}
     animate={{ y: 0, opacity: 0.7 }}
     transition={{ duration: 1.4, ease: "easeOut" }}
-    className="absolute top-0 right-0 w-[80px] h-[100vh] bg-red-600 transform skew-y-12 z-10"
+    className="absolute top-0 right-0 w-[40px] sm:w-[80px] h-[100vh] bg-red-600 transform skew-y-12 z-10"
   />
 
   {/* Bottom Left Bar (Diagonal Cross) */}
-  <div className="absolute bottom-0 left-0 w-[80px] h-[300px] sm:w-[100px] sm:h-[500px] bg-slate-900/50 transform rotate-45 translate-x-5 translate-y-5 sm:translate-x-10 sm:translate-y-10 opacity-80 z-10" />
+  <div className="absolute bottom-0 left-0 w-[100px] h-[500px] bg-slate-900/50 transform rotate-45 translate-x-10 translate-y-10 opacity-80 z-10" />
 
   {/* Bottom Right Bar (Horizontal) */}
   <motion.div
