@@ -64,13 +64,23 @@ export default function Home() {
   <div className="absolute top-0 left-0 w-[100px] h-[300px] sm:w-[150px] sm:h-[500px] bg-yellow-500 transform -rotate-45 -translate-x-5 -translate-y-5 sm:-translate-x-10 sm:-translate-y-10 opacity-90 z-10" />
 
   {/* Top Right Bar (Full-Screen Height on Mobile) */}
-  <div className="absolute top-0 right-0 w-[80px] h-[100vh] bg-red-600 transform skew-y-12 opacity-70 z-10" />
+  <motion.div
+    initial={{ y: -200, opacity: 0 }}
+    animate={{ y: 0, opacity: 0.7 }}
+    transition={{ duration: 1.4, ease: "easeOut" }}
+    className="absolute top-0 right-0 w-[80px] h-[100vh] bg-red-600 transform skew-y-12 z-10"
+  />
 
   {/* Bottom Left Bar (Diagonal Cross) */}
   <div className="absolute bottom-0 left-0 w-[80px] h-[300px] sm:w-[100px] sm:h-[500px] bg-slate-900/50 transform rotate-45 translate-x-5 translate-y-5 sm:translate-x-10 sm:translate-y-10 opacity-80 z-10" />
 
   {/* Bottom Right Bar (Horizontal) */}
-  <div className="absolute bottom-0 right-0 w-[100px] h-[10px] sm:w-[150px] sm:h-[20px] bg-green-600 translate-y-2 translate-x-2 sm:translate-y-5 sm:translate-x-5 opacity-75 z-10" />
+  <motion.div
+    initial={{ x: 200, opacity: 0 }}
+    animate={{ x: 0, opacity: 0.75 }}
+    transition={{ duration: 1.8, ease: "easeOut" }}
+    className="absolute bottom-0 right-0 w-[100px] h-[10px] sm:w-[150px] sm:h-[20px] bg-green-600 translate-y-2 translate-x-2 sm:translate-y-5 sm:translate-x-5 z-10"
+  />
 
   {/* Content */}
   <div className="relative h-full max-w-7xl mx-auto mt-16 px-4 sm:px-6 lg:px-8">
