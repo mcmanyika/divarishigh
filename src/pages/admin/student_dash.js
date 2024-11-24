@@ -101,8 +101,6 @@ const StudentDash = () => {
 
         <AcademicProgress />
 
-        <Deadlines />
-
         <div className="grid md:grid-cols-2 gap-6">
           <div className="bg-white dark:bg-slate-900 rounded-xl shadow-md overflow-hidden border border-gray-100 dark:border-slate-800">
             <div className="p-4 border-b border-gray-100 dark:border-slate-800">

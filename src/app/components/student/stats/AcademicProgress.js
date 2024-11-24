@@ -80,16 +80,8 @@ const AcademicProgress = () => {
   };
 
   return (
-    <div className="grid md:grid-cols-2 gap-6">
-      <div className="bg-white dark:bg-slate-900 rounded-xl shadow-md overflow-hidden border border-gray-100 dark:border-slate-800">
-        <div className="p-4 border-b border-gray-100 dark:border-slate-800">
-          <h3 className="text-lg font-semibold text-gray-800 dark:text-white">Performance Trend</h3>
-        </div>
-        <div className="p-4">
-          <Line data={chartData} options={chartOptions} />
-        </div>
-      </div>
-
+    <div className="grid md:grid-cols-1 gap-6">
+      
       <div className="bg-white dark:bg-slate-900 rounded-xl shadow-md overflow-hidden border border-gray-100 dark:border-slate-800">
         <div className="p-4 border-b border-gray-100 dark:border-slate-800">
           <h3 className="text-lg font-semibold text-gray-800 dark:text-white">Subject Performance</h3>

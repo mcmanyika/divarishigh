@@ -162,7 +162,7 @@ function AttendanceForm() {
       />
 
       <form onSubmit={submitAttendance}>
-        <table className="min-w-full text-left bg-white border border-gray-200">
+        <table className="min-w-full text-left">
           <thead>
             <tr>
               <th className="py-2 px-4 border-b">Student ID</th>
