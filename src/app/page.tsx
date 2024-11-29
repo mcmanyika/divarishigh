@@ -15,7 +15,7 @@ import { database } from '../../utils/firebaseConfig';
 import { ref, onValue } from 'firebase/database';
 import Map from '../app/components/Map';
 import { NavigationMenu } from "./components/navigation";
-
+import HeroSection from "./components/banner/HeroSection";
 export default function Home() {
   const [images, setImages] = useState<string[]>([]);
 
@@ -168,8 +168,8 @@ export default function Home() {
       </motion.section>
 
 
-      {/* Stats Section */}
-      <motion.section
+        {/* Stats Section */}
+      {/* <motion.section
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
@@ -214,7 +214,8 @@ export default function Home() {
             />
           </div>
         </div>
-      </motion.section>
+      </motion.section> */}
+      <HeroSection />
 
       {/* Gallery Section */}
       <motion.section
