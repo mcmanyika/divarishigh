@@ -132,7 +132,7 @@ export default function Home() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, delay: 0.8 }}
-        className="text-lg sm:text-2xl text-white/90 max-w-xl sm:max-w-3xl text-center"
+        className="text-lg font-thin sm:text-2xl text-white/90 max-w-xl sm:max-w-3xl text-center"
       >
         Nurturing Excellence, Inspiring Future Leaders
       </motion.p>
