@@ -16,7 +16,6 @@ export default function HeroSectionWithWave() {
 
   return (
     <div className="relative h-[600px] overflow-hidden">
-      {/* Top Wave */}
       <div className="absolute top-0 left-0 w-full overflow-hidden leading-none z-10">
         <svg
           className="relative block w-full h-[80px] transform scale-110"
@@ -46,7 +45,6 @@ export default function HeroSectionWithWave() {
           <p className=" text-gray-600 text-3xl font-thin leading-relaxed">
           Divaris Makaharis High School is one of Zimbabwe  reputable high schools, offering comprehensive Zimsec and Cambridge Examinations. The school is a cradle of academic excellence whose exit profile catches up with the signs of times.
           </p>
-          
         </div>
       </div>
 

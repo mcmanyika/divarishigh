@@ -3,7 +3,6 @@
 export default function Wave() {
   return (
     <div className="relative h-[50px] overflow-hidden">
-      {/* Bottom Wave */}
       <div className="absolute -bottom-2 left-0 w-full overflow-hidden leading-none z-20">
         <svg
           className="relative block w-full h-[80px] transform scale-110"

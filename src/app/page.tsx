@@ -18,6 +18,7 @@ import { NavigationMenu } from "./components/navigation";
 import HeroSection from "./components/banner/HeroSection";
 import Wave from "./components/banner/Wave";
 import WaveTop from "./components/banner/WaveTop";
+import Headmaster from "./components/banner/Headmaster";
 
 export default function Home() {
   const [images, setImages] = useState<string[]>([]);
@@ -171,53 +172,6 @@ export default function Home() {
       </motion.section>
 
 
-        {/* Stats Section */}
-      {/* <motion.section
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.8 }}
-        className="py-20 px-4 sm:px-6 lg:px-8"
-      >
-        <div className="max-w-7xl mx-auto">
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-4xl font-bold text-gray-900 dark:text-white uppercase">Our Impact</h2>
-            <p className="mt-4 text-xl text-gray-600 dark:text-gray-300">Making a difference in education</p>
-          </motion.div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <StatsCard
-              icon={<Users className="h-6 w-6" />}
-              title="Current Students"
-              value={1250}
-              delay={0.2}
-              circleColor="stroke-yellow-400"
-              className="border border-white dark:border-slate-700 rounded-lg"
-            />
-
-            <StatsCard
-              icon={<GraduationCap className="h-6 w-6" />}
-              title="Total Graduates"
-              value={15420}
-              delay={0.4}
-              circleColor="stroke-yellow-500"
-              className="border border-white dark:border-slate-700 rounded-lg font-thin text-lg"
-            />
-
-            <StatsCard
-              icon={<Calendar className="h-6 w-6" />}
-              title="Years of Excellence"
-              value={25}
-              delay={0.6}
-              circleColor="stroke-yellow-600"
-              className="border border-white dark:border-slate-700 rounded-lg"
-            />
-          </div>
-        </div>
-      </motion.section> */}
       <HeroSection />
 
       {/* Gallery Section */}
@@ -287,94 +241,9 @@ export default function Home() {
           </div>
         </div>
       </motion.section>
-        <Wave />
-      
-
-
-
-      {/* Headmaster's Remarks */}
-<motion.section
-  initial={{ opacity: 0, y: 20 }}
-  whileInView={{ opacity: 1, y: 0 }}
-  viewport={{ once: true }}
-  transition={{ duration: 0.8 }}
-  className="relative py-20 px-4 sm:px-6 lg:px-8 bg-white dark:bg-slate-900 overflow-hidden"
->
-  {/* Slanted Bars */}
-  {/* Top Left Slanted Bar */}
-  <div className="absolute top-0 left-0 w-[200px] h-[400px] bg-yellow-500 transform -rotate-45 -translate-x-10 -translate-y-10 opacity-50 z-10"></div>
-  
-  {/* Bottom Right Slanted Bar */}
-  <div className="absolute bottom-0 right-0 w-[300px] h-[500px] bg-blue-500 transform rotate-45 translate-x-10 translate-y-10 opacity-50 z-10"></div>
-  
-  {/* Center Crossed Bar */}
-  <div className="absolute top-1/2 left-1/2 w-[200px] h-[500px] bg-red-500 transform -translate-x-1/2 -translate-y-1/2 rotate-12 opacity-40 z-10"></div>
-
-  {/* Main Content */}
-  <div className="relative max-w-7xl mx-auto z-20">
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-      {/* Video Column */}
-      <motion.div
-        initial={{ opacity: 0, x: -50 }}
-        whileInView={{ opacity: 1, x: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.8, delay: 0.2 }}
-        className="relative aspect-video w-full rounded-2xl overflow-hidden"
-      >
-        <iframe
-          src="https://www.youtube.com/embed/YOUR_VIDEO_ID" // Replace YOUR_VIDEO_ID with actual YouTube video ID
-          title="Headmaster's Welcome Message"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowFullScreen
-          className="absolute top-0 left-0 w-full h-full rounded-2xl"
-        />
-      </motion.div>
-
-      {/* Content Column */}
-      <motion.div
-        initial={{ opacity: 0, x: 50 }}
-        whileInView={{ opacity: 1, x: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.8, delay: 0.4 }}
-        className="space-y-6"
-      >
-        <div className="space-y-2">
-          <h2 className="text-4xl font-bold text-gray-900 dark:text-white">Headmaster Welcome</h2>
-        </div>
-        
-        <div className="space-y-4 text-gray-600 dark:text-gray-300">
-          <p className="text-lg leading-relaxed">
-            Welcome to Divaris Makaharis School, where we believe in nurturing not just academic excellence, 
-            but the complete development of every student. Our commitment to providing a comprehensive education 
-            is reflected in our innovative curriculum and dedicated teaching staff.
-          </p>
-          
-          <p className="text-lg leading-relaxed">
-            We strive to create an environment where students can discover their passions, develop critical 
-            thinking skills, and grow into responsible global citizens. Our focus on both traditional academic 
-            subjects and modern technological skills ensures that our students are well-prepared for the 
-            challenges of tomorrow.
-          </p>
-
-          <p className="text-lg leading-relaxed">
-            At Divaris Makaharis, we understand that each student is unique, with their own talents and 
-            aspirations. Our role is to guide them on their educational journey, providing the support and 
-            resources they need to reach their full potential.
-          </p>
-        </div>
-
-        <div className="pt-6">
-          <div className="flex items-center gap-4">
-            <div>
-              <p className="font-semibold text-gray-900 dark:text-white">Mr. Matemayi</p>
-              <p className="text-sm text-gray-600 dark:text-gray-400">Headmaster</p>
-            </div>
-          </div>
-        </div>
-      </motion.div>
-    </div>
-  </div>
-</motion.section>
+      <Wave />
+    {/* Headmaster's Remarks */}
+    <Headmaster />
 <WaveTop />
 
       {/* Contact Section */}

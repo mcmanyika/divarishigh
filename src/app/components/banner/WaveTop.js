@@ -1,8 +1,6 @@
 
 
 export default function WaveTop() {
- 
-
   return (
     <div className="relative h-[50px] overflow-hidden">
       {/* Top Wave */}
