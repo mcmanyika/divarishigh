@@ -44,7 +44,7 @@ export default function HeroSectionWithWave() {
         <div className="text-center p-8 max-w-7xl border border-white/20">
         <h2 className="text-4xl font-bold text-gray-900 dark:text-white uppercase mb-8">About Us</h2>
           <p className=" text-gray-600 text-3xl font-thin leading-relaxed">
-          Divaris Makaharis High School is one of Zimbabwes reputable high schools, offering comprehensive Zimsec and Cambridge Examinations. The school is a cradle of academic excellence whose exit profile catches up with the signs of times.
+          Divaris Makaharis High School is one of Zimbabwe  reputable high schools, offering comprehensive Zimsec and Cambridge Examinations. The school is a cradle of academic excellence whose exit profile catches up with the signs of times.
           </p>
           
         </div>
