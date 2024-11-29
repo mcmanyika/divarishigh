@@ -22,6 +22,7 @@ import Headmaster from "./components/banner/Headmaster";
 
 export default function Home() {
   const [images, setImages] = useState<string[]>([]);
+  const [bannerImage, setBannerImage] = useState('');
 
   useEffect(() => {
     const fetchImages = () => {
@@ -35,6 +36,11 @@ export default function Home() {
           }
         });
         setImages(imageList);
+        
+        if (imageList.length > 0) {
+          const randomIndex = Math.floor(Math.random() * imageList.length);
+          setBannerImage(imageList[randomIndex]);
+        }
       });
     };
 
@@ -52,14 +58,23 @@ export default function Home() {
   {/* Hero Banner */}
 <section className="relative h-[80vh] overflow-hidden">
   {/* Background Image */}
-  <motion.div 
-    initial={{ opacity: 0 }}
-    animate={{ opacity: 1 }}
-    transition={{ duration: 1 }}
-    className="absolute inset-0 bg-[url('https://firebasestorage.googleapis.com/v0/b/divaris-3e59f.appspot.com/o/images%2FDSC_6074.jpg?alt=media&token=274e6ddf-f997-4fe6-812f-3e9e13472b33')] bg-cover bg-center"
-  >
-    <div className="absolute inset-0 bg-black/10 backdrop-blur-[1px]" />
-  </motion.div>
+  {bannerImage && (
+    <motion.div 
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 1 }}
+      className="absolute inset-0"
+    >
+      <Image
+        src={bannerImage}
+        alt="School Banner"
+        fill
+        className="object-cover"
+        priority
+      />
+      <div className="absolute inset-0 bg-black/10 backdrop-blur-[1px]" />
+    </motion.div>
+  )}
 
   {/* Creative Bars */}
   {/* Top Left Bar (Diagonal) */}
@@ -162,7 +177,6 @@ export default function Home() {
               delay={0.2}
               icon={<Users className="h-6 w-6 text-blue-600 group-hover:text-white transition-colors" />}
             />
-            
             <ProgramCard
               title="Our Mission"
               description="We cultivate well-rounded individuals through holistic education that balances academic excellence with character development. Our innovative learning environment nurtures critical thinking, creativity, and adaptability, ensuring our students are prepared for future challenges."
