@@ -163,11 +163,8 @@ export default function Home() {
             className="text-center mb-16"
           >
             <h2 className="text-4xl font-bold text-gray-900 dark:text-white uppercase tracking-wide">
-              Featured Programs
+              About Us
             </h2>
-            <p className="mt-4 text-lg text-gray-600 dark:text-gray-300">
-              Discover what makes our educational approach unique
-            </p>
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -205,7 +202,7 @@ export default function Home() {
             className="text-center mb-16"
           >
             <h2 className="text-4xl font-bold text-gray-900 dark:text-white uppercase">School Life</h2>
-            <p className="mt-4 text-xl text-gray-600 dark:text-gray-300">Experience our vibrant community</p>
+            <p className="mt-4 text-xl text-gray-600 font-thin dark:text-gray-300">Experience our vibrant community</p>
           </motion.div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1">
             {images.slice(0, 6).map((imageUrl, index) => (
@@ -277,7 +274,7 @@ export default function Home() {
             className="text-center mb-16"
           >
             <h2 className="text-4xl font-bold text-gray-900 dark:text-white uppercase">Get in Touch</h2>
-            <p className="mt-4 text-xl text-gray-600 dark:text-gray-300">We love to hear from you</p>
+            <p className="mt-4 text-xl font-thin text-gray-600 dark:text-gray-300">We love to hear from you</p>
           </motion.div>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             <div className="space-y-8">

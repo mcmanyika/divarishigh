@@ -80,9 +80,6 @@ export default function About() {
             transition={{ duration: 0.8 }}
             className="text-center p-8 backdrop-blur-sm bg-white/30 dark:bg-slate-900/30  border-white/20 dark:border-slate-700/20"
           >
-            <h2 className="text-4xl font-bold text-gray-900 dark:text-white uppercase mb-8 tracking-wider">
-              About Us
-            </h2>
             <p className="text-gray-700 dark:text-gray-200 text-2xl font-light leading-relaxed">
               Divaris Makaharis High School is one of Zimbabwe reputable high schools, 
               offering comprehensive Zimsec and Cambridge Examinations. The school is a 
