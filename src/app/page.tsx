@@ -139,7 +139,7 @@ export default function Home() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.8 }}
-        className="py-20 px-4 sm:px-6 lg:px-8 bg-blue-50/30 dark:bg-slate-900/50"
+        className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-blue-50/30 to-white/80 dark:from-slate-900/50 dark:to-slate-800/30"
       >
         <div className="max-w-7xl mx-auto">
           <motion.div 
@@ -147,25 +147,27 @@ export default function Home() {
             animate={{ opacity: 1, y: 0 }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl font-bold text-gray-900 dark:text-white uppercase">Featured Programs</h2></motion.div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <h2 className="text-4xl font-bold text-gray-900 dark:text-white uppercase tracking-wide">
+              Featured Programs
+            </h2>
+            <p className="mt-4 text-lg text-gray-600 dark:text-gray-300">
+              Discover what makes our educational approach unique
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <ProgramCard
-              title="Artificial Intelligence"
-              description="Learn the fundamentals of AI and machine learning through hands-on projects."
+              title="Our Vision"
+              description="We strive to be a center of educational excellence, recognized nationally and internationally. Our comprehensive approach encompasses academic achievement, athletic excellence, and rich cultural development, preparing students for global leadership."
               delay={0.2}
-              icon={<Users className="h-6 w-6" />}
+              icon={<Users className="h-6 w-6 text-blue-600 group-hover:text-white transition-colors" />}
             />
+            
             <ProgramCard
-              title="Robotics Engineering"
-              description="Design, build, and program robots in our state-of-the-art lab."
+              title="Our Mission"
+              description="We cultivate well-rounded individuals through holistic education that balances academic excellence with character development. Our innovative learning environment nurtures critical thinking, creativity, and adaptability, ensuring our students are prepared for future challenges."
               delay={0.4}
-              icon={<GraduationCap className="h-6 w-6" />}
-            />
-            <ProgramCard
-              title="Digital Arts & Design"
-              description="Combine creativity with technology in our digital media studio."
-              delay={0.6}
-              icon={<Calendar className="h-6 w-6" />}
+              icon={<GraduationCap className="h-6 w-6 text-blue-600 group-hover:text-white transition-colors" />}
             />
           </div>
         </div>
@@ -476,7 +478,7 @@ function ProgramCard({ title, description, delay, icon }: any) {
       animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
       transition={{ duration: 0.5, delay }}
     >
-      <Card className="p-8 hover:shadow-xl transition-all duration-300 cursor-pointer group border-blue-100/20 dark:bg-slate-800/50 dark:border-slate-700 backdrop-blur-sm">
+      <Card className="p-8 text-xl font-thin leading-relaxed hover:shadow-xl transition-all duration-300 cursor-pointer group border-blue-100/20 dark:bg-slate-800/50 dark:border-slate-700 backdrop-blur-sm">
         <div className="h-12 w-12 bg-blue-500/10 rounded-lg flex items-center justify-center mb-6 group-hover:bg-blue-500 transition-colors duration-300">
           {icon}
         </div>
@@ -484,10 +486,6 @@ function ProgramCard({ title, description, delay, icon }: any) {
           {title}
         </h3>
         <p className="mt-4 text-muted-foreground dark:text-gray-300">{description}</p>
-        <div className="mt-6 flex items-center text-sm text-blue-600 dark:text-blue-400 font-medium">
-          Learn more
-          <ArrowUpRight className="h-4 w-4 ml-1 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
-        </div>
       </Card>
     </motion.div>
   );
