@@ -191,8 +191,9 @@ export default function Home() {
 
 
       <HeroSection />
-      <WaveTop />
-
+      <LatestNews />
+      {/* <WaveTop /> */}
+      <Headmaster />
       {/* Gallery Section */}
       <motion.section
         initial={{ opacity: 0, y: 20 }}
@@ -273,7 +274,7 @@ export default function Home() {
       </motion.section>
       <Wave />
     {/* Headmaster's Remarks */}
-    <Headmaster />
+    
 
 
 
