@@ -191,7 +191,7 @@ export default function Home() {
 
 
       <HeroSection />
-
+      <WaveTop />
 
       {/* Gallery Section */}
       <motion.section

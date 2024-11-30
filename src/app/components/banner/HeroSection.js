@@ -22,7 +22,7 @@ export default function About() {
   };
 
   return (
-    <div ref={sectionRef} className="relative h-[600px] overflow-hidden bg-gradient-to-b from-blue-50/50 to-white dark:from-slate-900/50 dark:to-slate-900">
+    <div ref={sectionRef} className="relative h-[400px] overflow-hidden bg-gradient-to-b from-blue-50/50 to-white dark:from-slate-900/50 dark:to-slate-900">
       {/* Decorative Background Shapes */}
       <motion.div 
         initial="initial"
@@ -71,27 +71,20 @@ export default function About() {
       {/* Content */}
       <motion.div 
         style={{ y, opacity }}
-        className="absolute inset-0 flex items-center justify-center px-6 z-10"
+        className="absolute inset-0 flex items-center justify-center z-10"
       >
-        <div className="max-w-4xl mx-auto">
+        <div className="w-full max-w-4xl mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="text-center p-8 backdrop-blur-sm bg-white/30 dark:bg-slate-900/30  border-white/20 dark:border-slate-700/20"
+            className="text-center p-8 rounded-xl backdrop-blur-sm bg-white/30 dark:bg-slate-900/30 border border-white/20 dark:border-slate-700/20"
           >
-            <p className="text-gray-700 dark:text-gray-200 text-2xl font-light leading-relaxed">
+            <p className="text-gray-700 dark:text-gray-200 text-xl sm:text-2xl font-light leading-relaxed">
               Divaris Makaharis High School is one of Zimbabwe reputable high schools, 
               offering comprehensive Zimsec and Cambridge Examinations. The school is a 
               cradle of academic excellence whose exit profile catches up with the signs of times.
             </p>
-            <motion.div
-              initial={{ scale: 0.95 }}
-              whileHover={{ scale: 1.05 }}
-              transition={{ duration: 0.2 }}
-              className="mt-8"
-            >
-            </motion.div>
           </motion.div>
         </div>
       </motion.div>
