@@ -19,7 +19,8 @@ import HeroSection from "./components/banner/HeroSection";
 import Wave from "./components/banner/Wave";
 import WaveTop from "./components/banner/WaveTop";
 import Headmaster from "./components/banner/Headmaster";
-
+import LatestNews from "./components/banner/LatestNews";
+import { Modal } from "./components/banner/modal";
 export default function Home() {
   const [images, setImages] = useState<string[]>([]);
   const [bannerImage, setBannerImage] = useState('');
@@ -171,16 +172,6 @@ export default function Home() {
         className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-blue-50/30 to-white/80 dark:from-slate-900/50 dark:to-slate-800/30"
       >
         <div className="max-w-7xl mx-auto">
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-4xl font-bold text-gray-900 dark:text-white uppercase tracking-wide">
-              About Us
-            </h2>
-          </motion.div>
-
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <ProgramCard
               title="Our Vision"
@@ -200,6 +191,7 @@ export default function Home() {
 
 
       <HeroSection />
+
 
       {/* Gallery Section */}
       <motion.section
@@ -282,10 +274,11 @@ export default function Home() {
       <Wave />
     {/* Headmaster's Remarks */}
     <Headmaster />
-<WaveTop />
+
+
 
       {/* Contact Section */}
-      <motion.section
+      {/* <motion.section
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
@@ -341,7 +334,7 @@ export default function Home() {
             </Card>
           </div>
         </div>
-      </motion.section>
+      </motion.section> */}
 
       {/* Footer Section */}
       <motion.section
@@ -506,24 +499,56 @@ function StatsCard({ icon, title, value, delay, circleColor, className = "" }: a
 function ProgramCard({ title, description, delay, icon }: any) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const modalContent = {
+    Vision: {
+      title: "Our Vision",
+      content: (
+        <div className="space-y-6">
+          <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
+          We strive to be a center of educational excellence, recognized nationally and internationally. Our comprehensive approach encompasses academic achievement, athletic excellence, and rich cultural development, preparing students for global leadership.
+          </p>
+        </div>
+      ),
+    },
+    Mission: {
+      title: "Our Mission",
+      content: (
+        <div className="space-y-6">
+          <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
+          We cultivate well-rounded individuals through holistic education that balances academic excellence with character development. Our innovative learning environment nurtures critical thinking, creativity, and adaptability, ensuring our students are prepared for future challenges.
+          </p>
+        </div>
+      ),
+    },
+  };
 
   return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0, x: -20 }}
-      animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
-      transition={{ duration: 0.5, delay }}
-    >
-      <Card className="p-8 text-xl font-thin leading-relaxed hover:shadow-xl transition-all duration-300 cursor-pointer group border-blue-100/20 dark:bg-slate-800/50 dark:border-slate-700 backdrop-blur-sm">
-        <div className="h-12 w-12 bg-blue-500/10 rounded-lg flex items-center justify-center mb-6 group-hover:bg-blue-500 transition-colors duration-300">
-          {icon}
-        </div>
-        <h3 className="text-2xl font-semibold group-hover:text-blue-600 dark:text-white dark:group-hover:text-blue-400 transition-colors">
-          {title}
-        </h3>
-        <p className="mt-4 text-muted-foreground dark:text-gray-300">{description}</p>
-      </Card>
-    </motion.div>
+    <>
+      <motion.div
+        ref={ref}
+        initial={{ opacity: 0, x: -20 }}
+        animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
+        transition={{ duration: 0.5, delay }}
+        onClick={() => setIsModalOpen(true)}
+      >
+        <Card className="p-8 text-xl font-thin leading-relaxed hover:shadow-xl transition-all duration-300 cursor-pointer group border-blue-100/20 dark:bg-slate-800/50 dark:border-slate-700 backdrop-blur-sm">
+          <h3 className="text-2xl text-center uppercase font-semibold group-hover:text-blue-600 dark:text-white dark:group-hover:text-blue-400 transition-colors">
+            {title}
+          </h3>
+          <p className="mt-4 text-muted-foreground dark:text-gray-300 line-clamp-2">{description}</p>
+        </Card>
+      </motion.div>
+
+      <Modal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        title={modalContent[title.split(" ")[1]]?.title}
+      >
+        {modalContent[title.split(" ")[1]]?.content}
+      </Modal>
+    </>
   );
 }
 
