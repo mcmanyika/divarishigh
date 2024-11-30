@@ -20,7 +20,7 @@ import Wave from "./components/banner/Wave";
 import WaveTop from "./components/banner/WaveTop";
 import Headmaster from "./components/banner/Headmaster";
 import LatestNews from "./components/banner/LatestNews";
-import { Modal } from "./components/banner/modal";
+import { Modal } from "./components/banner/Modal";
 export default function Home() {
   const [images, setImages] = useState<string[]>([]);
   const [bannerImage, setBannerImage] = useState('');
