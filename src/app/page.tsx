@@ -24,6 +24,14 @@ export default function Home() {
   const [images, setImages] = useState<string[]>([]);
   const [bannerImage, setBannerImage] = useState('');
 
+  const shuffleArray = (array) => {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+  };
+
   useEffect(() => {
     const fetchImages = () => {
       const imagesRef = ref(database, 'images');
@@ -35,7 +43,9 @@ export default function Home() {
             imageList.push(image.url);
           }
         });
-        setImages(imageList);
+        
+        const shuffledImages = shuffleArray([...imageList]);
+        setImages(shuffledImages);
         
         if (imageList.length > 0) {
           const randomIndex = Math.floor(Math.random() * imageList.length);
@@ -206,56 +216,65 @@ export default function Home() {
             className="text-center mb-16"
           >
             <h2 className="text-4xl font-bold text-gray-900 dark:text-white uppercase">School Life</h2>
-            <p className="mt-4 text-xl text-gray-600 font-thin dark:text-gray-300">Experience our vibrant community</p>
+            <p className="mt-4 text-xl font-thin text-gray-600 dark:text-gray-300">Experience our vibrant community</p>
           </motion.div>
-          <div className="overflow-x-auto">
-            <div className="flex gap-1 min-w-max">
-              {images.slice(0, 12).map((imageUrl, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 100, scale: 0.8 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  transition={{
-                    duration: 0.8,
-                    delay: 0.2 + index * 0.2,
-                    type: "spring",
-                    bounce: 0.4
-                  }}
-                  whileHover={{ 
-                    scale: 1.05,
-                    y: -10,
-                    transition: { duration: 0.3 } 
-                  }}
-                  className="relative aspect-[4/3] w-[431px] flex-shrink-0 overflow-hidden"
-                >
-                  <Image
-                    src={imageUrl}
-                    alt={`School gallery image ${index + 1}`}
-                    fill
-                    className="object-cover transition-transform duration-500 hover:scale-110"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300">
-                    <div className="absolute bottom-0 left-0 right-0 p-4">
-                      <motion.h3 
-                        initial={{ y: 20, opacity: 0 }}
-                        whileHover={{ y: 0, opacity: 1 }}
-                        transition={{ duration: 0.3 }}
-                        className="text-white text-lg font-semibold"
-                      >
-                        School Life
-                      </motion.h3>
-                      <motion.p 
-                        initial={{ y: 20, opacity: 0 }}
-                        whileHover={{ y: 0, opacity: 1 }}
-                        transition={{ duration: 0.3, delay: 0.1 }}
-                        className="text-white/90 text-sm"
-                      >
-                        Discover our facilities
-                      </motion.p>
+
+          {/* Scrollable Container */}
+          <div className="relative">
+            {/* Scroll Indicators */}
+            <div className="absolute left-0 top-0 bottom-0 w-20 bg-gradient-to-r from-gray-50 to-transparent dark:from-slate-900/50 z-10" />
+            <div className="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-gray-50 to-transparent dark:from-slate-900/50 z-10" />
+            
+            {/* Scrollable Gallery */}
+            <div className="overflow-x-auto scrollbar-hide">
+              <div className="flex gap-1 min-w-max px-4">
+                {images.slice(0, 12).map((imageUrl, index) => (
+                  <motion.div
+                    key={imageUrl}
+                    initial={{ opacity: 0, y: 100, scale: 0.8 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    transition={{
+                      duration: 0.8,
+                      delay: 0.2 + index * 0.1,
+                      type: "spring",
+                      bounce: 0.4
+                    }}
+                    whileHover={{ 
+                      scale: 1.05,
+                      y: -10,
+                      transition: { duration: 0.3 } 
+                    }}
+                    className="relative aspect-[4/3] w-[431px] flex-shrink-0 overflow-hidden  shadow-lg"
+                  >
+                    <Image
+                      src={imageUrl}
+                      alt={`School gallery image ${index + 1}`}
+                      fill
+                      className="object-cover transition-transform duration-500 hover:scale-110"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300">
+                      <div className="absolute bottom-0 left-0 right-0 p-4">
+                        <motion.h3 
+                          initial={{ y: 20, opacity: 0 }}
+                          whileHover={{ y: 0, opacity: 1 }}
+                          transition={{ duration: 0.3 }}
+                          className="text-white text-lg font-semibold"
+                        >
+                          School Life
+                        </motion.h3>
+                        <motion.p 
+                          initial={{ y: 20, opacity: 0 }}
+                          whileHover={{ y: 0, opacity: 1 }}
+                          transition={{ duration: 0.3, delay: 0.1 }}
+                          className="text-white/90 text-sm"
+                        >
+                          Discover our facilities
+                        </motion.p>
+                      </div>
                     </div>
-                  </div>
-                </motion.div>
-              ))}
+                  </motion.div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
