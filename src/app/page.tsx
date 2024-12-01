@@ -74,10 +74,10 @@ export default function Home() {
       <section className="relative h-[80vh] overflow-hidden">
         {/* Background Image */}
         {bannerImage && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1 }}
+          <motion.div 
+            initial={{ opacity: 0, scale: 1.1 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1.5, ease: "easeOut" }}
             className="absolute inset-0"
           >
             <Image
@@ -87,40 +87,69 @@ export default function Home() {
               className="object-cover"
               priority
             />
-            <div className="absolute inset-0 bg-black/10 backdrop-blur-[1px]" />
+            <div className="absolute inset-0 bg-gradient-to-r from-black/30 to-black/10 backdrop-blur-[1px]" />
           </motion.div>
         )}
 
-        {/* Creative Bars */}
-        {/* Top Left Bar (Diagonal) */}
+        {/* Creative Bars - Left Side */}
+        <div className="absolute left-0 top-0 h-full w-32 flex flex-col justify-between py-20 z-10">
+          {[
+            { color: 'from-yellow-400 to-yellow-200', width: 'w-full' },
+            { color: 'from-blue-400 to-blue-200', width: 'w-2/3' },
+            { color: 'from-green-400 to-green-200', width: 'w-1/2' }
+          ].map((bar, index) => (
+            <motion.div
+              key={index}
+              initial={{ x: -200, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              transition={{ 
+                duration: 1.2,
+                ease: "easeOut",
+                delay: index * 0.2
+              }}
+              className={`${bar.width} h-[3px] bg-gradient-to-r ${bar.color} opacity-80`}
+            />
+          ))}
+        </div>
 
-        <div className="absolute top-0 left-0 w-[100px] h-[300px] sm:w-[150px] sm:h-[500px] bg-yellow-500 transform -rotate-45 -translate-x-5 -translate-y-5 sm:-translate-x-10 sm:-translate-y-10 opacity-90 z-10" />
+        {/* Right Side Accent */}
+        <div className="absolute right-0 top-0 h-full w-24 flex flex-col items-end justify-center z-10">
+          <motion.div
+            initial={{ height: 0 }}
+            animate={{ height: "40vh" }}
+            transition={{ duration: 1.5, ease: "easeOut" }}
+            className="w-[2px] bg-gradient-to-b from-white/0 via-white/40 to-white/0"
+          />
+        </div>
 
-        {/* Top Right Bar (Full-Screen Height on Mobile) */}
+        {/* Top Accent */}
         <motion.div
-          initial={{ y: -200, opacity: 0 }}
-          animate={{ y: 0, opacity: 0.7 }}
-          transition={{ duration: 1.4, ease: "easeOut" }}
-          className="absolute top-0 right-0 w-[40px] sm:w-[80px] h-[100vh] bg-red-600 transform skew-y-12 z-10"
+          initial={{ width: 0 }}
+          animate={{ width: "100%" }}
+          transition={{ duration: 1.5, ease: "easeOut" }}
+          className="absolute top-0 left-0 h-[1px] bg-gradient-to-r from-white/0 via-white/20 to-white/0 z-10"
         />
 
-        {/* Bottom Left Bar (Diagonal Cross) */}
-        <div className="absolute bottom-0 left-0 w-[100px] h-[500px] bg-slate-900/50 transform rotate-45 translate-x-10 translate-y-10 opacity-80 z-10" />
-
-        {/* Bottom Right Bar (Horizontal) */}
-        <motion.div
-          initial={{ x: 200, opacity: 0 }}
-          animate={{ x: 0, opacity: 0.75 }}
-          transition={{ duration: 1.8, ease: "easeOut" }}
-          className="absolute bottom-0 right-0 w-[100px] h-[10px] sm:w-[150px] sm:h-[20px] bg-green-600 translate-y-2 translate-x-2 sm:translate-y-5 sm:translate-x-5 z-10"
-        />
+        {/* Bottom Design Elements */}
+        <div className="absolute bottom-0 left-0 right-0 z-10">
+          <motion.div
+            initial={{ y: 100 }}
+            animate={{ y: 0 }}
+            transition={{ duration: 1, ease: "easeOut" }}
+            className="flex justify-between items-end h-32"
+          >
+            <div className="w-1/3 h-full bg-gradient-to-t from-red-500/20 to-transparent" />
+            <div className="w-1/4 h-2/3 bg-gradient-to-t from-blue-500/20 to-transparent" />
+            <div className="w-1/5 h-1/2 bg-gradient-to-t from-green-500/20 to-transparent" />
+          </motion.div>
+        </div>
 
         {/* Content */}
-        <div className="relative h-full max-w-7xl mx-auto mt-16 px-4 sm:px-6 lg:px-8">
+        <div className="relative h-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Logo */}
-          <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            animate={{ opacity: 1, x: 0 }}
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8, delay: 0.3 }}
             className="absolute top-8 left-8 z-20"
           >
@@ -134,32 +163,33 @@ export default function Home() {
           </motion.div>
 
           {/* Hero Text */}
-          <div className="absolute inset-0 flex flex-col items-center justify-center space-y-4 z-20 px-4">
-            <motion.h1
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.5 }}
-              className="text-3xl sm:text-5xl md:text-7xl font-bold text-center text-white"
+          <div className="absolute inset-0 flex flex-col items-center justify-center z-20">
+            <motion.div
+              initial={{ opacity: 0, y: 50, scale: 0.9 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ 
+                duration: 1.2,
+                ease: "easeOut",
+                delay: 0.8
+              }}
+              className="text-center space-y-6 px-4 backdrop-blur-sm bg-black/10 py-8 rounded-2xl"
             >
-              Divaris Makaharis School
-            </motion.h1>
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.8 }}
-              className="text-lg font-thin sm:text-2xl text-white/90 max-w-xl sm:max-w-3xl text-center"
-            >
-              Nurturing Excellence, Inspiring Future Leaders
-            </motion.p>
+              <h1 className="text-3xl sm:text-5xl md:text-7xl font-bold text-white">
+                Divaris Makaharis School
+              </h1>
+              <p className="text-lg sm:text-2xl text-white/90 max-w-xl sm:max-w-3xl font-light">
+                Nurturing Excellence, Inspiring Future Leaders
+              </p>
+            </motion.div>
           </div>
         </div>
 
         {/* Bottom Gradient */}
-        <motion.div
+        <motion.div 
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1, delay: 1 }}
-          className="absolute bottom-0 left-0 right-0 h-16 sm:h-32 bg-gradient-to-t from-background to-transparent"
+          className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-background to-transparent"
         />
       </section>
 
@@ -224,17 +254,20 @@ export default function Home() {
                   <motion.div
                     key={imageUrl}
                     initial={{ opacity: 0, y: 100, scale: 0.8 }}
-                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                    viewport={{ once: true, margin: "-100px" }}
                     transition={{
-                      duration: 0.8,
-                      delay: 0.2 + index * 0.1,
+                      duration: 1,
+                      delay: 0.15 * index,
+                      ease: "easeOut",
                       type: "spring",
-                      bounce: 0.4
+                      stiffness: 100,
+                      damping: 15
                     }}
                     whileHover={{
                       scale: 1.05,
-                      y: -10,
-                      transition: { duration: 0.3 }
+                      y: -15,
+                      transition: { duration: 0.4 }
                     }}
                     className="relative aspect-[4/3] w-[431px] flex-shrink-0 overflow-hidden  shadow-lg"
                   >
@@ -275,12 +308,12 @@ export default function Home() {
       <Headmaster />
       
       {/* Contact Section */}
-      {/* <motion.section
+      <motion.section
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.8 }}
-        className="pb-20 pt-20 px-4 sm:px-6 lg:px-8 bg-blue-50/30 dark:bg-slate-900/50"
+        className="pb-20 pt-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-blue-50/30 to-white/80 dark:from-slate-900/50 dark:to-slate-800/30"
       >
         <div className="max-w-7xl mx-auto">
           <motion.div 
@@ -288,50 +321,64 @@ export default function Home() {
             animate={{ opacity: 1, y: 0 }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl font-bold text-gray-900 dark:text-white uppercase">Get in Touch</h2>
-            <p className="mt-4 text-xl font-thin text-gray-600 dark:text-gray-300">We love to hear from you</p>
+            <h2 className="text-4xl font-bold text-gray-900 dark:text-white uppercase">
+              Get in Touch
+            </h2>
+            <p className="mt-4 text-xl font-thin text-gray-600 dark:text-gray-300">
+              We are here to help and answer any questions you might have
+            </p>
           </motion.div>
+
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+            {/* Contact Information */}
             <div className="space-y-8">
-              <Card className="p-6 hover:shadow-lg transition-shadow border-blue-100/20 dark:bg-slate-800 dark:border-slate-700">
-                <div className="space-y-6">
-                  <div className="flex items-center space-x-3">
-                    <MapPin className="h-5 w-5 text-blue-600 dark:text-blue-400" />
-                    <div>
-                      <h3 className="font-medium dark:text-white">Address</h3>
-                      <p className="text-sm text-muted-foreground dark:text-gray-300">Corner Lavenham Drive & Northolt Road, Bluffhill, Harare, Zimbabwe</p>
+              {[
+                { icon: <MapPin />, title: "Visit Us", content: "Corner Lavenham Drive & Northolt Road, Bluffhill, Harare" },
+                { icon: <Phone />, title: "Call Us", content: "+263 78 9916 294" },
+                { icon: <Mail />, title: "Email Us", content: "divarismakaharis@gmail.com" }
+              ].map((item, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, x: -30 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{
+                    duration: 0.8,
+                    delay: index * 0.2,
+                    ease: "easeOut"
+                  }}
+                  whileHover={{
+                    x: 15,
+                    transition: { duration: 0.3 }
+                  }}
+                >
+                  <Card className="p-8 hover:shadow-xl transition-all duration-300 border-blue-100/20 dark:bg-slate-800/50 dark:border-slate-700 backdrop-blur-sm">
+                    <div className="space-y-8">
+                      <div className="flex items-start space-x-4 group">
+                        <div className="p-3 rounded-xl bg-blue-500/10 group-hover:bg-blue-500/20 transition-colors">
+                          {item.icon}
+                        </div>
+                        <div>
+                          <h3 className="font-semibold text-lg dark:text-white mb-1">{item.title}</h3>
+                          <p className="text-gray-600 dark:text-gray-300 leading-relaxed">{item.content}</p>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                  <Separator />
-                  <div className="flex items-center space-x-3">
-                    <Phone className="h-5 w-5 text-blue-600 dark:text-blue-400" />
-                    <div>
-                      <h3 className="font-medium dark:text-white">Phone</h3>
-                      <p className="text-sm text-muted-foreground dark:text-gray-300">+263 78 9916 294</p>
-                    </div>
-                  </div>
-                  <Separator />
-                  <div className="flex items-center space-x-3">
-                    <Mail className="h-5 w-5 text-blue-600 dark:text-blue-400" />
-                    <div>
-                      <h3 className="font-medium dark:text-white">Email</h3>
-                      <p className="text-sm text-muted-foreground dark:text-gray-300">divarismakaharis@gmail.com</p>
-                    </div>
-                  </div>
-                </div>
-              </Card>
-              
-              <div className="h-[400px] rounded-lg overflow-hidden">
-                <Map />
-              </div>
+                  </Card>
+                </motion.div>
+              ))}
             </div>
-            
-            <Card className="p-6 hover:shadow-lg transition-shadow border-blue-100/20 dark:bg-slate-800 dark:border-slate-700">
-              <ContactForm />
-            </Card>
+                    
+            {/* Map */}
+            <motion.div 
+              whileHover={{ scale: 1.02 }}
+              className="h-[430px] rounded-2xl overflow-hidden shadow-lg border border-blue-100/20 dark:border-slate-700"
+            >
+              <Map />
+            </motion.div>
           </div>
         </div>
-      </motion.section> */}
+      </motion.section>
 
       {/* Footer Section */}
       <motion.section
@@ -545,9 +592,18 @@ function ProgramCard({ title, description, delay, icon }: any) {
     <>
       <motion.div
         ref={ref}
-        initial={{ opacity: 0, x: -20 }}
-        animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
-        transition={{ duration: 0.5, delay }}
+        initial={{ opacity: 0, y: 50, scale: 0.95 }}
+        whileInView={{ opacity: 1, y: 0, scale: 1 }}
+        viewport={{ once: true, margin: "-50px" }}
+        transition={{ 
+          duration: 1,
+          ease: "easeOut",
+          delay: delay
+        }}
+        whileHover={{ 
+          scale: 1.03,
+          transition: { duration: 0.3 }
+        }}
         onClick={() => setIsModalOpen(true)}
       >
         <Card className="relative overflow-hidden p-8 text-xl font-thin leading-relaxed hover:shadow-xl transition-all duration-300 cursor-pointer group border-none bg-gradient-to-br from-white to-gray-50 dark:from-slate-800 dark:to-slate-700/50 backdrop-blur-sm">
