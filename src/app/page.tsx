@@ -44,10 +44,10 @@ export default function Home() {
             imageList.push(image.url);
           }
         });
-        
+
         const shuffledImages = shuffleArray([...imageList]);
         setImages(shuffledImages);
-        
+
         if (imageList.length > 0) {
           const randomIndex = Math.floor(Math.random() * imageList.length);
           setBannerImage(imageList[randomIndex]);
@@ -69,99 +69,99 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-background to-background/90 dark:from-slate-650 dark:to-slate-600">
-      
-  {/* Hero Banner */}
-<section className="relative h-[80vh] overflow-hidden">
-  {/* Background Image */}
-  {bannerImage && (
-    <motion.div 
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 1 }}
-      className="absolute inset-0"
-    >
-      <Image
-        src={bannerImage}
-        alt="School Banner"
-        fill
-        className="object-cover"
-        priority
-      />
-      <div className="absolute inset-0 bg-black/10 backdrop-blur-[1px]" />
-    </motion.div>
-  )}
 
-  {/* Creative Bars */}
-  {/* Top Left Bar (Diagonal) */}
-  
-  <div className="absolute top-0 left-0 w-[100px] h-[300px] sm:w-[150px] sm:h-[500px] bg-yellow-500 transform -rotate-45 -translate-x-5 -translate-y-5 sm:-translate-x-10 sm:-translate-y-10 opacity-90 z-10" />
+      {/* Hero Banner */}
+      <section className="relative h-[80vh] overflow-hidden">
+        {/* Background Image */}
+        {bannerImage && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1 }}
+            className="absolute inset-0"
+          >
+            <Image
+              src={bannerImage}
+              alt="School Banner"
+              fill
+              className="object-cover"
+              priority
+            />
+            <div className="absolute inset-0 bg-black/10 backdrop-blur-[1px]" />
+          </motion.div>
+        )}
 
-  {/* Top Right Bar (Full-Screen Height on Mobile) */}
-  <motion.div
-    initial={{ y: -200, opacity: 0 }}
-    animate={{ y: 0, opacity: 0.7 }}
-    transition={{ duration: 1.4, ease: "easeOut" }}
-    className="absolute top-0 right-0 w-[40px] sm:w-[80px] h-[100vh] bg-red-600 transform skew-y-12 z-10"
-  />
+        {/* Creative Bars */}
+        {/* Top Left Bar (Diagonal) */}
 
-  {/* Bottom Left Bar (Diagonal Cross) */}
-  <div className="absolute bottom-0 left-0 w-[100px] h-[500px] bg-slate-900/50 transform rotate-45 translate-x-10 translate-y-10 opacity-80 z-10" />
+        <div className="absolute top-0 left-0 w-[100px] h-[300px] sm:w-[150px] sm:h-[500px] bg-yellow-500 transform -rotate-45 -translate-x-5 -translate-y-5 sm:-translate-x-10 sm:-translate-y-10 opacity-90 z-10" />
 
-  {/* Bottom Right Bar (Horizontal) */}
-  <motion.div
-    initial={{ x: 200, opacity: 0 }}
-    animate={{ x: 0, opacity: 0.75 }}
-    transition={{ duration: 1.8, ease: "easeOut" }}
-    className="absolute bottom-0 right-0 w-[100px] h-[10px] sm:w-[150px] sm:h-[20px] bg-green-600 translate-y-2 translate-x-2 sm:translate-y-5 sm:translate-x-5 z-10"
-  />
+        {/* Top Right Bar (Full-Screen Height on Mobile) */}
+        <motion.div
+          initial={{ y: -200, opacity: 0 }}
+          animate={{ y: 0, opacity: 0.7 }}
+          transition={{ duration: 1.4, ease: "easeOut" }}
+          className="absolute top-0 right-0 w-[40px] sm:w-[80px] h-[100vh] bg-red-600 transform skew-y-12 z-10"
+        />
 
-  {/* Content */}
-  <div className="relative h-full max-w-7xl mx-auto mt-16 px-4 sm:px-6 lg:px-8">
-    {/* Logo */}
-    <motion.div 
-      initial={{ opacity: 0, x: -50 }}
-      animate={{ opacity: 1, x: 0 }}
-      transition={{ duration: 0.8, delay: 0.3 }}
-      className="absolute top-8 left-8 z-20"
-    >
-      <Image
-        src="/images/logo.png"
-        alt="Divaris Makaharis School Logo"
-        width={60}
-        height={80}
-        className="rounded-full sm:w-[80px] sm:h-[100px] w-[60px] h-[80px]"
-      />
-    </motion.div>
+        {/* Bottom Left Bar (Diagonal Cross) */}
+        <div className="absolute bottom-0 left-0 w-[100px] h-[500px] bg-slate-900/50 transform rotate-45 translate-x-10 translate-y-10 opacity-80 z-10" />
 
-    {/* Hero Text */}
-    <div className="absolute inset-0 flex flex-col items-center justify-center space-y-4 z-20 px-4">
-      <motion.h1 
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, delay: 0.5 }}
-        className="text-3xl sm:text-5xl md:text-7xl font-bold text-center text-white"
-      >
-        Divaris Makaharis School
-      </motion.h1>
-      <motion.p 
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, delay: 0.8 }}
-        className="text-lg font-thin sm:text-2xl text-white/90 max-w-xl sm:max-w-3xl text-center"
-      >
-        Nurturing Excellence, Inspiring Future Leaders
-      </motion.p>
-    </div>
-  </div>
+        {/* Bottom Right Bar (Horizontal) */}
+        <motion.div
+          initial={{ x: 200, opacity: 0 }}
+          animate={{ x: 0, opacity: 0.75 }}
+          transition={{ duration: 1.8, ease: "easeOut" }}
+          className="absolute bottom-0 right-0 w-[100px] h-[10px] sm:w-[150px] sm:h-[20px] bg-green-600 translate-y-2 translate-x-2 sm:translate-y-5 sm:translate-x-5 z-10"
+        />
 
-  {/* Bottom Gradient */}
-  <motion.div 
-    initial={{ opacity: 0 }}
-    animate={{ opacity: 1 }}
-    transition={{ duration: 1, delay: 1 }}
-    className="absolute bottom-0 left-0 right-0 h-16 sm:h-32 bg-gradient-to-t from-background to-transparent" 
-  />
-</section>
+        {/* Content */}
+        <div className="relative h-full max-w-7xl mx-auto mt-16 px-4 sm:px-6 lg:px-8">
+          {/* Logo */}
+          <motion.div
+            initial={{ opacity: 0, x: -50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, delay: 0.3 }}
+            className="absolute top-8 left-8 z-20"
+          >
+            <Image
+              src="/images/logo.png"
+              alt="Divaris Makaharis School Logo"
+              width={60}
+              height={80}
+              className="rounded-full sm:w-[80px] sm:h-[100px] w-[60px] h-[80px]"
+            />
+          </motion.div>
+
+          {/* Hero Text */}
+          <div className="absolute inset-0 flex flex-col items-center justify-center space-y-4 z-20 px-4">
+            <motion.h1
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.5 }}
+              className="text-3xl sm:text-5xl md:text-7xl font-bold text-center text-white"
+            >
+              Divaris Makaharis School
+            </motion.h1>
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.8 }}
+              className="text-lg font-thin sm:text-2xl text-white/90 max-w-xl sm:max-w-3xl text-center"
+            >
+              Nurturing Excellence, Inspiring Future Leaders
+            </motion.p>
+          </div>
+        </div>
+
+        {/* Bottom Gradient */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1, delay: 1 }}
+          className="absolute bottom-0 left-0 right-0 h-16 sm:h-32 bg-gradient-to-t from-background to-transparent"
+        />
+      </section>
 
       {/* Featured Programs */}
       <motion.section
@@ -191,9 +191,8 @@ export default function Home() {
 
 
       <HeroSection />
-      <LatestNews />
-      {/* <WaveTop /> */}
-      <Headmaster />
+      {/* <LatestNews /> */}
+      
       {/* Gallery Section */}
       <motion.section
         initial={{ opacity: 0, y: 20 }}
@@ -203,7 +202,7 @@ export default function Home() {
         className="py-20 px-0 sm:px-6 lg:px-0 bg-gray-50 dark:bg-slate-900/50"
       >
         <div className="w-full">
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             className="text-center mb-16"
@@ -217,7 +216,7 @@ export default function Home() {
             {/* Scroll Indicators */}
             <div className="absolute left-0 top-0 bottom-0 w-20 bg-gradient-to-r from-gray-50 to-transparent dark:from-slate-900/50 z-10" />
             <div className="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-gray-50 to-transparent dark:from-slate-900/50 z-10" />
-            
+
             {/* Scrollable Gallery */}
             <div className="overflow-x-auto scrollbar-hide">
               <div className="flex gap-1 min-w-max px-4">
@@ -232,10 +231,10 @@ export default function Home() {
                       type: "spring",
                       bounce: 0.4
                     }}
-                    whileHover={{ 
+                    whileHover={{
                       scale: 1.05,
                       y: -10,
-                      transition: { duration: 0.3 } 
+                      transition: { duration: 0.3 }
                     }}
                     className="relative aspect-[4/3] w-[431px] flex-shrink-0 overflow-hidden  shadow-lg"
                   >
@@ -247,7 +246,7 @@ export default function Home() {
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300">
                       <div className="absolute bottom-0 left-0 right-0 p-4">
-                        <motion.h3 
+                        <motion.h3
                           initial={{ y: 20, opacity: 0 }}
                           whileHover={{ y: 0, opacity: 1 }}
                           transition={{ duration: 0.3 }}
@@ -255,7 +254,7 @@ export default function Home() {
                         >
                           School Life
                         </motion.h3>
-                        <motion.p 
+                        <motion.p
                           initial={{ y: 20, opacity: 0 }}
                           whileHover={{ y: 0, opacity: 1 }}
                           transition={{ duration: 0.3, delay: 0.1 }}
@@ -273,11 +272,8 @@ export default function Home() {
         </div>
       </motion.section>
       <Wave />
-    {/* Headmaster's Remarks */}
-    
-
-
-
+      <Headmaster />
+      
       {/* Contact Section */}
       {/* <motion.section
         initial={{ opacity: 0, y: 20 }}
@@ -391,7 +387,7 @@ export default function Home() {
                   <Mail className="h-5 w-5 text-blue-400" />
                   <div>
                     <p className="text-sm text-blue-100">
-                    divarismakaharis@gmail.com
+                      divarismakaharis@gmail.com
                     </p>
                   </div>
                 </div>
@@ -399,7 +395,7 @@ export default function Home() {
                   <Phone className="h-5 w-5 text-blue-400" />
                   <div>
                     <p className="text-sm text-blue-100">
-                    +263 78 9916 294
+                      +263 78 9916 294
                     </p>
                   </div>
                 </div>
@@ -407,7 +403,7 @@ export default function Home() {
                   <MapPin className="h-5 w-5 text-blue-400" />
                   <div>
                     <p className="text-sm text-blue-100">
-                    Corner Lavenham Drive & Northolt Road, Bluffhill, Harare, Zimbabwe
+                      Corner Lavenham Drive & Northolt Road, Bluffhill, Harare, Zimbabwe
 
                     </p>
                   </div>
@@ -478,9 +474,9 @@ function StatsCard({ icon, title, value, delay, circleColor, className = "" }: a
           {isInView && (
             <>
               <div className="relative h-64 w-64 mb-6">
-                <CircleProgress 
-                  targetValue={getPercentage()} 
-                  color={circleColor} 
+                <CircleProgress
+                  targetValue={getPercentage()}
+                  color={circleColor}
                 />
                 <div className="absolute inset-0 flex items-center justify-center">
                   <Counter from={0} to={value} duration={2} className="text-5xl font-bold" />
@@ -508,7 +504,7 @@ function ProgramCard({ title, description, delay, icon }: any) {
       content: (
         <div className="space-y-6">
           <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
-          We strive to be a center of educational excellence, recognized nationally and internationally. Our comprehensive approach encompasses academic achievement, athletic excellence, and rich cultural development, preparing students for global leadership.
+            We strive to be a center of educational excellence, recognized nationally and internationally. Our comprehensive approach encompasses academic achievement, athletic excellence, and rich cultural development, preparing students for global leadership.
           </p>
         </div>
       ),
@@ -518,7 +514,7 @@ function ProgramCard({ title, description, delay, icon }: any) {
       content: (
         <div className="space-y-6">
           <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
-          We cultivate well-rounded individuals through holistic education that balances academic excellence with character development. Our innovative learning environment nurtures critical thinking, creativity, and adaptability, ensuring our students are prepared for future challenges.
+            We cultivate well-rounded individuals through holistic education that balances academic excellence with character development. Our innovative learning environment nurtures critical thinking, creativity, and adaptability, ensuring our students are prepared for future challenges.
           </p>
         </div>
       ),
