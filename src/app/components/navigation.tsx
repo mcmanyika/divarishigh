@@ -61,7 +61,7 @@ export function NavigationMenu() {
           {/* Facebook Icon */}
           <div className="py-4">
             <a 
-              href="https://www.facebook.com/DivarisMakahariscollege/" 
+              href="https://www.facebook.com/DivarisMakaharisPrepSchool/?__n=K" 
               target="_blank" 
               rel="noopener noreferrer"
               className="flex items-center justify-center w-10 h-10 rounded-full bg-blue-600 hover:bg-blue-700 text-white transition-colors duration-200"
