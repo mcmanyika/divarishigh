@@ -462,7 +462,7 @@ export default function Home() {
           <div className="mt-24 pt-8 border-t border-blue-800 dark:border-slate-800">
             <div className="flex justify-center items-center">
               <p className="text-sm p-4 text-blue-100 dark:text-white">
-                © {new Date().getFullYear()} Divaris Makaharis School. All rights reserved.
+                © {new Date().getFullYear()} Divaris Makaharis School. Developed by <a href="https://learner-gamma.vercel.app/" className="hover:text-blue-400">SMART LEARNER</a>.
               </p>
             </div>
           </div>
