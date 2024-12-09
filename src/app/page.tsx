@@ -334,7 +334,7 @@ export default function Home() {
             <div className="space-y-8">
               {[
                 { icon: <MapPin />, title: "Visit Us", content: "Corner Lavenham Drive & Northolt Road, Bluffhill, Harare" },
-                { icon: <Phone />, title: "Call Us", content: "+263 78 9916 294" },
+                { icon: <Phone />, title: "Call Us", content: "+263 77 275 1531" },
                 { icon: <Mail />, title: "Email Us", content: "divarismakaharis@gmail.com" }
               ].map((item, index) => (
                 <motion.div

@@ -93,7 +93,6 @@ export default function Headmaster() {
             >
               <div className="flex items-center gap-4">
                 <div className="flex-1">
-                  <p className="font-semibold text-gray-900 dark:text-white">Mr. Matemayi</p>
                   <p className="text-sm text-gray-600 dark:text-gray-400">Headmaster</p>
                 </div>
                 

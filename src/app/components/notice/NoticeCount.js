@@ -52,7 +52,7 @@ const NoticeCount = () => {
         </span>
         <FaBell className="h-7 w-7 text-gray-400" />
       </div>
-      <div>
+      {/* <div>
       <button
                   onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
                   className="flex items-center w-full p-2 text-gray-500 dark:text-gray-300"
@@ -67,7 +67,7 @@ const NoticeCount = () => {
                     </>
                   )}
                 </button>
-      </div>
+      </div> */}
       {/* Modal for Notices */}
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
         <h2 className="text-lg font-bold mb-4">Notices</h2>

@@ -265,9 +265,9 @@ const AdminLayout = ({ children }) => {
               </div>
             )}
           </div>
-          <div className="w-full">
+          <div>
             <Breadcrumb />
-            <div className='h-screen  overflow-y-auto'>
+            <div className='h-screen mt-6  overflow-y-auto'>
               {children}
             </div>
           </div>

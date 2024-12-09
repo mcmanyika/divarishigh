@@ -43,7 +43,7 @@ const TitleList = ({ titles, onSignOut }) => {
       {sortedTitles.map((rw) => {
         const IconComponent = iconMapping[rw.icon] || defaultIcon; // Fallback to default icon if not found
         return (
-          <div key={rw.id} className="mb-4 flex items-center w-full hover:bg-slate-50 hover:text-black p-1">
+          <div key={rw.id} className="mb-4 flex items-center w-full hover:px-4 hover:rounded-full hover:bg-slate-50 hover:text-black p-1">
             <Link href={rw.link} className="flex items-center w-full" aria-label={rw.title}>
               <div className="flex items-center space-x-2 w-full"> {/* Reduced space to space-x-2 */}
                 <div className="w-5">
