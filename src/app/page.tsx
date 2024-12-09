@@ -442,7 +442,7 @@ export default function Home() {
                   <Phone className="h-5 w-5 text-blue-400" />
                   <div>
                     <p className="text-sm text-blue-100">
-                      +263 78 9916 294
+                    +263 77 275 1531
                     </p>
                   </div>
                 </div>
