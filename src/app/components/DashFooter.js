@@ -15,7 +15,7 @@ const Footer = () => {
       <footer className="text-gray-400 bg-white dark:bg-gray-800 dark:text-gray-300 text-sm p-4">
         <div className="font-thin">
           &copy; Copyrights reserved {new Date().getFullYear()}. Developed by{' '}
-          <Link href='https://learner-gamma.vercel.app/' target="_blank" className="hover:text-gray-600 dark:hover:text-gray-100">
+          <Link href='https://smartlearner.co.zw' target="_blank" className="hover:text-gray-600 dark:hover:text-gray-100">
             <b>SMART LEARNER</b>
           </Link>
         </div>

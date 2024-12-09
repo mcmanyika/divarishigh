@@ -122,7 +122,7 @@ export default function Footer() {
           <div className="flex justify-center items-center">
             <p className="text-sm p-4 text-blue-100 dark:text-white">
               © {new Date().getFullYear()} {schoolInfo.schoolName}. Developed by{" "}
-              <a href="https://learner-gamma.vercel.app/" className="hover:text-blue-400">
+              <a href="https://smartlearner.co.zw" className="hover:text-blue-400" target="_blank">
                 SMART LEARNER
               </a>
               .
