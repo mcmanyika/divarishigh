@@ -98,7 +98,7 @@ const GenderPieChart = () => {
       </div>
       
       {/* Optional: Add gender statistics */}
-      <div className="mt-4 grid grid-cols-2 gap-4 w-full max-w-md">
+      {/* <div className="mt-4 grid grid-cols-2 gap-4 w-full max-w-md">
         <div className="text-center p-2 rounded-lg bg-blue-100 dark:bg-blue-900">
           <p className="text-blue-800 dark:text-blue-200 font-semibold">
             Male: {genderCounts.male}
@@ -109,7 +109,7 @@ const GenderPieChart = () => {
             Female: {genderCounts.female}
           </p>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

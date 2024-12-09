@@ -101,25 +101,24 @@ const AdmissionsList = () => {
               <th className="px-4 py-2 text-left text-gray-700 dark:text-gray-200">First Name</th>
               <th className="px-4 py-2 text-left text-gray-700 dark:text-gray-200">Last Name</th>
               <th className="px-4 py-2 text-left text-gray-700 dark:text-gray-200">Status</th>
-              <th className="px-4 py-2 text-left text-gray-700 dark:text-gray-200">Actions</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
             {currentAdmissions.map((admission) => (
-              <tr key={admission.id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
+              <tr key={admission.id} className="hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer" onClick={() => openModal(admission)}>
                 <td className="px-4 py-2 text-gray-800 dark:text-gray-200">{admission.id}</td>
                 <td className="px-4 py-2 text-gray-800 dark:text-gray-200 capitalize">{admission.firstName}</td>
                 <td className="px-4 py-2 text-gray-800 dark:text-gray-200 capitalize">{admission.lastName}</td>
                 <td className="px-4 py-2 text-gray-800 dark:text-gray-200">{admission.status}</td>
-                <td className="px-4 py-2">
+                {/* <td className="px-4 py-2">
                   <button
                     onClick={() => openModal(admission)}
                     className="bg-yellow-500 hover:bg-yellow-600 dark:bg-yellow-600 
                       dark:hover:bg-yellow-700 text-white px-2 py-1 rounded mr-2"
                   >
                     Edit
-                  </button>
-                  {admission.status === 'Accepted' && (
+                  </button> */}
+                  {/* {admission.status === 'Accepted' && (
                     <button
                       onClick={() => {
                         setSelectedAdmission(admission);
@@ -131,8 +130,8 @@ const AdmissionsList = () => {
                       <HiCreditCard className="inline-block mr-1" />
                       Pay
                     </button>
-                  )}
-                </td>
+                  )} */}
+                {/* </td> */}
               </tr>
             ))}
           </tbody>

@@ -12,7 +12,7 @@ const StudentReport = () => {
   const [reportData, setReportData] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Modified form state to include one default subject
+  // Modified form state to remove comments
   const [formData, setFormData] = useState({
     subjects: [
       {
@@ -29,8 +29,6 @@ const StudentReport = () => {
       absent: '',
       percentage: ''
     },
-    teacherComments: '',
-    principalComments: '',
     term: 'First Term',
     year: new Date().getFullYear().toString(),
     teacherEmail: session?.user?.email || '',
@@ -204,6 +202,23 @@ const StudentReport = () => {
     return 'F';
   };
 
+  // Add this function to fetch existing subjects
+  const fetchExistingSubjects = async (studentId, term, year) => {
+    try {
+      const reportRef = ref(database, `reports/${studentId}/${term}_${year}`);
+      const snapshot = await get(reportRef);
+      
+      if (snapshot.exists()) {
+        return snapshot.val().subjects || [];
+      }
+      return [];
+    } catch (error) {
+      console.error('Error fetching existing subjects:', error);
+      return [];
+    }
+  };
+
+  // Modified handleSubmit function
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!selectedStudent) return;
@@ -211,7 +226,7 @@ const StudentReport = () => {
     try {
       setLoading(true);
       
-      // Process subjects
+      // Process new subjects
       const processedSubjects = formData.subjects.map(subject => {
         const possibleMark = parseFloat(subject.possibleMark) || 100;
         const obtainedMark = parseFloat(subject.obtainedMark) || 0;
@@ -227,33 +242,116 @@ const StudentReport = () => {
         };
       });
 
+      // Fetch existing subjects
+      const existingSubjects = await fetchExistingSubjects(
+        selectedStudent, 
+        formData.term, 
+        formData.year
+      );
+
+      // Merge existing and new subjects, avoiding duplicates
+      const mergedSubjects = [...existingSubjects];
+      processedSubjects.forEach(newSubject => {
+        const existingIndex = mergedSubjects.findIndex(
+          existing => existing.name.toLowerCase() === newSubject.name.toLowerCase()
+        );
+        
+        if (existingIndex !== -1) {
+          // Update existing subject
+          mergedSubjects[existingIndex] = newSubject;
+        } else {
+          // Add new subject
+          mergedSubjects.push(newSubject);
+        }
+      });
+
       // Calculate attendance percentage
       const present = parseInt(formData.attendance.present) || 0;
       const absent = parseInt(formData.attendance.absent) || 0;
       const total = present + absent;
       const percentage = total ? ((present / total) * 100).toFixed(1) : 0;
 
-      const reportRef = ref(database, `reports/${selectedStudent}/${formData.term}_${formData.year}`);
-      await set(reportRef, {
+      // Add student data to the report
+      const reportData = {
         ...formData,
-        subjects: processedSubjects,
+        subjects: mergedSubjects, // Use merged subjects
         attendance: {
           ...formData.attendance,
           percentage
         },
-        timestamp: Date.now()
-      });
+        studentName: selectedStudentData?.name,
+        class: selectedStudentData?.class,
+        admissionNumber: selectedStudentData?.admissionNumber,
+        timestamp: Date.now(),
+        lastUpdatedBy: session?.user?.email || '',
+        lastUpdateDate: new Date().toISOString()
+      };
 
-      toast.success('Report saved successfully');
-      // Refresh report data
-      fetchStudentReport();
+      const reportRef = ref(database, `reports/${selectedStudent}/${formData.term}_${formData.year}`);
+      await set(reportRef, reportData);
+
+      // Reset form - modified to remove comments
+      setFormData(prev => ({
+        ...prev,
+        subjects: [
+          {
+            name: '',
+            possibleMark: '100',
+            obtainedMark: '',
+            classAverage: '',
+            effortGrade: '',
+            remarks: ''
+          }
+        ],
+        attendance: {
+          present: '',
+          absent: '',
+          percentage: ''
+        }
+      }));
+
+      // Fetch and display updated report data
+      const updatedReportRef = ref(database, `reports/${selectedStudent}/${formData.term}_${formData.year}`);
+      const snapshot = await get(updatedReportRef);
+      
+      if (snapshot.exists()) {
+        setReportData(snapshot.val());
+        toast.success('Report updated successfully');
+      }
     } catch (error) {
       console.error('Error saving report:', error);
-      toast.error('Error saving report');
+      toast.error(`Error saving report: ${error.message}`);
     } finally {
       setLoading(false);
     }
   };
+
+  // Add this effect to load existing subjects when a student is selected
+  useEffect(() => {
+    const loadExistingReport = async () => {
+      if (!selectedStudent) return;
+
+      try {
+        const existingSubjects = await fetchExistingSubjects(
+          selectedStudent,
+          formData.term,
+          formData.year
+        );
+
+        if (existingSubjects.length > 0) {
+          // Update form with existing subjects
+          setReportData(prev => ({
+            ...prev,
+            subjects: existingSubjects
+          }));
+        }
+      } catch (error) {
+        console.error('Error loading existing report:', error);
+      }
+    };
+
+    loadExistingReport();
+  }, [selectedStudent, formData.term, formData.year]);
 
   if (loading) {
     return (
@@ -264,7 +362,7 @@ const StudentReport = () => {
   }
 
   return (
-    <div className="p-6 max-w-7xl mx-auto bg-white dark:bg-slate-900">
+    <div className="p-6  bg-white rounded-lg dark:bg-slate-900">
       {/* Student Selection */}
       <div className="bg-white dark:bg-slate-800 rounded-xl shadow-md p-6 mb-6">
         <label className="block text-sm font-medium text-gray-700 dark:text-white mb-2">
@@ -454,33 +552,6 @@ const StudentReport = () => {
             </div>
           </div>
 
-          {/* Comments */}
-          <div className="mb-8">
-            <h3 className="text-xl font-medium mb-6 text-gray-800 dark:text-white">Comments</h3>
-            <div className="space-y-6 bg-gray-50 dark:bg-slate-700 p-6 rounded-lg">
-              <div>
-                <label className="block text-base text-gray-600 dark:text-gray-400 mb-2">Teacher s Comments</label>
-                <textarea
-                  value={formData.teacherComments}
-                  onChange={(e) => setFormData(prev => ({ ...prev, teacherComments: e.target.value }))}
-                  className="w-full px-4 py-3 rounded-lg border-gray-300 dark:border-white dark:bg-white dark:text-gray-800 text-base focus:ring-2 focus:ring-main3"
-                  rows="4"
-                  placeholder="Enter your comments about the student's performance"
-                />
-              </div>
-              <div>
-                <label className="block text-base text-gray-600 dark:text-gray-400 mb-2">Principal s Comments</label>
-                <textarea
-                  value={formData.principalComments}
-                  onChange={(e) => setFormData(prev => ({ ...prev, principalComments: e.target.value }))}
-                  className="w-full px-4 py-3 rounded-lg border-gray-300 dark:border-white dark:bg-white dark:text-gray-800 text-base focus:ring-2 focus:ring-main3"
-                  rows="4"
-                  placeholder="Principal's comments will be added later"
-                />
-              </div>
-            </div>
-          </div>
-
           {/* Submit Button */}
           <div className="flex justify-end space-x-4">
             <button
@@ -494,115 +565,7 @@ const StudentReport = () => {
         </form>
       )}
 
-      {/* Report Display */}
-      {selectedStudent && reportData && (
-        <div className="bg-white dark:bg-slate-800 rounded-xl shadow-md p-6">
-          {/* School Header */}
-          <div className="text-center mb-6">
-            <h1 className="text-2xl font-bold text-gray-800 dark:text-white">School Name</h1>
-            <p className="text-gray-600 dark:text-gray-300">End of Term Academic Report</p>
-          </div>
-
-          {/* Student Information */}
-          <div className="grid grid-cols-2 gap-4 mb-6 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
-            {/* ... student info display ... */}
-          </div>
-
-          {/* Academic Performance Table */}
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm text-left">
-              <thead className="bg-gray-100 dark:bg-slate-700">
-                <tr>
-                  <th className="px-4 py-2">Subject</th>
-                  <th className="px-4 py-2">Possible Mark</th>
-                  <th className="px-4 py-2">Obtained Mark</th>
-                  <th className="px-4 py-2">Percentage</th>
-                  <th className="px-4 py-2">Grade</th>
-                  <th className="px-4 py-2">Class Average</th>
-                  <th className="px-4 py-2">Effort Grade</th>
-                  <th className="px-4 py-2">Remarks</th>
-                </tr>
-              </thead>
-              <tbody>
-                {reportData.grades && Object.entries(reportData.grades).map(([subject, grades], index) => (
-                  <tr key={index} className="border-b dark:border-gray-600">
-                    <td className="px-4 py-2">{subject}</td>
-                    <td className="px-4 py-2">{grades.possibleMark}</td>
-                    <td className="px-4 py-2">{grades.obtainedMark}</td>
-                    <td className="px-4 py-2">{grades.percentage}%</td>
-                    <td className="px-4 py-2">{grades.grade}</td>
-                    <td className="px-4 py-2">{grades.classAverage}</td>
-                    <td className="px-4 py-2">{grades.effortGrade}</td>
-                    <td className="px-4 py-2">{grades.remarks}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-
-          {/* Attendance Summary */}
-          <div className="mt-6 p-4 bg-gray-50 dark:bg-slate-700 rounded-lg">
-            <h3 className="text-lg font-semibold mb-2 text-gray-800 dark:text-white">Attendance Summary</h3>
-            <div className="grid grid-cols-3 gap-4">
-              <div>
-                <p className="text-gray-600 dark:text-gray-300">
-                  <span className="font-semibold">Present:</span> {reportData.attendance?.present || 0} days
-                </p>
-              </div>
-              <div>
-                <p className="text-gray-600 dark:text-gray-300">
-                  <span className="font-semibold">Absent:</span> {reportData.attendance?.absent || 0} days
-                </p>
-              </div>
-              <div>
-                <p className="text-gray-600 dark:text-gray-300">
-                  <span className="font-semibold">Percentage:</span> {reportData.attendance?.percentage || 0}%
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Comments Section */}
-          <div className="mt-6">
-            <div className="mb-4">
-              <h4 className="font-semibold mb-2 text-gray-800 dark:text-white">Class Teacher s Comments</h4>
-              <p className="text-gray-600 dark:text-gray-300 p-2 border rounded">
-                {reportData.teacherComments || 'No comments available'}
-              </p>
-            </div>
-            <div className="mb-4">
-              <h4 className="font-semibold mb-2 text-gray-800 dark:text-white">Principal s Comments</h4>
-              <p className="text-gray-600 dark:text-gray-300 p-2 border rounded">
-                {reportData.principalComments || 'No comments available'}
-              </p>
-            </div>
-          </div>
-
-          {/* Signature Section */}
-          <div className="mt-6 grid grid-cols-2 gap-4">
-            <div className="text-center">
-              <div className="border-t border-gray-300 dark:border-gray-600 pt-2">
-                <p className="text-sm text-gray-600 dark:text-gray-300">Class Teacher s Signature</p>
-              </div>
-            </div>
-            <div className="text-center">
-              <div className="border-t border-gray-300 dark:border-gray-600 pt-2">
-                <p className="text-sm text-gray-600 dark:text-gray-300">Principal s Signature</p>
-              </div>
-            </div>
-          </div>
-
-          {/* Print Button */}
-          <div className="mt-6 text-center">
-            <button 
-              onClick={() => window.print()}
-              className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-lg transition duration-200"
-            >
-              Print Report
-            </button>
-          </div>
-        </div>
-      )}
+      
     </div>
   );
 };

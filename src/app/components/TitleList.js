@@ -55,14 +55,14 @@ const TitleList = ({ titles, onSignOut }) => {
           </div>
         );
       })}
-      <div className="flex items-center w-full hover:bg-slate-50 hover:text-black p-1"> {/* Reduced space here as well */}
+      <div className="flex items-center w-full hover:bg-slate-50 hover:px-4 hover:rounded-full hover:text-black p-1"> {/* Reduced space here as well */}
         <div className="w-6">
           <FaSignOutAlt className="text-2xl" />
         </div>
         <div className="text-left font-thin  cursor-pointer w-full">
           <button
             onClick={onSignOut}
-            className="flex items-center font-thin p-2 rounded cursor-pointer w-full"
+            className="flex items-center font-thin p-2 rounded-full cursor-pointer w-full"
             aria-label="Sign Out"
           >
             Sign Out

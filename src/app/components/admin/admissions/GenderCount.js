@@ -40,7 +40,7 @@ const GenderCount = () => {
       </h2>
       <div className="grid grid-cols-3 gap-4">
         <div className="p-4 bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-200 
-          rounded-lg shadow-md hover:shadow-lg dark:shadow-gray-900 
+          rounded-lg 
           flex flex-col items-center justify-center 
           transition-all duration-200">
           <FaMale className="text-4xl mb-2" />
@@ -48,7 +48,7 @@ const GenderCount = () => {
           <p className="text-2xl">{genderCounts.male}</p>
         </div>
         <div className="p-4 bg-pink-100 dark:bg-pink-900 text-pink-700 dark:text-pink-200 
-          rounded-lg shadow-md hover:shadow-lg dark:shadow-gray-900 
+          rounded-lg 
           flex flex-col items-center justify-center 
           transition-all duration-200">
           <FaFemale className="text-4xl mb-2" />
@@ -56,7 +56,7 @@ const GenderCount = () => {
           <p className="text-2xl">{genderCounts.female}</p>
         </div>
         <div className="p-4 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 
-          rounded-lg shadow-md hover:shadow-lg dark:shadow-gray-900 
+          rounded-lg 
           flex flex-col items-center justify-center 
           transition-all duration-200">
           <FaUsers className="text-4xl mb-2" />

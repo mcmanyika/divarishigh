@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { Mail, Phone, MapPin } from "lucide-react";
-import { database } from '../../utils/firebaseConfig';
+import { database } from '../../../utils/firebaseConfig';
 import { ref, onValue } from 'firebase/database';
 
 export default function Footer() {
