@@ -463,7 +463,7 @@ const TeacherReports = () => {
                     </p>
                   </div>
                   <div className="flex gap-2">
-                    <span className="px-3 py-1 text-xs font-medium bg-main3 bg-opacity-10 text-main3 rounded-full">
+                    <span className="px-3 py-1 text-xs text-white font-medium bg-slate-600  text-main3 rounded-full">
                       {new Date(report.timestamp).toLocaleDateString()}
                     </span>
                     <button
@@ -509,7 +509,7 @@ const TeacherReports = () => {
                 <button
                   onClick={() => setSelectedReport(report)}
                   className="mt-4 w-full px-4 py-2 text-sm text-main3 border border-main3 
-                           rounded-lg hover:bg-main3 hover:text-white transition-colors duration-200"
+                           rounded-lg hover:bg-slate-600 hover:text-white  transition-colors duration-200"
                 >
                   View Details
                 </button>

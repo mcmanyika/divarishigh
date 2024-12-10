@@ -1,28 +1,7 @@
 import { useState, useEffect } from 'react';
-import { ref, onValue } from 'firebase/database';
+import { ref, get } from 'firebase/database';
 import { database } from '../../../../../utils/firebaseConfig';
 import { useGlobalState } from '../../../store';
-import { Line } from 'react-chartjs-2';
-import { 
-  Chart as ChartJS, 
-  CategoryScale, 
-  LinearScale, 
-  PointElement, 
-  LineElement, 
-  Title, 
-  Tooltip, 
-  Legend 
-} from 'chart.js';
-
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend
-);
 
 const AcademicProgress = () => {
   const [progressData, setProgressData] = useState(null);
@@ -30,73 +9,73 @@ const AcademicProgress = () => {
   const [studentId] = useGlobalState('studentId');
 
   useEffect(() => {
-    if (!studentId) return;
+    const fetchReports = async () => {
+      if (!studentId) return;
 
-    const progressRef = ref(database, `userTypes/${studentId}/academicProgress`);
-    const unsubscribe = onValue(progressRef, (snapshot) => {
-      if (snapshot.exists()) {
-        setProgressData(snapshot.val());
+      try {
+        const reportsRef = ref(database, `reports/${studentId}`);
+        const snapshot = await get(reportsRef);
+
+        if (snapshot.exists()) {
+          const reports = snapshot.val();
+          
+          // Process reports data
+          const subjectPerformance = {};
+          
+          // Sort reports by timestamp
+          const sortedReports = Object.values(reports).sort((a, b) => a.timestamp - b.timestamp);
+          
+          // Process each report
+          sortedReports.forEach(report => {
+            // Update subject performance
+            report.subjects.forEach(subject => {
+              if (!subjectPerformance[subject.name]) {
+                subjectPerformance[subject.name] = [];
+              }
+              subjectPerformance[subject.name].push(parseFloat(subject.percentage || 0));
+            });
+          });
+
+          // Calculate average performance for each subject
+          const averageSubjectPerformance = Object.entries(subjectPerformance).reduce((acc, [subject, scores]) => {
+            const average = scores.reduce((sum, score) => sum + score, 0) / scores.length;
+            acc[subject] = Math.round(average);
+            return acc;
+          }, {});
+
+          setProgressData({
+            subjectPerformance: averageSubjectPerformance
+          });
+        }
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching reports:', error);
+        setLoading(false);
       }
-      setLoading(false);
-    }, (error) => {
-      console.error('Error fetching progress:', error);
-      setLoading(false);
-    });
+    };
 
-    return () => unsubscribe();
+    fetchReports();
   }, [studentId]);
 
   if (loading) {
     return <div className="animate-pulse">Loading progress...</div>;
   }
 
-  const chartData = {
-    labels: progressData?.performanceTrend?.map(item => item.month) || [],
-    datasets: [{
-      label: 'Performance',
-      data: progressData?.performanceTrend?.map(item => item.score) || [],
-      borderColor: 'rgb(75, 192, 192)',
-      tension: 0.1
-    }]
-  };
-
-  const chartOptions = {
-    responsive: true,
-    plugins: {
-      legend: {
-        position: 'top',
-      },
-      title: {
-        display: true,
-        text: 'Academic Performance Trend'
-      }
-    },
-    scales: {
-      y: {
-        min: 0,
-        max: 100
-      }
-    }
-  };
-
   return (
-    <div className="grid md:grid-cols-1 gap-6">
+    <div className="bg-white dark:bg-slate-900 rounded-xl shadow-md overflow-hidden border border-gray-100 dark:border-slate-800">
       
-      <div className="bg-white dark:bg-slate-900 rounded-xl shadow-md overflow-hidden border border-gray-100 dark:border-slate-800">
-        <div className="p-4 border-b border-gray-100 dark:border-slate-800">
-          <h3 className="text-lg font-semibold text-gray-800 dark:text-white">Subject Performance</h3>
-        </div>
-        <div className="p-4 space-y-4">
-          {progressData?.subjectPerformance && 
-            Object.entries(progressData.subjectPerformance).map(([subject, progress]) => (
+      <div className="p-4 space-y-4">
+        {progressData?.subjectPerformance && 
+          Object.entries(progressData.subjectPerformance)
+            .sort(([, a], [, b]) => b - a) // Sort by performance (highest first)
+            .map(([subject, progress]) => (
               <SubjectProgress 
                 key={subject}
                 subject={subject}
                 progress={progress}
               />
             ))
-          }
-        </div>
+        }
       </div>
     </div>
   );

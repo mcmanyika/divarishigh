@@ -85,21 +85,16 @@ const StudentDash = () => {
                   Welcome, {studentData?.firstName} {studentData?.lastName}
                 </h2>
                 <p className="text-gray-500 dark:text-gray-400">
-                  Class: {studentData?.class} | Roll: {studentData?.rollNumber}
+                  Student ID: {studentData?.userID} <br />
+                  Class: {studentData?.class}  
                 </p>
               </div>
-            </div>
-            <div className="mt-4 md:mt-0">
-              <span className="px-4 py-2 bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-400 rounded-full text-sm">
-                Current Term: Spring 2024
-              </span>
             </div>
           </div>
         </div>
 
-        <QuickStats />
+        {/* <QuickStats /> */}
 
-        <AcademicProgress />
 
         <div className="grid md:grid-cols-2 gap-6">
           <div className="bg-white dark:bg-slate-900 rounded-xl shadow-md overflow-hidden border border-gray-100 dark:border-slate-800">
@@ -136,7 +131,7 @@ const StudentDash = () => {
               <h3 className="text-lg font-semibold text-gray-800 dark:text-white">Recent Exams Results</h3>
             </div>
             <div className="p-4">
-              <CombinedExamsList />
+                <AcademicProgress />
             </div>
           </div>
         </div>
