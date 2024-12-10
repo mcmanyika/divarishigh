@@ -1,7 +1,6 @@
 import withAuth from '../../../../utils/withAuth';
 import AdminLayout from '../../admin/adminLayout';
 import StudentReport from '../../../app/components/student/reports/StudentReport';
-
 const StudentReportPage = () => {
   return (
     <AdminLayout>
@@ -13,6 +12,12 @@ const StudentReportPage = () => {
           <p className="text-gray-600 dark:text-gray-400">
             Generate and view end of term reports for students.
           </p>
+          <button 
+            onClick={() => window.location.href = '/teacher/report/all-reports'} 
+            className="bg-main3 text-white mt-4 px-4 py-2 rounded-lg"
+          >
+            Show All Reports
+          </button>
         </div>
         <StudentReport />
       </div>

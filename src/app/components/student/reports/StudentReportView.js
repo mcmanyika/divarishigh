@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { ref, get } from 'firebase/database';
 import { database } from '../../../../../utils/firebaseConfig';
 import { useSession } from 'next-auth/react';
+import withAuth from '../../../../../utils/withAuth';
 
 const StudentReportView = () => {
   const { data: session } = useSession();
@@ -155,7 +156,7 @@ const StudentReportView = () => {
             </div>
           </div>
 
-          {/* Academic Performance - Modified to remove Remarks column */}
+          {/* Academic Performance Table */}
           <div className="overflow-x-auto mb-6">
             <table className="w-full text-sm text-left">
               <thead className="bg-gray-100 dark:bg-slate-700">
@@ -192,22 +193,6 @@ const StudentReportView = () => {
                 ))}
               </tbody>
             </table>
-          </div>
-
-          {/* Attendance Summary */}
-          <div className="mb-6 p-4 bg-gray-50 dark:bg-slate-700 rounded-lg">
-            <h3 className="text-lg font-semibold mb-2 text-gray-800 dark:text-white">Attendance Summary</h3>
-            <div className="grid grid-cols-3 gap-4">
-              <p className="text-gray-600 dark:text-gray-300">
-                <span className="font-semibold">Days Present:</span> {selectedReport.attendance.present}
-              </p>
-              <p className="text-gray-600 dark:text-gray-300">
-                <span className="font-semibold">Days Absent:</span> {selectedReport.attendance.absent}
-              </p>
-              <p className="text-gray-600 dark:text-gray-300">
-                <span className="font-semibold">Attendance:</span> {selectedReport.attendance.percentage}%
-              </p>
-            </div>
           </div>
 
           {/* Print Button */}
@@ -274,12 +259,6 @@ const StudentReportView = () => {
                   </span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-sm text-gray-600 dark:text-gray-400">Attendance</span>
-                  <span className="text-sm font-medium text-gray-800 dark:text-white">
-                    {report.attendance.percentage}%
-                  </span>
-                </div>
-                <div className="flex justify-between">
                   <span className="text-sm text-gray-600 dark:text-gray-400">Class</span>
                   <span className="text-sm font-medium text-gray-800 dark:text-white">
                     {report.class}
@@ -329,4 +308,4 @@ const RemarksModal = ({ subject, onClose }) => {
   );
 };
 
-export default StudentReportView;
+export default withAuth(StudentReportView);

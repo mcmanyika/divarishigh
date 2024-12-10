@@ -3,9 +3,12 @@ import { ref, get, set } from 'firebase/database';
 import { database } from '../../../../../utils/firebaseConfig';
 import { toast } from 'react-toastify';
 import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import withAuth from '../../../../../utils/withAuth';
 
 const StudentReport = () => {
   const { data: session } = useSession();
+  const router = useRouter();
   const [selectedStudent, setSelectedStudent] = useState('');
   const [selectedStudentData, setSelectedStudentData] = useState(null);
   const [students, setStudents] = useState([]);
@@ -21,14 +24,11 @@ const StudentReport = () => {
         obtainedMark: '',
         classAverage: '',
         effortGrade: '',
-        remarks: ''
+        remarks: '',
+        teacherEmail: session?.user?.email || '',
+        teacherName: session?.user?.name || ''
       }
     ],
-    attendance: {
-      present: '',
-      absent: '',
-      percentage: ''
-    },
     term: 'First Term',
     year: new Date().getFullYear().toString(),
     teacherEmail: session?.user?.email || '',
@@ -47,7 +47,9 @@ const StudentReport = () => {
           obtainedMark: '',
           classAverage: '',
           effortGrade: '',
-          remarks: ''
+          remarks: '',
+          teacherEmail: session?.user?.email || '',
+          teacherName: session?.user?.name || ''
         }
       ]
     }));
@@ -182,16 +184,6 @@ const StudentReport = () => {
     }));
   };
 
-  const handleAttendanceChange = (field, value) => {
-    setFormData(prev => ({
-      ...prev,
-      attendance: {
-        ...prev.attendance,
-        [field]: value
-      }
-    }));
-  };
-
   const calculateGrade = (obtained, possible) => {
     const percentage = (obtained / possible) * 100;
     if (percentage >= 90) return 'A+';
@@ -265,20 +257,10 @@ const StudentReport = () => {
         }
       });
 
-      // Calculate attendance percentage
-      const present = parseInt(formData.attendance.present) || 0;
-      const absent = parseInt(formData.attendance.absent) || 0;
-      const total = present + absent;
-      const percentage = total ? ((present / total) * 100).toFixed(1) : 0;
-
       // Add student data to the report
       const reportData = {
         ...formData,
         subjects: mergedSubjects, // Use merged subjects
-        attendance: {
-          ...formData.attendance,
-          percentage
-        },
         studentName: selectedStudentData?.name,
         class: selectedStudentData?.class,
         admissionNumber: selectedStudentData?.admissionNumber,
@@ -290,34 +272,11 @@ const StudentReport = () => {
       const reportRef = ref(database, `reports/${selectedStudent}/${formData.term}_${formData.year}`);
       await set(reportRef, reportData);
 
-      // Reset form - modified to remove comments
-      setFormData(prev => ({
-        ...prev,
-        subjects: [
-          {
-            name: '',
-            possibleMark: '100',
-            obtainedMark: '',
-            classAverage: '',
-            effortGrade: '',
-            remarks: ''
-          }
-        ],
-        attendance: {
-          present: '',
-          absent: '',
-          percentage: ''
-        }
-      }));
-
-      // Fetch and display updated report data
-      const updatedReportRef = ref(database, `reports/${selectedStudent}/${formData.term}_${formData.year}`);
-      const snapshot = await get(updatedReportRef);
+      toast.success('Report saved successfully');
       
-      if (snapshot.exists()) {
-        setReportData(snapshot.val());
-        toast.success('Report updated successfully');
-      }
+      // Redirect to all-reports page
+      router.push('/teacher/report/all-reports');
+      
     } catch (error) {
       console.error('Error saving report:', error);
       toast.error(`Error saving report: ${error.message}`);
@@ -420,13 +379,7 @@ const StudentReport = () => {
           <div className="mb-8">
             <div className="flex justify-between items-center mb-6">
               <h3 className="text-xl font-medium text-gray-800 dark:text-white">Subjects</h3>
-              <button
-                type="button"
-                onClick={addSubject}
-                className="px-4 py-2 bg-main3 text-white rounded-lg hover:bg-opacity-90 transition-colors"
-              >
-                Add Subject
-              </button>
+              
             </div>
 
             {formData.subjects.map((subject, index) => (
@@ -525,38 +478,18 @@ const StudentReport = () => {
             )}
           </div>
 
-          {/* Attendance */}
-          <div className="mb-8">
-            <h3 className="text-xl font-medium mb-6 text-gray-800 dark:text-white">Attendance</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-gray-50 dark:bg-slate-700 p-6 rounded-lg">
-              <div>
-                <label className="block text-base text-gray-600 dark:text-gray-400 mb-2">Days Present</label>
-                <input
-                  type="number"
-                  min="0"
-                  value={formData.attendance.present}
-                  onChange={(e) => handleAttendanceChange('present', e.target.value)}
-                  className="w-full px-4 py-3 rounded-lg border-gray-300 dark:border-white dark:bg-white dark:text-gray-800 text-base focus:ring-2 focus:ring-main3"
-                />
-              </div>
-              <div>
-                <label className="block text-base text-gray-600 dark:text-gray-400 mb-2">Days Absent</label>
-                <input
-                  type="number"
-                  min="0"
-                  value={formData.attendance.absent}
-                  onChange={(e) => handleAttendanceChange('absent', e.target.value)}
-                  className="w-full px-4 py-3 rounded-lg border-gray-300 dark:border-white dark:bg-white dark:text-gray-800 text-base focus:ring-2 focus:ring-main3"
-                />
-              </div>
-            </div>
-          </div>
-
           {/* Submit Button */}
           <div className="flex justify-end space-x-4">
+          <button
+                type="button"
+                onClick={addSubject}
+                className="px-4 py-2 bg-main3 text-white rounded-lg hover:bg-opacity-90 transition-colors"
+              >
+                Add Subject
+              </button>
             <button
               type="submit"
-              className="px-6 py-3 text-base font-medium bg-main3 text-white rounded-lg hover:bg-opacity-90 transition-colors"
+              className="px-6 py-3 text-base font-medium bg-main text-white rounded-lg hover:bg-opacity-90 transition-colors"
               disabled={loading}
             >
               {loading ? 'Saving...' : 'Save Report'}
@@ -570,4 +503,4 @@ const StudentReport = () => {
   );
 };
 
-export default StudentReport;
+export default withAuth(StudentReport);
