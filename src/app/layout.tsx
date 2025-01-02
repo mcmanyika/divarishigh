@@ -1,6 +1,7 @@
 import { authOptions } from "../pages/api/auth/[...nextauth]";
 import { getServerSession, Session } from "next-auth";
 import { Inter } from "next/font/google";
+import { Analytics } from '@vercel/analytics/react';
 import type { Metadata } from 'next';
 import { ThemeProvider } from './components/theme-provider';
 import { NavigationMenu } from './components/navigation';
@@ -17,25 +18,20 @@ export const metadata: Metadata = {
 export default async function RootLayout({ 
   children, 
 }: {
-  children: React.ReactNode;
+  children: React.ReactNode
 }) {
-  const session = (await getServerSession(authOptions)) as Session | null;
-
+  const session = (await getServerSession(authOptions)) as Session | null; // Assert the type
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en">
+      <head>
+      </head>
       <body className={inter.className}>
         <SessionProvider session={session}>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="dark"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <NavigationMenu />
-            {children}
-          </ThemeProvider>
+          {children}
+          <Analytics />
         </SessionProvider>
       </body>
     </html>
   );
 }
+

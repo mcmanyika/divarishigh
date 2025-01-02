@@ -106,16 +106,7 @@ const Accounts = () => {
   }, [modalOpen]);
 
   return (
-    <div className="p-4 bg-white shadow-md rounded-md">
-      <div className="flex justify-between items-center w-full">
-        <div className="text-2xl font-semibold mb-4">Accounts List</div>
-        <div className="three-dots flex flex-col justify-between h-4 space-y-1">
-          <Link href="/admin/admission">
-            <div className="w-1 h-1 bg-black rounded-full"></div>
-          </Link>
-        </div>
-      </div>
-
+    <div className="w-full  p-4 bg-white shadow-md rounded-md">
       {/* Search Bar */}
       <div className="mb-4">
         <input
@@ -128,18 +119,30 @@ const Accounts = () => {
       </div>
 
       {/* Grid of Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2  gap-6">
         {currentAdmissions.map((admission) => (
           <div
             key={admission.id}
-            className="bg-gray-50 p-4 rounded-md shadow-md hover:bg-gray-100 cursor-pointer"
+            className="bg-gray-10 p-4 rounded-md shadow hover:bg-gray-50 cursor-pointer overflow-hidden"
             onClick={() => openModal(admission)}
           >
-            <p className="text-lg font-bold mb-2 capitalize">{admission.firstName} {admission.lastName}</p>
-            <p className="text-sm mb-1"><span className="font-semibold">Email:</span> {admission.email}</p>
-            { admission.class && (<p className="text-sm mb-1"><span className="font-semibold">Class:</span> {admission.class}</p>) }
-            <p className="text-sm mb-1"><span className="font-semibold">Phone:</span> {admission.phone}</p>
-            <p className="text-sm mb-1"><span className="font-semibold">Status:</span> {admission.status}</p>
+            <p className="text-lg font-bold mb-2 capitalize truncate">
+              {admission.firstName} {admission.lastName}
+            </p>
+            <p className="text-sm mb-1 truncate">
+              <span className="font-semibold">Email:</span> {admission.email}
+            </p>
+            {admission.class && (
+              <p className="text-sm mb-1 truncate">
+                <span className="font-semibold">Class:</span> {admission.class}
+              </p>
+            )}
+            <p className="text-sm mb-1 truncate">
+              <span className="font-semibold">Phone:</span> {admission.phone}
+            </p>
+            <p className="text-sm mb-1 truncate">
+              <span className="font-semibold">Status:</span> {admission.status}
+            </p>
           </div>
         ))}
       </div>
@@ -166,17 +169,44 @@ const Accounts = () => {
 
       {/* Modal */}
       {modalOpen && selectedAdmission && (
-         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-         <div className="bg-white p-8 rounded-md max-w-screen-lg">
-           <h2 className="text-xl font-semibold mb-4">Edit Admission</h2>
-           <EditAdmissionForm
-             formData={formData}
-             handleInputChange={handleInputChange}
-             handleSubmit={handleSubmit}
-             closeModal={closeModal}
-           /> 
-         </div>
-       </div>
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center p-4 z-50">
+          <div 
+            id="modal-content"
+            className="bg-white dark:bg-gray-800 rounded-lg shadow-xl w-full max-w-4xl max-h-[90vh] overflow-y-auto"
+          >
+            <div className="sticky top-0 bg-white dark:bg-gray-800 border-b dark:border-gray-700 p-4">
+              <div className="flex justify-between items-center">
+                <h2 className="text-xl font-semibold dark:text-white">Edit Admission</h2>
+                <button
+                  onClick={closeModal}
+                  className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full"
+                >
+                  <svg
+                    className="w-6 h-6 text-gray-600 dark:text-gray-300"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                </button>
+              </div>
+            </div>
+            <div className="p-6">
+              <EditAdmissionForm
+                formData={formData}
+                handleInputChange={handleInputChange}
+                handleSubmit={handleSubmit}
+                closeModal={closeModal}
+              />
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

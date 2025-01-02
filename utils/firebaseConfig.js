@@ -1,22 +1,24 @@
-import { initializeApp, getApps, getApp } from "firebase/app";
+import { initializeApp } from "firebase/app";
 import { getDatabase } from "firebase/database";
 import { getStorage } from 'firebase/storage';
-import { getAuth } from 'firebase/auth'
+import { getAuth } from 'firebase/auth'; // Importing Firebase Auth
 
 const firebaseConfig = {
   apiKey: 'AIzaSyCCpiVwkk8CFcviS1t2VT3CqUzhPfgHs-4',
-  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
-  projectId: 'divaris-3e59f', // Ensure this matches your Firebase project
-  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
-  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
-  databaseURL: process.env.NEXT_PUBLIC_FIREBASE_DATABASE_URL // Make sure this is set in your environment variables
+  authDomain: process.env.FIREBASE_AUTH_DOMAIN,
+  projectId: 'divaris-3e59f',
+  storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.FIREBASE_APP_ID
 };
 
-// Check if a Firebase app is already initialized, and use it if it exists
-const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+
+// Firebase services
 const database = getDatabase(app);
 const storage = getStorage(app);
-const auth = getAuth(app)
+const auth = getAuth(app); // Initializing the auth service
 
-export { database, storage, auth };
+// Exporting services
+export { database, storage, auth }; // Ensure auth is exported

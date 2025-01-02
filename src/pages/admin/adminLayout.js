@@ -10,9 +10,6 @@ import '../../app/globals.css';
 
 import { useRouter } from 'next/router';
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; // 
-import { faSpinner } from '@fortawesome/free-solid-svg-icons'; // Spinner icon
-import AIAssistantForm from '../../app/components/ai/AIAssistantForm';
 import Footer from '../../app/components/DashFooter';
 import { database } from '../../../utils/firebaseConfig';
 import TitleList from '../../app/components/TitleList';
@@ -26,6 +23,7 @@ import { useTheme } from 'next-themes';
 const AdminLayout = ({ children }) => {
   const { data: session, status } = useSession();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(false);
   const [titles, setTitles] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [userID, setUserID] = useGlobalState('userID');
@@ -41,6 +39,8 @@ const AdminLayout = ({ children }) => {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   const popupRef = useRef(null); // Add this ref for the popup
+
+  const [websiteUrl, setWebsiteUrl] = useState('');
 
   useEffect(() => {
     setMounted(true);
@@ -92,8 +92,8 @@ const AdminLayout = ({ children }) => {
             
             // Define allowed titles based on userID
             const allowedTitles = {
-              'STFF': ['Dashboard', 'Class Routine', 'Notice', 'Admission', 'Applicants', 'Attendance', 'Create Blog', 'Contact Us', 'Payment', 'Class Allocation'],
-              'ADM': ['Dashboard', 'Term Reports', 'Store'],
+              'STFF': ['Dashboard', 'Class Routine', 'Notice', 'Admissions', 'Applicants', 'Attendance', 'Payment', 'Class Allocation'],
+              'ADM': ['Dashboard', 'Finance', 'My Assignments', 'Term Reports', 'Store'],
               'TCHR': ['Dashboard', 'Assignments', 'Attendance', 'Students Stats', 'Student Report', 'Exams', 'Notice', 'Events']
             };
 
@@ -142,6 +142,7 @@ const AdminLayout = ({ children }) => {
         if (accountSnapshot.exists()) {
           const accountData = accountSnapshot.val();
           setLogoUrl(accountData.logo);
+          setWebsiteUrl(accountData.website);
         } else {
           console.error('No account data found');
         }
@@ -182,19 +183,37 @@ const AdminLayout = ({ children }) => {
 
   return (
     <div className="flex min-h-screen overflow-y-auto text-base bg-main dark:bg-gray-900">
-
-      <aside className={`fixed z-40 transform ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-300 md:relative md:translate-x-0 w-42 bg-dash dark:bg-gray-800 text-white p-4 min-h-screen overflow-y-auto rounded-tr-xl flex flex-col`}>
-        <div className="flex justify-center items-center pt-10 mb-10">
-          <Link href='/'>
+      <aside 
+        className={`fixed z-40 transform ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} 
+          transition-all duration-300 md:relative md:translate-x-0 
+          ${isExpanded ? 'w-64' : 'w-16'} 
+          bg-dash dark:bg-gray-800 text-white p-2 min-h-screen overflow-y-auto rounded-tr-xl 
+          flex flex-col`}
+        onMouseEnter={() => setIsExpanded(true)}
+        onMouseLeave={() => setIsExpanded(false)}
+      >
+        <div className={`flex ${isExpanded ? 'justify-center' : 'justify-center'} items-center`}>
+          <Link href={websiteUrl || '#'}>
             {logoUrl ? (
-              <Image src={logoUrl} alt="Logo" width={70} height={60} className='rounded-full' />
+              <Image 
+                src={logoUrl} 
+                alt="Logo" 
+                width={isExpanded ? 70 : 55} 
+                height={isExpanded ? 60 : 55} 
+                className='rounded-full transition-all duration-300 m-2 mb-8' 
+              />
             ) : (
-              <div className="w-14 h-14 bg-gray-300 rounded-full animate-pulse" />
+              <div className={`${isExpanded ? 'w-14 h-14' : 'w-11 h-11'} bg-gray-300 rounded-full animate-pulse`} />
             )}
           </Link>
         </div>
-        <nav className="flex-1 h-screen overflow-y-auto"> 
-          <TitleList titles={titles} onSignOut={handleSignOut} />
+        <nav className="flex-1 h-screen overflow-y-auto px-1">
+          <TitleList 
+            titles={titles} 
+            onSignOut={handleSignOut}
+            isExpanded={isExpanded}
+            iconSize="text-2xl"
+          />
         </nav>
       </aside>
 
@@ -202,11 +221,12 @@ const AdminLayout = ({ children }) => {
         <div className="fixed inset-0 bg-black opacity-50 z-30 md:hidden" onClick={toggleMobileSidebar}></div>
       )}
 
-      <div className="flex-1 flex flex-col transition-all duration-300 ease-in-out">
+      <div className={`flex-1 flex flex-col transition-all duration-300 ease-in-out
+        ${isExpanded ? 'md:ml-2' : 'md:ml-4'}`}>
         <header className="flex items-center justify-between bg-dash dark:bg-gray-800 text-white p-4 md:hidden">
           <div className="flex items-center">
             <FaBars className="cursor-pointer text-2xl mr-4" onClick={toggleMobileSidebar} />
-            <Link href='/'>
+            <Link href={websiteUrl || '#'}>
               {logoUrl ? (
                 <Image src={logoUrl} alt="Logo" width={50} height={30} className='rounded-full' />
               ) : (
@@ -274,7 +294,6 @@ const AdminLayout = ({ children }) => {
         </main>
 
         <Footer />
-        <AIAssistantForm />
 
         {/* Modal for Document Upload */}
         {isModalOpen && (
