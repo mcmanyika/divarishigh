@@ -10,7 +10,7 @@ const ClassRoutine = () => {
   const [, setRoutineCount] = useGlobalState('routineCount');
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(true);
-  const itemsPerPage = 5;
+  const itemsPerPage = 3;
   const [selectedRoutine, setSelectedRoutine] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
