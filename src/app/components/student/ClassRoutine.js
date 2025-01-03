@@ -13,6 +13,7 @@ const ClassRoutine = () => {
   const itemsPerPage = 3;
   const [selectedRoutine, setSelectedRoutine] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [sortConfig, setSortConfig] = useState({ key: 'date', direction: 'desc' });
 
   useEffect(() => {
     const routineRef = ref(database, 'classRoutine');
@@ -64,7 +65,42 @@ const ClassRoutine = () => {
     setCurrentPage((prevPage) => Math.min(prevPage + 1, maxPage));
   };
 
-  const currentItems = routine.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+  const sortRoutines = (routines) => {
+    return [...routines].sort((a, b) => {
+      if (sortConfig.key === 'date' || sortConfig.key === 'time') {
+        let valueA, valueB;
+        
+        if (sortConfig.key === 'date') {
+          valueA = new Date(a.date).getTime();
+          valueB = new Date(b.date).getTime();
+        } else { // time
+          valueA = a.time;
+          valueB = b.time;
+        }
+        
+        return sortConfig.direction === 'asc' ? valueA - valueB : valueB - valueA;
+      }
+      
+      // For other fields (subject, teacher)
+      if (a[sortConfig.key] < b[sortConfig.key]) {
+        return sortConfig.direction === 'asc' ? -1 : 1;
+      }
+      if (a[sortConfig.key] > b[sortConfig.key]) {
+        return sortConfig.direction === 'asc' ? 1 : -1;
+      }
+      return 0;
+    });
+  };
+
+  const handleSort = (key) => {
+    setSortConfig((prevConfig) => ({
+      key,
+      direction: prevConfig.key === key && prevConfig.direction === 'asc' ? 'desc' : 'asc',
+    }));
+  };
+
+  const sortedRoutines = sortRoutines(routine);
+  const currentItems = sortedRoutines.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
   return (
     <div className="w-full text-sm p-6 bg-white dark:bg-gray-800 transition-colors duration-200">
@@ -81,10 +117,38 @@ const ClassRoutine = () => {
             <table className="min-w-full text-left border-collapse">
               <thead>
                 <tr className="uppercase bg-gray-50 dark:bg-gray-700">
-                  <th className="p-2 border-b border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-300">Date</th>
-                  <th className="p-2 border-b border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-300">Time</th>
-                  <th className="p-2 border-b border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-300">Subject</th>
-                  <th className="p-2 border-b border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-300">Teacher</th>
+                  {[
+                    { key: 'date', label: 'Date' },
+                    { key: 'time', label: 'Time' },
+                    { key: 'subject', label: 'Subject' },
+                    { key: 'teacher', label: 'Teacher' }
+                  ].map((column) => (
+                    <th 
+                      key={column.key}
+                      className="p-3 border-b border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-300 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600"
+                      onClick={() => handleSort(column.key)}
+                    >
+                      <div className="flex items-center justify-between">
+                        <span>{column.label}</span>
+                        <span className="inline-flex flex-col">
+                          <svg className={`w-3 h-3 ${
+                            sortConfig.key === column.key && sortConfig.direction === 'asc' 
+                              ? 'text-blue-500 dark:text-blue-400' 
+                              : 'text-gray-400 dark:text-gray-500'
+                          }`} viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 8l-6 6 1.41 1.41L12 10.83l4.59 4.58L18 14z" />
+                          </svg>
+                          <svg className={`w-3 h-3 ${
+                            sortConfig.key === column.key && sortConfig.direction === 'desc'
+                              ? 'text-blue-500 dark:text-blue-400'
+                              : 'text-gray-400 dark:text-gray-500'
+                          }`} viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z" />
+                          </svg>
+                        </span>
+                      </div>
+                    </th>
+                  ))}
                 </tr>
               </thead>
               <tbody className="bg-white dark:bg-gray-800">
@@ -97,10 +161,10 @@ const ClassRoutine = () => {
                       setIsModalOpen(true);
                     }}
                   >
-                    <td className="p-2 border-b border-gray-200 dark:border-gray-600 text-gray-600 dark:text-gray-300">{entry.date}</td>
-                    <td className="p-2 border-b border-gray-200 dark:border-gray-600 text-gray-600 dark:text-gray-300">{entry.time}</td>
-                    <td className="p-2 border-b border-gray-200 dark:border-gray-600 text-gray-600 dark:text-gray-300">{entry.subject}</td>
-                    <td className="p-2 border-b border-gray-200 dark:border-gray-600 text-gray-600 dark:text-gray-300 capitalize">{entry.teacher}</td>
+                    <td className="p-4 border-b border-gray-200 dark:border-gray-600 text-gray-600 dark:text-gray-300">{entry.date}</td>
+                    <td className="p-3 border-b border-gray-200 dark:border-gray-600 text-gray-600 dark:text-gray-300">{entry.time}</td>
+                    <td className="p-3 border-b border-gray-200 dark:border-gray-600 text-gray-600 dark:text-gray-300">{entry.subject}</td>
+                    <td className="p-3 border-b border-gray-200 dark:border-gray-600 text-gray-600 dark:text-gray-300 capitalize">{entry.teacher}</td>
                   </tr>
                 ))}
               </tbody>
@@ -110,7 +174,7 @@ const ClassRoutine = () => {
           <div className="flex justify-between mt-4">
             <button
               onClick={handlePreviousPage}
-              className="bg-blue-500 dark:bg-blue-600 text-white py-1 px-3 rounded-md 
+              className="bg-blue-500 dark:bg-blue-600 text-white px-4 py-2 rounded-full 
                 hover:bg-blue-700 dark:hover:bg-blue-700 
                 disabled:opacity-50 disabled:cursor-not-allowed
                 transition-colors duration-200"
@@ -120,7 +184,7 @@ const ClassRoutine = () => {
             </button>
             <button
               onClick={handleNextPage}
-              className="bg-blue-500 dark:bg-blue-600 text-white py-1 px-3 rounded-md 
+              className="bg-blue-500 dark:bg-blue-600 text-white px-4 py-2 rounded-full 
                 hover:bg-blue-700 dark:hover:bg-blue-700 
                 disabled:opacity-50 disabled:cursor-not-allowed
                 transition-colors duration-200"
