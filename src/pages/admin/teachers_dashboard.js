@@ -8,7 +8,7 @@ import TeacherClassesList from '../../app/components/teachers/utils/TeacherClass
 const TeacherDashboard = () => {
   return (
     <AdminLayout>
-      <div className="flex flex-col h-screen overflow-y-auto px-2 
+      <div className="flex flex-col h-screen overflow-y-auto
         bg-gray-100 dark:bg-gray-900 transition-colors duration-200">
         <div className="w-full space-y-4">
           
