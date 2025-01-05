@@ -146,7 +146,7 @@ const StudentGenderCount = () => {
   return (
     <div className="w-full text-sm p-4 bg-white dark:bg-gray-800 transition-colors duration-200">
       <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-white">
-        Students By Gender
+        My Students By Gender
       </h2>
       
       <div className="relative h-[300px] mb-4">
