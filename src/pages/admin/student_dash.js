@@ -110,9 +110,6 @@ const StudentDash = () => {
                 <FaUser className="text-2xl text-main3 dark:text-main2" />
               </div>
                 <div className='flex flex-col'>
-                  <h2 className="text-xl font-semibold text-gray-800 dark:text-white">
-                    Hi, {studentData?.firstName} {studentData?.lastName}
-                  </h2>
                   <p className="text-gray-500 dark:text-gray-400">
                     Student ID: {studentData?.userID} <br />
                     Class: {studentData?.class}  

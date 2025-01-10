@@ -16,6 +16,7 @@ const SubscriptionPlans = () => {
   const [hasSubscription, setHasSubscription] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [subscriptionStatus, setSubscriptionStatus] = useState(null);
+  const [isUnderReview, setIsUnderReview] = useState(false);
 
   const plan = {
     name: 'School Term Package',
@@ -44,10 +45,17 @@ const SubscriptionPlans = () => {
           if (snapshot.exists()) {
             const subscription = snapshot.val();
             const isActive = subscription.status === 'approved';
+            const underReview = subscription.status === 'pending';
             const hasNotExpired = subscription.endDate > Date.now();
             setHasSubscription(isActive && hasNotExpired);
+            setSubscriptionStatus(subscription.status);
+            setIsUnderReview(underReview);
+            console.log('Subscription Status:', subscription.status);
+            console.log('Is Under Review:', underReview);
           } else {
             setHasSubscription(false);
+            setSubscriptionStatus(null);
+            setIsUnderReview(false);
           }
         } catch (error) {
           console.error('Error checking subscription:', error);
@@ -196,109 +204,113 @@ const SubscriptionPlans = () => {
   }
 
   return (
-    <>
-      <div className="py-8">
-        <h2 className="text-2xl font-bold text-center mb-8">Student Subscription</h2>
-        <div className="max-w-md mx-auto">
-          <div className="border rounded-lg p-8 hover:shadow-lg transition-shadow
-                      bg-white flex flex-col dark:bg-slate-900 dark:border-slate-800">
-            <div className="text-center mb-8">
-              <h3 className="text-2xl font-semibold mb-3 dark:text-white">{plan.name}</h3>
-              <p className="text-4xl font-bold text-blue-600">
-                ${plan.price}
-                <span className="text-sm text-gray-600 dark:text-gray-400">/{plan.duration}</span>
+    (!isUnderReview && subscriptionStatus !== 'pending') && (
+      <>
+        <div className="py-8">
+          <h2 className="text-2xl font-bold text-center mb-8">Student Subscription</h2>
+          <div className="max-w-md mx-auto">
+            <div className="border rounded-lg p-8 hover:shadow-lg transition-shadow
+                        bg-white flex flex-col dark:bg-slate-900 dark:border-slate-800">
+              <div className="text-center mb-8">
+                <h3 className="text-2xl font-semibold mb-3 dark:text-white">{plan.name}</h3>
+                <p className="text-4xl font-bold text-blue-600">
+                  ${plan.price}
+                  <span className="text-sm text-gray-600 dark:text-gray-400">/{plan.duration}</span>
+                </p>
+              </div>
+              
+              <div className="flex-grow space-y-4">
+                {plan.features.map((feature, idx) => (
+                  <div key={idx} className="flex items-center">
+                    <FaCheck className="text-green-500 mr-3" />
+                    <span className="text-gray-700 dark:text-gray-300">{feature}</span>
+                  </div>
+                ))}
+              </div>
+
+              <div className="mt-8 flex justify-center">
+                
+                  <stripe-buy-button
+                    buy-button-id="buy_btn_1QeQRPHXrdQYsUmnAdiD3kKg"
+                    publishable-key="pk_live_51MJe2UHXrdQYsUmndYJEEaLJrPLEUpWXEjlsHaJCYvcifZAJcD5O4dRjgRIgByLhM9w18AN6DNXzznxHiau1mLTw00k4RM3DxI"
+                  />
+                
+              </div>
+              <button
+                onClick={() => setShowConfirmationModal(true)}
+                className="text-center text-sm text-gray-500 dark:text-gray-400 mt-4 hover:text-blue-500 transition-colors cursor-pointer"
+              >
+                Submit payment confirmation ID
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Confirmation Modal */}
+        {showConfirmationModal && (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+            <div className="bg-white dark:bg-slate-800 p-6 rounded-xl max-w-md w-full shadow-xl">
+              <h3 className="text-xl font-bold mb-4 dark:text-white">
+                Complete Your Subscription
+              </h3>
+              <p className="text-gray-600 dark:text-gray-300 text-sm mb-4">
+                Please enter the payment confirmation ID to activate your subscription.
               </p>
-            </div>
-            
-            <div className="flex-grow space-y-4">
-              {plan.features.map((feature, idx) => (
-                <div key={idx} className="flex items-center">
-                  <FaCheck className="text-green-500 mr-3" />
-                  <span className="text-gray-700 dark:text-gray-300">{feature}</span>
+              
+              <form onSubmit={handleConfirmationSubmit} className="space-y-4">
+                <div>
+                  <label 
+                    htmlFor="confirmationId" 
+                    className="block text-sm font-medium mb-2 dark:text-gray-300"
+                  >
+                    Payment Confirmation ID
+                  </label>
+                  <input
+                    type="text"
+                    id="confirmationId"
+                    value={confirmationId}
+                    onChange={(e) => setConfirmationId(e.target.value)}
+                    className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 
+                             dark:bg-slate-700 dark:border-slate-600 dark:text-white"
+                    required
+                    placeholder="Enter the ID from your payment confirmation"
+                    maxLength={50}
+                    disabled={isSubmitting}
+                  />
                 </div>
-              ))}
+
+                <div className="flex items-center justify-end gap-3 mt-6">
+                  <button
+                    type="button"
+                    onClick={() => setShowConfirmationModal(false)}
+                    className="px-4 py-2 text-gray-600 hover:text-gray-800 
+                             dark:text-gray-300 disabled:opacity-50"
+                    disabled={isSubmitting}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="px-4 py-2 bg-blue-600 text-white rounded-lg 
+                             hover:bg-blue-700 disabled:opacity-50 flex items-center gap-2"
+                    disabled={isSubmitting}
+                  >
+                    {isSubmitting ? (
+                      <>
+                        <FaSpinner className="animate-spin" />
+                        <span>Processing...</span>
+                      </>
+                    ) : (
+                      'Activate Subscription'
+                    )}
+                  </button>
+                </div>
+              </form>
             </div>
-
-            <div className="mt-8 flex justify-center">
-              <stripe-buy-button
-                buy-button-id="buy_btn_1QeQRPHXrdQYsUmnAdiD3kKg"
-                publishable-key="pk_live_51MJe2UHXrdQYsUmndYJEEaLJrPLEUpWXEjlsHaJCYvcifZAJcD5O4dRjgRIgByLhM9w18AN6DNXzznxHiau1mLTw00k4RM3DxI"
-              />
-            </div>
-            <button
-              onClick={() => setShowConfirmationModal(true)}
-              className="text-center text-sm text-gray-500 dark:text-gray-400 mt-4 hover:text-blue-500 transition-colors cursor-pointer"
-            >
-              Submit payment confirmation ID
-            </button>
           </div>
-        </div>
-      </div>
-
-      {/* Confirmation Modal */}
-      {showConfirmationModal && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white dark:bg-slate-800 p-6 rounded-xl max-w-md w-full shadow-xl">
-            <h3 className="text-xl font-bold mb-4 dark:text-white">
-              Complete Your Subscription
-            </h3>
-            <p className="text-gray-600 dark:text-gray-300 text-sm mb-4">
-              Please enter the payment confirmation ID to activate your subscription.
-            </p>
-            
-            <form onSubmit={handleConfirmationSubmit} className="space-y-4">
-              <div>
-                <label 
-                  htmlFor="confirmationId" 
-                  className="block text-sm font-medium mb-2 dark:text-gray-300"
-                >
-                  Payment Confirmation ID
-                </label>
-                <input
-                  type="text"
-                  id="confirmationId"
-                  value={confirmationId}
-                  onChange={(e) => setConfirmationId(e.target.value)}
-                  className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 
-                           dark:bg-slate-700 dark:border-slate-600 dark:text-white"
-                  required
-                  placeholder="Enter the ID from your payment confirmation"
-                  maxLength={50}
-                  disabled={isSubmitting}
-                />
-              </div>
-
-              <div className="flex items-center justify-end gap-3 mt-6">
-                <button
-                  type="button"
-                  onClick={() => setShowConfirmationModal(false)}
-                  className="px-4 py-2 text-gray-600 hover:text-gray-800 
-                           dark:text-gray-300 disabled:opacity-50"
-                  disabled={isSubmitting}
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="px-4 py-2 bg-blue-600 text-white rounded-lg 
-                           hover:bg-blue-700 disabled:opacity-50 flex items-center gap-2"
-                  disabled={isSubmitting}
-                >
-                  {isSubmitting ? (
-                    <>
-                      <FaSpinner className="animate-spin" />
-                      <span>Processing...</span>
-                    </>
-                  ) : (
-                    'Activate Subscription'
-                  )}
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
-    </>
+        )}
+      </>
+    )
   );
 };
 
