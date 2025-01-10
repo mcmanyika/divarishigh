@@ -16,6 +16,7 @@ import AcademicProgress from '../../app/components/student/stats/AcademicProgres
 import Deadlines from '../../app/components/student/stats/Deadlines';
 import { loadStripe } from '@stripe/stripe-js';
 import axios from 'axios';
+import SubscriptionPlans from '../../app/components/student/subscription/SubscriptionPlans';
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
 
@@ -102,8 +103,6 @@ const StudentDash = () => {
   return (
     <AdminLayout>
       <div className='min-h-screen space-y-6 pt-6 dark:bg-slate-950 transition-colors duration-200'>
-        
-        
         <div className="bg-white dark:bg-slate-900 rounded-xl shadow-md p-6 border border-gray-100 dark:border-slate-800">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between">
             <div className="flex items-center space-x-4">
@@ -163,6 +162,10 @@ const StudentDash = () => {
                 <AcademicProgress />
             </div>
           </div>
+        </div>
+
+        <div className="mt-8">
+          <SubscriptionPlans />
         </div>
       </div>
     </AdminLayout>
