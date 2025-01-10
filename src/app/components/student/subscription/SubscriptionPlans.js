@@ -17,9 +17,9 @@ const SubscriptionPlans = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   const plan = {
-    name: 'Student Package',
+    name: 'School Term Package',
     price: '6.00',
-    duration: 'Quarterly',
+    duration: 'Per Term',
     features: [
       'Full access to all courses',
       'Assignment submission',
@@ -28,7 +28,8 @@ const SubscriptionPlans = () => {
       'Attendance reports',
       'Email support',
       'End of Term Reports',
-      'Parent portal access'
+      'Parent portal access',
+      'Valid for entire school term'
     ]
   };
 
@@ -38,7 +39,15 @@ const SubscriptionPlans = () => {
         try {
           const subscriptionRef = ref(database, `students/${studentId}/subscription`);
           const snapshot = await get(subscriptionRef);
-          setHasSubscription(snapshot.exists() && snapshot.val().status === 'active');
+          
+          if (snapshot.exists()) {
+            const subscription = snapshot.val();
+            const isActive = subscription.status === 'approved';
+            const hasNotExpired = subscription.endDate > Date.now();
+            setHasSubscription(isActive && hasNotExpired);
+          } else {
+            setHasSubscription(false);
+          }
         } catch (error) {
           console.error('Error checking subscription:', error);
         }
@@ -59,17 +68,22 @@ const SubscriptionPlans = () => {
     setIsSubmitting(true);
     
     try {
+      const currentDate = new Date();
+      const termDates = calculateTermDates(currentDate);
+
       await set(ref(database, `students/${studentId}/subscription`), {
-        status: 'active',
+        status: 'Pending',
         startDate: serverTimestamp(),
-        plan: 'Student Package',
+        endDate: termDates.endDate,
+        termPeriod: termDates.termName,
+        plan: 'School Term Package',
         confirmationId: confirmationId.trim(),
         updatedAt: serverTimestamp(),
         email: session?.user?.email
       });
 
       setHasSubscription(true);
-      toast.success('Subscription activated successfully!');
+      toast.success('Term subscription activated successfully!');
       setShowConfirmationModal(false);
     } catch (error) {
       console.error('Error submitting confirmation:', error);
@@ -77,6 +91,63 @@ const SubscriptionPlans = () => {
     } finally {
       setIsSubmitting(false);
     }
+  };
+
+  const calculateTermDates = (currentDate) => {
+    const year = currentDate.getFullYear();
+    
+    const terms = {
+      term1: {
+        start: new Date(year, 0, 1),
+        end: new Date(year, 3, 30),
+        name: 'Term 1'
+      },
+      term2: {
+        start: new Date(year, 4, 1),
+        end: new Date(year, 7, 31),
+        name: 'Term 2'
+      },
+      term3: {
+        start: new Date(year, 8, 1),
+        end: new Date(year, 11, 31),
+        name: 'Term 3'
+      }
+    };
+
+    // Find current or next term
+    let currentTerm;
+    const termsArray = Object.values(terms);
+    
+    // First try to find the current term
+    for (const term of termsArray) {
+      if (currentDate >= term.start && currentDate <= term.end) {
+        currentTerm = term;
+        break;
+      }
+    }
+
+    // If no current term found, find the next term
+    if (!currentTerm) {
+      for (const term of termsArray) {
+        if (currentDate < term.start) {
+          currentTerm = term;
+          break;
+        }
+      }
+      // If we're after the last term of the year, use first term of next year
+      if (!currentTerm) {
+        currentTerm = {
+          ...terms.term1,
+          start: new Date(year + 1, 0, 1),
+          end: new Date(year + 1, 3, 30)
+        };
+      }
+    }
+
+    return {
+      endDate: currentTerm.end.getTime(),
+      termName: currentTerm.name
+    };
   };
 
   React.useEffect(() => {
@@ -110,9 +181,7 @@ const SubscriptionPlans = () => {
 
   if (hasSubscription) {
     return (
-      <div className="text-center">
-        
-      </div>
+      <div></div>
     );
   }
 
