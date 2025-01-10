@@ -15,6 +15,7 @@ const SubscriptionPlans = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [hasSubscription, setHasSubscription] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [subscriptionStatus, setSubscriptionStatus] = useState(null);
 
   const plan = {
     name: 'School Term Package',
@@ -179,9 +180,18 @@ const SubscriptionPlans = () => {
     );
   }
 
-  if (hasSubscription) {
+  if (hasSubscription || subscriptionStatus === 'Pending') {
     return (
-      <div></div>
+      <div className="py-8 text-center">
+        {subscriptionStatus === 'Pending' && (
+          <>
+            <h2 className="text-2xl font-bold mb-4">Payment Under Review</h2>
+            <p className="text-gray-600 dark:text-gray-400">
+              Your payment is currently being processed. We will notify you once it is confirmed.
+            </p>
+          </>
+        )}
+      </div>
     );
   }
 
